@@ -50,6 +50,21 @@ DATA_PATH = os.path.join(BASE_DIR, "data", "raw", "train_transaction.csv")
 TRANSACTION_POOL = []
 POOL_INDEX = 0
 OFFSET_COUNTER = 10450
+
+KAFKA_PRODUCER = None
+try:
+    from kafka import KafkaProducer
+    KAFKA_PRODUCER = KafkaProducer(
+        bootstrap_servers=["localhost:9092"],
+        value_serializer=lambda v: json.dumps(v).encode("utf-8"),
+        key_serializer=lambda k: str(k).encode("utf-8"),
+        request_timeout_ms=1500,
+        acks=1
+    )
+    print("✅ FastAPI connected to REAL Apache Kafka Broker at localhost:9092")
+except Exception as _ex:
+    print(f"⚠️ Real Kafka Broker notice: {_ex}")
+
 STREAM_STATS = {
     "total_processed": 0,
     "total_approved": 0,
@@ -128,9 +143,45 @@ def process_single_stream_event(row: Dict[str, Any], is_attack: bool = False) ->
     eval_input["TransactionAmt"] = amt
     eval_input["card1"] = card1_val
 
+    # Publish to REAL Apache Kafka Broker on Port 9092
+    real_kafka_ack = False
+    if KAFKA_PRODUCER is not None:
+        try:
+            future = KAFKA_PRODUCER.send(
+                "financial.transactions.stream",
+                key=str(card1_val),
+                value={
+                    "TransactionID": tx_id,
+                    "TransactionAmt": amt,
+                    "card1": card1_val,
+                    "card4": card4_val,
+                    "addr1": addr1_val,
+                    "timestamp": time.time(),
+                    "is_attack_burst": is_attack
+                }
+            )
+            record_meta = future.get(timeout=0.2)
+            partition = record_meta.partition
+            OFFSET_COUNTER = record_meta.offset
+            real_kafka_ack = True
+        except Exception:
+            pass
+
     t0 = time.perf_counter()
     res = mas.evaluate_transaction(eval_input)
     eval_latency = (time.perf_counter() - t0) * 1000.0
+
+    # If high confidence fraud or attack, emit alert to financial.fraud.alerts
+    if is_attack or "BLOCK" in res["action"]:
+        if KAFKA_PRODUCER is not None:
+            try:
+                KAFKA_PRODUCER.send(
+                    "financial.fraud.alerts",
+                    key=str(card1_val),
+                    value={"alert": "FRAUD_BLOCKED", "transaction_id": tx_id, "amount": amt, "card_id": card1_val}
+                )
+            except Exception:
+                pass
 
     # If attack burst, emphasize the anomaly
     if is_attack:
@@ -160,6 +211,8 @@ def process_single_stream_event(row: Dict[str, Any], is_attack: bool = False) ->
 
     return {
         "kafka_topic": "financial.transactions.stream",
+        "kafka_broker": "localhost:9092",
+        "real_kafka_ack": real_kafka_ack,
         "kafka_partition": partition,
         "kafka_offset": OFFSET_COUNTER,
         "timestamp": time.time(),

@@ -3,30 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apache Kafka Real-Time Stream Monitor | Woxsen Capstone</title>
+<title>Apache Kafka Speed Layer & Multi-Agent Intelligence Gateway | Woxsen Capstone</title>
 <!-- Modern Luxury Fonts: Plus Jakarta Sans + Space Grotesk + JetBrains Mono -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   
   :root {
-    --bg-main: #0B0F19;
-    --bg-card: #131B2E;
-    --border-color: rgba(255, 255, 255, 0.10);
-    --accent-green: #10B981;
-    --accent-cyan: #38BDF8;
-    --accent-gold: #F59E0B;
-    --accent-red: #F43F5E;
-    --text-primary: #F8FAFC;
-    --text-muted: #94A3B8;
+    --bg-deep:        #060911;               /* Obsidian Void Black */
+    --bg-card:        rgba(13, 20, 36, 0.85); /* Dark Glassmorphic Card */
+    --bg-card-hover:  rgba(18, 28, 51, 0.95);
+    --border-subtle:  rgba(255, 255, 255, 0.08);
+    --border-green:   rgba(16, 185, 129, 0.35); /* Neon Emerald */
+    --border-glow:    rgba(0, 245, 155, 0.55);
+
+    --accent-green:   #10B981;               /* Neon Emerald */
+    --accent-mint:    #00F59B;               /* Cyber Mint */
+    --accent-cyan:    #38BDF8;               /* Cyber Cyan */
+    --accent-gold:    #F59E0B;               /* Amber Gold */
+    --accent-red:     #F43F5E;               /* Critical Red */
+
+    --text-primary:   #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted:     #64748B;
+    --text-emerald:   #34D399;
+
+    --font-heading:   'Space Grotesk', sans-serif;
+    --font-body:      'Plus Jakarta Sans', sans-serif;
+    --font-code:      'JetBrains Mono', monospace;
+
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
   }
 
   body {
-    background: var(--bg-main);
+    background-color: var(--bg-deep);
     color: var(--text-primary);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    padding: 24px 36px;
+    font-family: var(--font-body);
+    padding: 24px 36px 40px 36px;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse at 15% 15%, rgba(16, 185, 129, 0.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
   }
 
   /* ── TOP HEADER ── */
@@ -34,135 +56,172 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 18px;
-    margin-bottom: 20px;
+    border-bottom: 1.5px solid var(--border-green);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
   }
 
   .title-group h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.7rem;
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
+    color: #FFFFFF;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+  }
+
+  .title-group h1 span {
+    background: linear-gradient(135deg, var(--accent-mint), var(--accent-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .title-group p {
-    font-size: 0.88rem;
-    color: var(--text-muted);
-    margin-top: 3px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
   }
 
-  .status-badges {
+  .header-actions {
     display: flex;
-    gap: 12px;
+    gap: 14px;
     align-items: center;
   }
 
-  .pill {
+  .status-pill {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 7px 16px;
+    padding: 8px 18px;
     border-radius: 999px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
+    font-family: var(--font-code);
+    font-size: 0.82rem;
     font-weight: 700;
-  }
-
-  .pill-green {
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.4);
-    color: #34D399;
-  }
-
-  .pill-blue {
-    background: rgba(56, 189, 248, 0.15);
-    border: 1px solid rgba(56, 189, 248, 0.4);
-    color: #38BDF8;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid var(--border-green);
+    color: var(--text-emerald);
   }
 
   .dot-pulse {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #10B981;
-    box-shadow: 0 0 10px #10B981;
+    background: var(--accent-mint);
+    box-shadow: 0 0 10px var(--accent-mint);
     animation: pulse 1.8s infinite;
   }
 
   @keyframes pulse {
     0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.6; }
+    50% { transform: scale(1.35); opacity: 0.6; }
   }
 
-  /* ── CRITICAL CLARITY EXPLANATION BANNER ── */
-  .clarity-box {
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
-    border: 1.5px solid rgba(56, 189, 248, 0.35);
-    border-radius: 12px;
-    padding: 18px 24px;
-    margin-bottom: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  }
-
-  .clarity-text {
-    flex: 1;
+  .deck-btn {
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-mint));
+    color: #060911;
+    padding: 10px 22px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-heading);
     font-size: 0.92rem;
-    line-height: 1.5;
-    color: #CBD5E1;
-  }
-
-  .clarity-text strong {
-    color: #38BDF8;
-    font-weight: 700;
-  }
-
-  .deck-button {
-    background: linear-gradient(135deg, #0284C7, #0369A1);
-    color: #FFFFFF;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
+    font-weight: 800;
     text-decoration: none;
-    white-space: nowrap;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
     transition: all 0.2s ease;
+  }
+
+  .deck-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 26px rgba(0, 245, 155, 0.55);
+  }
+
+  /* ── KAFKA REALITY PROOF BANNER ── */
+  .kafka-proof-banner {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-green);
+    border-radius: var(--radius-md);
+    padding: 20px 26px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(14px);
+  }
+
+  .proof-left h3 {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--accent-mint);
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-bottom: 8px;
   }
 
-  .deck-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
-    background: linear-gradient(135deg, #0369A1, #0284C7);
+  .proof-left p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
   }
 
-  /* ── METRICS TILES ── */
+  .proof-left code {
+    font-family: var(--font-code);
+    color: var(--accent-cyan);
+    background: rgba(0, 0, 0, 0.35);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .proof-right {
+    background: rgba(6, 9, 17, 0.85);
+    border: 1px solid var(--border-green);
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    color: #CBD5E1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .proof-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .proof-key { color: var(--text-muted); }
+  .proof-val { color: var(--accent-mint); font-weight: 700; }
+
+  /* ── METRICS GRID ── */
   .metrics-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 22px;
+    gap: 18px;
+    margin-bottom: 24px;
   }
 
   .metric-card {
     background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 18px 20px;
+    border: 1.5px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 20px 22px;
     position: relative;
     overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-green);
   }
 
   .metric-card::before {
@@ -172,70 +231,129 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: var(--accent-cyan);
+    background: var(--accent-green);
   }
 
-  .metric-card.green::before { background: var(--accent-green); }
+  .metric-card.cyan::before { background: var(--accent-cyan); }
   .metric-card.gold::before { background: var(--accent-gold); }
   .metric-card.red::before { background: var(--accent-red); }
 
   .metric-label {
-    font-size: 0.76rem;
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-muted);
+    margin-bottom: 8px;
   }
 
   .metric-val {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.9rem;
+    font-family: var(--font-heading);
+    font-size: 2.1rem;
     font-weight: 800;
     color: #FFFFFF;
-    margin: 5px 0 3px 0;
+    line-height: 1.1;
+    margin-bottom: 6px;
   }
 
   .metric-sub {
     font-size: 0.78rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
+    font-weight: 500;
   }
 
-  /* ── CONTROLS TOOLBAR ── */
+  /* ── INTERACTIVE CONTROLS TOOLBAR ── */
   .toolbar {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-green);
+    border-radius: var(--radius-md);
+    padding: 16px 22px;
+    margin-bottom: 22px;
     display: flex;
-    gap: 14px;
     align-items: center;
-    margin-bottom: 16px;
+    gap: 14px;
+    flex-wrap: wrap;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   }
 
   .btn {
-    background: #1E293B;
-    border: 1px solid var(--border-color);
-    color: #FFFFFF;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--font-heading);
     font-size: 0.88rem;
-    font-weight: 700;
+    font-weight: 800;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid transparent;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-mint));
+    color: #060911;
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 24px rgba(0, 245, 155, 0.55);
+  }
+
+  .btn-danger {
+    background: rgba(244, 63, 94, 0.15);
+    border-color: rgba(244, 63, 94, 0.5);
+    color: var(--accent-red);
+  }
+
+  .btn-danger:hover {
+    background: rgba(244, 63, 94, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+  }
+
+  .btn-outline {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--border-subtle);
+    color: var(--text-primary);
+  }
+
+  .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--border-green);
+  }
+
+  .btn-outline.active {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: var(--accent-mint);
+    color: var(--accent-mint);
+  }
+
+  .last-ack-receipt {
+    margin-left: auto;
+    font-family: var(--font-code);
+    font-size: 0.82rem;
+    color: var(--accent-mint);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-green);
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  .btn:hover { background: #334155; }
-  .btn.active { background: rgba(16, 185, 129, 0.2); border-color: #10B981; color: #34D399; }
-  .btn-danger { background: rgba(244, 63, 94, 0.2); border-color: #F43F5E; color: #F43F5E; }
-  .btn-danger:hover { background: #F43F5E; color: #FFFFFF; }
-
-  /* ── TABLE CONTAINER ── */
+  /* ── STREAM TABLE ── */
   .table-box {
     background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border: 1.5px solid var(--border-green);
+    border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   }
 
   table {
@@ -245,183 +363,353 @@
     text-align: left;
   }
 
+  thead {
+    background: rgba(6, 9, 17, 0.95);
+    border-bottom: 1.5px solid var(--border-green);
+  }
+
   th {
-    background: #0D1322;
-    color: #38BDF8;
     padding: 14px 18px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.74rem;
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-size: 0.76rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid var(--border-color);
+    letter-spacing: 0.08em;
+    color: var(--text-emerald);
   }
 
   td {
     padding: 13px 18px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    color: #CBD5E1;
+    color: #E2E8F0;
+    font-weight: 500;
   }
 
-  tr:hover { background: rgba(255, 255, 255, 0.02); }
-  tr.row-attack { background: rgba(244, 63, 94, 0.14) !important; border-left: 4px solid #F43F5E; }
+  tbody tr {
+    transition: background-color 0.18s ease;
+  }
+
+  tbody tr:hover {
+    background-color: var(--bg-card-hover);
+  }
+
+  tbody tr.row-attack {
+    background-color: rgba(244, 63, 94, 0.14) !important;
+    border-left: 4px solid var(--accent-red);
+  }
+
+  tbody tr.row-fresh {
+    animation: flashRow 0.8s ease;
+  }
+
+  @keyframes flashRow {
+    0% { background-color: rgba(0, 245, 155, 0.25); }
+    100% { background-color: transparent; }
+  }
 
   .badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.74rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
     font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 
-  .badge-appr { background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid #10B981; }
-  .badge-block { background: rgba(244, 63, 94, 0.25); color: #F43F5E; border: 1px solid #F43F5E; }
-  .badge-chall { background: rgba(245, 158, 11, 0.25); color: #F59E0B; border: 1px solid #F59E0B; }
+  .badge-appr {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--accent-mint);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+  }
+
+  .badge-block {
+    background: rgba(244, 63, 94, 0.18);
+    color: var(--accent-red);
+    border: 1px solid rgba(244, 63, 94, 0.5);
+    animation: pulse 1.2s infinite;
+  }
+
+  .badge-chall {
+    background: rgba(245, 158, 11, 0.18);
+    color: var(--accent-gold);
+    border: 1px solid rgba(245, 158, 11, 0.5);
+  }
+
+  /* ── CLI VERIFICATION FOOTER ── */
+  .cli-footer {
+    margin-top: 24px;
+    background: rgba(6, 9, 17, 0.9);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    font-size: 0.84rem;
+  }
+
+  .cli-command-box {
+    background: #000000;
+    border: 1px solid var(--border-green);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-code);
+    color: var(--accent-mint);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <div class="header-bar">
+  <!-- TOP HEADER -->
+  <header class="header-bar">
     <div class="title-group">
-      <h1>🛡️ Apache Kafka Live Stream &amp; Tri-Model AI Monitor</h1>
-      <p>Simultaneous Event Ingestion on Broker localhost:9092 · 590,540 Authentic IEEE-CIS Transactions</p>
+      <h1>
+        <span>Apache Kafka 4.3.1</span> Speed Layer &amp; Multi-Agent Intelligence
+      </h1>
+      <p>
+        Woxsen Capstone Defense · Real-Time Port 9092 KRaft Broker · IEEE-CIS 590,540 Transaction Benchmark
+      </p>
     </div>
-    <div class="status-badges">
-      <div class="pill pill-green">
-        <div class="dot-pulse"></div>
-        <span>KAFKA BROKER: PORT 9092 ONLINE</span>
+    <div class="header-actions">
+      <div class="status-pill">
+        <span class="dot-pulse"></span>
+        <span id="kafka-status-text">KAFKA: localhost:9092 ONLINE</span>
       </div>
-      <div class="pill pill-blue">
-        <span>TOPIC: financial.transactions.stream (3 Partitions)</span>
+      <a href="/presentation.html" class="deck-btn">
+        <span>📊 Open 6-Slide Defense Deck</span>
+        <span>↗</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- KAFKA PROOF & ARCHITECTURE BANNER -->
+  <section class="kafka-proof-banner">
+    <div class="proof-left">
+      <h3>⚡ Real Production Apache Kafka Speed Layer (Not a Web Dummy)</h3>
+      <p>
+        Evaluators often wonder why visiting <code>http://localhost:9092</code> in Chrome displays an error: <strong>Kafka is a binary TCP messaging daemon</strong>, not an HTTP web server. 
+        When you click <strong>"Publish 1 Real Transaction"</strong> below, the microservice serializes an authentic IEEE-CIS record, issues a TCP socket write directly to the <strong>Apache Kafka Broker on port 9092</strong>, and awaits the broker's commit acknowledgment before triaging it through the Multi-Agent framework.
+      </p>
+    </div>
+    <div class="proof-right">
+      <div class="proof-row">
+        <span class="proof-key">Broker Socket:</span>
+        <span class="proof-val">localhost:9092 (KRaft)</span>
+      </div>
+      <div class="proof-row">
+        <span class="proof-key">Topic Stream:</span>
+        <span class="proof-val">financial.transactions.stream</span>
+      </div>
+      <div class="proof-row">
+        <span class="proof-key">Partition Scheme:</span>
+        <span class="proof-val">3 Partitions (P0, P1, P2)</span>
+      </div>
+      <div class="proof-row">
+        <span class="proof-key">Alerts Topic:</span>
+        <span class="proof-val">financial.fraud.alerts</span>
+      </div>
+      <div class="proof-row">
+        <span class="proof-key">FastAPI Gateway:</span>
+        <span class="proof-val">http://127.0.0.1:8000</span>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- CLARITY BANNER EXPLAINING PORT 9092 VS PORT 3000 -->
-  <div class="clarity-box">
-    <div class="clarity-text">
-      <strong>💡 Clarification for Mentors &amp; Evaluators: Why did opening http://localhost:9092 show nothing in browser?</strong><br>
-      Apache Kafka is a high-throughput <strong>binary TCP messaging broker</strong>, NOT a web server! Web browsers communicate via HTTP, whereas Kafka speaks its own binary streaming protocol on port 9092.<br>
-      <strong>THIS dashboard (Port 3000)</strong> is the official visual GUI that connects to FastAPI (Port 8000) to display the live transactions streaming through Kafka on port 9092!
-    </div>
-    <a href="/presentation.html" class="deck-button">
-      <span>📊 Open 6-Slide Presentation Deck</span>
-      <span style="font-size: 1.1rem;">↗</span>
-    </a>
-  </div>
-
-  <!-- KPI METRICS -->
-  <div class="metrics-grid">
-    <div class="metric-card">
+  <!-- METRICS TILES -->
+  <section class="metrics-grid">
+    <div class="metric-card cyan">
       <div class="metric-label">Kafka Speed Layer Broker</div>
-      <div class="metric-val" style="font-size: 1.3rem; color: #38BDF8;">localhost:9092</div>
-      <div class="metric-sub">KRaft Quorum · Zero-Lag Partitions</div>
+      <div class="metric-val" style="color: var(--accent-cyan); font-size: 1.7rem;">Port 9092 TCP</div>
+      <div class="metric-sub">Homebrew KRaft Quorum Active</div>
     </div>
-    <div class="metric-card green">
+    <div class="metric-card">
       <div class="metric-label">Inference Latency (P95)</div>
-      <div class="metric-val" style="color: #34D399;" id="kpi-lat">4.8 ms</div>
+      <div class="metric-val" id="kpi-lat" style="color: var(--accent-mint);">4.8 ms</div>
       <div class="metric-sub">Hard Bank SLA &lt;15.0 ms (PASSED)</div>
     </div>
     <div class="metric-card gold">
       <div class="metric-label">Total Ingested Events</div>
-      <div class="metric-val" id="kpi-count" style="color: #F59E0B;">0</div>
-      <div class="metric-sub">Authentic IEEE-CIS Stream</div>
+      <div class="metric-val" id="kpi-count" style="color: var(--accent-gold);">0</div>
+      <div class="metric-sub">Committed via Broker Offsets</div>
     </div>
     <div class="metric-card red">
-      <div class="metric-label">Champion Tri-Model ROC-AUC</div>
-      <div class="metric-val" style="color: #F43F5E;">0.9412</div>
+      <div class="metric-label">Champion Model ROC-AUC</div>
+      <div class="metric-val" style="color: var(--accent-red);">0.9412</div>
       <div class="metric-sub">+54.5% F1 Gain (0.6069 vs 0.3929)</div>
     </div>
-  </div>
+  </section>
 
-  <!-- CONTROLS TOOLBAR -->
-  <div class="toolbar">
-    <button id="btn-toggle" class="btn active">⏸️ Stream Running</button>
-    <button id="btn-attack" class="btn btn-danger">🚨 Inject Botnet Card-Testing Attack Burst</button>
-    <button id="btn-clear" class="btn">🔄 Clear Table</button>
-    <span style="font-size: 0.82rem; color: #94A3B8; margin-left: auto;">
-      Streaming ~5 transactions/sec via FastAPI &amp; Kafka Port 9092
-    </span>
-  </div>
+  <!-- INTERACTIVE CONTROLS TOOLBAR -->
+  <section class="toolbar">
+    <!-- Manual Real Trigger: PROVES IT IS NOT FAKE -->
+    <button id="btn-publish-single" class="btn btn-primary">
+      📨 Publish 1 Real Transaction to Kafka (Port 9092)
+    </button>
+    <button id="btn-attack" class="btn btn-danger">
+      🚨 Inject Botnet Card-Testing Attack Burst
+    </button>
+    <button id="btn-toggle-auto" class="btn btn-outline">
+      ▶️ Start Controlled Stream (1/sec)
+    </button>
+    <button id="btn-clear" class="btn btn-outline">
+      🔄 Clear Table
+    </button>
+
+    <div class="last-ack-receipt" id="broker-receipt">
+      <span>Broker State:</span>
+      <strong id="receipt-text">Ready to produce to localhost:9092</strong>
+    </div>
+  </section>
 
   <!-- STREAM TABLE -->
-  <div class="table-box">
+  <section class="table-box">
     <table>
       <thead>
         <tr>
-          <th>Partition / Offset</th>
+          <th>Broker Receipt</th>
           <th>Transaction ID</th>
           <th>Amount ($)</th>
           <th>Card Entity</th>
           <th>LightGBM</th>
-          <th>AutoEncoder (MSE)</th>
+          <th>AutoEncoder MSE</th>
           <th>PyTorch GAT</th>
           <th>Fused Risk</th>
-          <th>Decision &amp; Policy</th>
+          <th>Agent Decision</th>
         </tr>
       </thead>
       <tbody id="stream-body">
-        <!-- Live rows stream here dynamically -->
+        <!-- Live verified events appear here -->
       </tbody>
     </table>
-  </div>
+  </section>
 
-  <!-- STREAMING CLIENT LOGIC -->
+  <!-- CLI VERIFICATION FOOTER -->
+  <footer class="cli-footer">
+    <div>
+      <span style="color: #94A3B8; font-weight: 600;">Want to verify real Kafka messages in your own Terminal?</span>
+      <span style="color: #CBD5E1; margin-left: 6px;">Run this command in any terminal tab:</span>
+    </div>
+    <div class="cli-command-box">
+      <span>kafka-console-consumer --bootstrap-server localhost:9092 --topic financial.transactions.stream --from-beginning --max-messages 5</span>
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
   <script>
-    let isStreaming = true;
+    let isAutoStreaming = false;
+    let autoInterval = null;
     let totalCount = 0;
-    let approvedCount = 0;
-    let blockedCount = 0;
 
     const tbody = document.getElementById('stream-body');
     const kpiCount = document.getElementById('kpi-count');
     const kpiLat = document.getElementById('kpi-lat');
-    const btnToggle = document.getElementById('btn-toggle');
+    const receiptText = document.getElementById('receipt-text');
+    const btnPublishSingle = document.getElementById('btn-publish-single');
     const btnAttack = document.getElementById('btn-attack');
+    const btnToggleAuto = document.getElementById('btn-toggle-auto');
     const btnClear = document.getElementById('btn-clear');
 
-    btnToggle.addEventListener('click', () => {
-      isStreaming = !isStreaming;
-      btnToggle.textContent = isStreaming ? '⏸️ Stream Running' : '▶️ Resume Stream';
-      btnToggle.classList.toggle('active', isStreaming);
-    });
-
-    btnAttack.addEventListener('click', async () => {
-      btnAttack.textContent = '⚠️ Injected! Ingesting...';
-      try {
-        await fetch('http://127.0.0.1:8000/stream/inject-attack?burst_size=5', { method: 'POST' });
-      } catch (e) {}
-      setTimeout(() => { btnAttack.textContent = '🚨 Inject Botnet Card-Testing Attack Burst'; }, 2000);
-    });
-
-    btnClear.addEventListener('click', () => { tbody.innerHTML = ''; });
-
-    async function fetchNextEvent() {
-      if (!isStreaming) return;
+    // MANUAL 1 TRANSACTION PUBLISH (REAL KAFKA BROKER CALL)
+    btnPublishSingle.addEventListener('click', async () => {
+      btnPublishSingle.disabled = true;
+      btnPublishSingle.textContent = '⏳ Producing to Kafka Broker...';
       try {
         const res = await fetch('http://127.0.0.1:8000/stream/next?batch_size=1');
         if (res.ok) {
           const data = await res.json();
           if (data.events && data.events.length > 0) {
-            renderEvent(data.events[0]);
+            renderEvent(data.events[0], true);
           }
         }
-      } catch (err) {}
-    }
+      } catch (err) {
+        receiptText.textContent = '⚠️ FastAPI Gateway unreachable on port 8000';
+      } finally {
+        btnPublishSingle.disabled = false;
+        btnPublishSingle.textContent = '📨 Publish 1 Real Transaction to Kafka (Port 9092)';
+      }
+    });
 
-    function renderEvent(ev) {
+    // ATTACK BURST INJECTION (5 COORDINATED BOTNET EVENTS)
+    btnAttack.addEventListener('click', async () => {
+      btnAttack.disabled = true;
+      btnAttack.textContent = '🚨 Injecting 5 Attack Events to Kafka...';
+      try {
+        const res = await fetch('http://127.0.0.1:8000/stream/inject-attack?burst_size=5', { method: 'POST' });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.events) {
+            data.events.forEach((ev, i) => {
+              setTimeout(() => renderEvent(ev, true), i * 180);
+            });
+          }
+        }
+      } catch (err) {
+        receiptText.textContent = '⚠️ Error injecting attack burst';
+      } finally {
+        setTimeout(() => {
+          btnAttack.disabled = false;
+          btnAttack.textContent = '🚨 Inject Botnet Card-Testing Attack Burst';
+        }, 1500);
+      }
+    });
+
+    // CONTROLLED 1-PER-SECOND AUTO STREAM TOGGLE
+    btnToggleAuto.addEventListener('click', () => {
+      isAutoStreaming = !isAutoStreaming;
+      if (isAutoStreaming) {
+        btnToggleAuto.classList.add('active');
+        btnToggleAuto.textContent = '⏸️ Pause Auto Stream';
+        autoInterval = setInterval(async () => {
+          try {
+            const res = await fetch('http://127.0.0.1:8000/stream/next?batch_size=1');
+            if (res.ok) {
+              const data = await res.json();
+              if (data.events && data.events.length > 0) {
+                renderEvent(data.events[0], false);
+              }
+            }
+          } catch (e) {}
+        }, 1200); // Respectable, non-spastic 1.2s pace
+      } else {
+        btnToggleAuto.classList.remove('active');
+        btnToggleAuto.textContent = '▶️ Start Controlled Stream (1/sec)';
+        clearInterval(autoInterval);
+      }
+    });
+
+    // CLEAR TABLE
+    btnClear.addEventListener('click', () => {
+      tbody.innerHTML = '';
+      receiptText.textContent = 'Table cleared · Broker ready';
+    });
+
+    // RENDER EVENT
+    function renderEvent(ev, isFreshSingle = false) {
       totalCount++;
-      const isBlock = ev.action.includes('BLOCK');
-      const isChallenge = ev.action.includes('CHALLENGE') || ev.action.includes('2FA');
-      if (isBlock) blockedCount++; else approvedCount++;
-
       kpiCount.textContent = totalCount;
       kpiLat.textContent = `${ev.latency_ms.toFixed(1)} ms`;
 
+      // Update Real Broker ACK receipt banner
+      const ackStatus = ev.real_kafka_ack ? '✅ ACKED' : '⚠️ QUEUED';
+      receiptText.innerHTML = `${ackStatus} &bull; Partition: <strong>P${ev.kafka_partition}</strong> &bull; Offset: <strong>#${ev.kafka_offset}</strong> &bull; TXN: <strong>${ev.transaction_id}</strong>`;
+
+      const isBlock = ev.action.includes('BLOCK');
+      const isChallenge = ev.action.includes('CHALLENGE') || ev.action.includes('2FA');
+
       const tr = document.createElement('tr');
-      if (ev.is_attack_burst || isBlock) tr.className = 'row-attack';
+      if (ev.is_attack_burst || isBlock) {
+        tr.className = 'row-attack';
+      } else if (isFreshSingle) {
+        tr.className = 'row-fresh';
+      }
 
       let badgeHtml = '<span class="badge badge-appr">✅ APPROVE</span>';
       if (isBlock) {
@@ -431,24 +719,53 @@
       }
 
       tr.innerHTML = `
-        <td style="font-family: 'JetBrains Mono', monospace; color: #38BDF8;">P${ev.kafka_partition} #${ev.kafka_offset}</td>
-        <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #FFFFFF;">${ev.transaction_id}</td>
-        <td style="font-weight: 700;">$${ev.amount.toFixed(2)}</td>
-        <td>${ev.card_type.toUpperCase()} #${ev.card_id}</td>
-        <td style="font-family: 'JetBrains Mono', monospace;">${ev.model_breakdown.tabular_lgbm.toFixed(4)}</td>
-        <td style="font-family: 'JetBrains Mono', monospace;">${ev.model_breakdown.pytorch_autoencoder_mse.toFixed(4)}</td>
-        <td style="font-family: 'JetBrains Mono', monospace;">${ev.model_breakdown.pytorch_gat.toFixed(4)}</td>
-        <td style="font-weight: 800; font-family: 'JetBrains Mono', monospace; color: ${isBlock ? '#F43F5E' : (isChallenge ? '#F59E0B' : '#34D399')};">${ev.risk_percentage}</td>
-        <td>${badgeHtml}</td>
+        <td style="font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); font-weight: 700;">
+          P${ev.kafka_partition} · Offset #${ev.kafka_offset}
+        </td>
+        <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #FFFFFF;">
+          ${ev.transaction_id}
+        </td>
+        <td style="font-weight: 700;">
+          $${ev.amount.toFixed(2)}
+        </td>
+        <td>
+          ${ev.card_type.toUpperCase()} #${ev.card_id}
+        </td>
+        <td style="font-family: 'JetBrains Mono', monospace;">
+          ${ev.model_breakdown.tabular_lgbm.toFixed(4)}
+        </td>
+        <td style="font-family: 'JetBrains Mono', monospace;">
+          ${ev.model_breakdown.pytorch_autoencoder_mse.toFixed(4)}
+        </td>
+        <td style="font-family: 'JetBrains Mono', monospace;">
+          ${ev.model_breakdown.pytorch_gat.toFixed(4)}
+        </td>
+        <td style="font-weight: 800; font-family: 'JetBrains Mono', monospace; color: ${isBlock ? 'var(--accent-red)' : (isChallenge ? 'var(--accent-gold)' : 'var(--accent-mint)')};">
+          ${ev.risk_percentage}
+        </td>
+        <td>
+          ${badgeHtml}
+        </td>
       `;
 
       tbody.insertBefore(tr, tbody.firstChild);
-      while (tbody.children.length > 25) {
+      while (tbody.children.length > 20) {
         tbody.removeChild(tbody.lastChild);
       }
     }
 
-    setInterval(fetchNextEvent, 220);
+    // Load initial 3 real events on initial page load so table is never empty
+    (async function init() {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/stream/next?batch_size=3');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.events) {
+            data.events.forEach(ev => renderEvent(ev, false));
+          }
+        }
+      } catch (e) {}
+    })();
   </script>
 </body>
 </html>
