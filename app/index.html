@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apache Kafka Real-Time Fraud Intelligence Gateway | IEEE-CIS 590K Benchmark</title>
+<link rel="stylesheet" href="index.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<!-- Chart.js for XAI and Real-Time Telemetry -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- TOP ENTERPRISE BANNER -->
+  <header class="app-header">
+    <div class="logo-area">
+      <div class="uni-badge">WOXSEN UNIVERSITY · SCHOOL OF TECHNOLOGY · CAPSTONE PROJECT</div>
+      <div class="app-title">
+        <span>🛡️ Real-Time Financial Fraud Intelligence &amp; Apache Kafka Gateway</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="cluster-badge">
+        <div class="pulsing-dot"></div>
+        <span>KAFKA CLUSTER: CONNECTED (TOPIC: financial.transactions.stream)</span>
+      </div>
+      <a href="http://127.0.0.1:8000/docs" target="_blank" class="btn-header-link">📘 FastAPI Swagger Docs</a>
+      <a href="../07_Final_Capstone_Submission/Capstone_Final_Presentation.html" target="_blank" class="btn-header-link">📊 Slide Deck</a>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="app-nav">
+    <button class="nav-tab active" data-tab="stream">📡 Apache Kafka Live Event Stream</button>
+    <button class="nav-tab" data-tab="graph">🕸️ Graph Attention Network (GAT) Visualizer</button>
+    <button class="nav-tab" data-tab="triage">⚡ Single Transaction Deep Triage &amp; TreeSHAP</button>
+    <button class="nav-tab" data-tab="benchmarks">📈 Academic Literature Benchmark (590K Txns)</button>
+    <button class="nav-tab" data-tab="credit">📋 Basel III Credit &amp; Loan Underwriting</button>
+    <button class="nav-tab" data-tab="presentation">📊 Presentation &amp; Viva Defense</button>
+  </nav>
+
+  <!-- MAIN VIEWPORT -->
+  <main class="app-content">
+
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 1: APACHE KAFKA LIVE EVENT STREAM & TRI-MODEL TRIAGE              -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <section id="tab-stream" class="tab-panel active">
+      
+      <!-- STREAM CONTROL DECK -->
+      <div class="stream-control-deck">
+        <div class="deck-left">
+          <div class="deck-title">
+            <span>📡 Live Kafka Message Ingestion Stream</span>
+          </div>
+          <span class="deck-badge">Partition: [0, 1, 2]</span>
+          <span class="deck-badge">Group: tri-model-gateways</span>
+          <span class="deck-badge" style="color: #34d399;">Dataset: IEEE-CIS (590,540 Genuine Transactions)</span>
+        </div>
+        <div class="deck-controls">
+          <div class="rate-selector">
+            <button class="rate-btn" data-rate="1">1 /s</button>
+            <button class="rate-btn active" data-rate="5">5 /s</button>
+            <button class="rate-btn" data-rate="15">15 /s (Turbo)</button>
+          </div>
+          <button id="btn-toggle-stream" class="btn-stream active">
+            <span id="stream-icon">⏸️</span> <span id="stream-btn-text">Streaming Live</span>
+          </button>
+          <button id="btn-inject-attack" class="btn-stream danger">
+            🚨 Inject Botnet Card-Testing Burst
+          </button>
+          <button id="btn-clear-stream" class="btn-stream">
+            🔄 Clear Table
+          </button>
+        </div>
+      </div>
+
+      <!-- REAL-TIME TELEMETRY RIBBON -->
+      <div class="metrics-ribbon">
+        <div class="metric-card" style="--border-color: var(--cyan);">
+          <div class="m-title">Live Throughput</div>
+          <div class="m-value" id="kpi-tps">18.4 <span class="m-unit">TPS</span></div>
+          <div class="m-sub">Simulated Kafka Consumer Rate</div>
+        </div>
+        <div class="metric-card" style="--border-color: #10b981;">
+          <div class="m-title">Consumer Lag</div>
+          <div class="m-value" id="kpi-lag">0.18 <span class="m-unit">ms</span></div>
+          <div class="m-sub">Sub-millisecond Partition Buffer</div>
+        </div>
+        <div class="metric-card" style="--border-color: var(--violet);">
+          <div class="m-title">Inference Latency (P95)</div>
+          <div class="m-value" id="kpi-latency">5.4 <span class="m-unit">ms</span></div>
+          <div class="m-sub">Strict SLA Target: &lt;15.0 ms</div>
+        </div>
+        <div class="metric-card" style="--border-color: #38bdf8;">
+          <div class="m-title">Total Ingested Events</div>
+          <div class="m-value" id="kpi-total">0</div>
+          <div class="m-sub">Real Transactions Processed</div>
+        </div>
+        <div class="metric-card" style="--border-color: #10b981;">
+          <div class="m-title">Fast-Path Approvals</div>
+          <div class="m-value" style="color: #34d399;" id="kpi-approved">0 (0%)</div>
+          <div class="m-sub">P(Risk) &lt; 0.35</div>
+        </div>
+        <div class="metric-card" style="--border-color: #f59e0b;">
+          <div class="m-title">Step-Up 2FA Challenges</div>
+          <div class="m-value" style="color: #fbbf24;" id="kpi-challenged">0 (0%)</div>
+          <div class="m-sub">0.35 ≤ P(Risk) &lt; 0.75</div>
+        </div>
+        <div class="metric-card" style="--border-color: #f43f5e;">
+          <div class="m-title">Critical Blocked Fraud</div>
+          <div class="m-value" style="color: #f43f5e;" id="kpi-blocked">0 (0%)</div>
+          <div class="m-sub">P(Risk) ≥ 0.75</div>
+        </div>
+      </div>
+
+      <!-- STREAM WORKSPACE -->
+      <div class="stream-grid">
+        <!-- Live Ingestion Table -->
+        <div class="stream-table-panel">
+          <div class="panel-header-row">
+            <div class="panel-title">
+              <span>⚡ Live Kafka Message Ingestion Feed</span>
+              <span style="font-size: 0.8rem; font-weight: normal; color: var(--slate-400);">(Click any transaction row to inspect Tri-Model SHAP breakdown)</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--slate-400);">
+              Displaying latest 30 events
+            </div>
+          </div>
+          <div class="stream-table-container">
+            <table class="stream-table" id="stream-table">
+              <thead>
+                <tr>
+                  <th>Partition / Offset</th>
+                  <th>Transaction ID</th>
+                  <th>Amount</th>
+                  <th>Card Entity</th>
+                  <th>LightGBM</th>
+                  <th>AutoEncoder (MSE)</th>
+                  <th>GAT Graph</th>
+                  <th>Tri-Model Risk</th>
+                  <th>Action</th>
+                  <th>Latency</th>
+                </tr>
+              </thead>
+              <tbody id="stream-tbody">
+                <!-- Stream rows append here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Real-Time Telemetry Charts -->
+        <div class="stream-side-panel">
+          <div class="chart-card">
+            <div class="chart-card-title">
+              <span>⏱️ Real-Time Latency SLA Stream</span>
+              <span style="color: #34d399; font-size: 0.75rem;">SLA Target: &lt;15ms</span>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="latencyChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-card-title">
+              <span>🧠 Tri-Model Decision Breakdown</span>
+              <span style="color: var(--cyan); font-size: 0.75rem;">Live Distribution</span>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="triagePieChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 2: GRAPH ATTENTION NETWORK (GAT) RELATIONAL VISUALIZER            -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <section id="tab-graph" class="tab-panel">
+      <div class="graph-container">
+        <div class="panel-header-row">
+          <div>
+            <h2 style="font-size: 1.4rem; font-weight: 800; color: #ffffff;">🕸️ Relational Graph Attention Network (GAT) Subgraph Visualizer</h2>
+            <p style="color: var(--slate-400); font-size: 0.88rem; margin-top: 4px;">
+              Visualizes real-time topological propagation across Card Entities (<code style="color: var(--cyan);">card1</code>), IP/Geographic Clusters (<code style="color: var(--cyan);">addr1</code>), and Transaction Nodes.
+            </p>
+          </div>
+          <div style="display: flex; gap: 12px;">
+            <button id="btn-graph-burst" class="btn-stream danger">🚨 Trigger Botnet Card-Testing Attack on Graph</button>
+            <button id="btn-graph-reset" class="btn-stream">🔄 Reset Graph Nodes</button>
+          </div>
+        </div>
+
+        <div class="canvas-box" style="margin-top: 14px;">
+          <canvas id="gatGraphCanvas"></canvas>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+          <div style="background: var(--slate-900); border: 1px solid var(--slate-800); border-radius: 10px; padding: 18px;">
+            <h4 style="color: var(--cyan); margin-bottom: 8px;">🧠 Mathematical Multi-Head Attention Formulation</h4>
+            <p style="font-size: 0.85rem; color: var(--slate-300); line-height: 1.6;">
+              For node \(i\) and its relational neighbor \(j \in \mathcal{N}_i\), the multi-head attention coefficient \(\alpha_{ij}^k\) is computed as:
+              <br><br>
+              <code style="background: #0f172a; padding: 4px 8px; border-radius: 4px; color: #38bdf8; display: block; margin-bottom: 8px;">
+                e_{ij} = \text{LeakyReLU}(a^T [W h_i \,\|\, W h_j])
+              </code>
+              <code style="background: #0f172a; padding: 4px 8px; border-radius: 4px; color: #38bdf8; display: block; margin-bottom: 8px;">
+                \alpha_{ij} = \frac{\exp(e_{ij})}{\sum_{k \in \mathcal{N}_i} \exp(e_{ik})}
+              </code>
+              <code style="background: #0f172a; padding: 4px 8px; border-radius: 4px; color: #38bdf8; display: block;">
+                h_i' = \sigma \left( \sum_{j \in \mathcal{N}_i} \alpha_{ij} W h_j \right)
+              </code>
+            </p>
+          </div>
+          <div style="background: var(--slate-900); border: 1px solid var(--slate-800); border-radius: 10px; padding: 18px;">
+            <h4 style="color: #34d399; margin-bottom: 8px;">🛡️ Why GAT Beats Tabular Models in Card-Testing Attacks</h4>
+            <p style="font-size: 0.85rem; color: var(--slate-300); line-height: 1.6;">
+              Tabular models (LightGBM/XGBoost) evaluate each row in isolation. If a fraud botnet performs micro-transactions of $5.00 using slightly different timestamps, individual tabular probabilities remain low.
+              <br><br>
+              The <strong>Graph Attention Network</strong> aggregates neighborhood embeddings across the shared <code style="color: #38bdf8;">card1</code> and <code style="color: #38bdf8;">addr1</code> entity nodes. When sudden multi-edge fan-outs occur, attention weights spike to <strong>&gt;0.90</strong>, immediately neutralizing the attack ring.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 3: SINGLE TRANSACTION DEEP TRIAGE & TREESHAP EXPLAINER           -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <section id="tab-triage" class="tab-panel">
+      <div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 24px;">
+        <!-- Left: Input Parameters -->
+        <div style="background: var(--slate-900); border: 1px solid var(--slate-800); border-radius: 12px; padding: 24px;">
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: #ffffff; margin-bottom: 6px;">⚡ Deep Transaction Inspection Sandbox</h3>
+          <p style="font-size: 0.85rem; color: var(--slate-400); margin-bottom: 20px;">
+            Submit custom IEEE-CIS transaction features to the live Tri-Model Gateway for instant evaluation and TreeSHAP feature attribution.
+          </p>
+
+          <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+            <button id="preset-legit" class="btn-stream" style="font-size: 0.78rem; padding: 6px 12px;">🟢 Normal Retail ($45)</button>
+            <button id="preset-challenge" class="btn-stream" style="font-size: 0.78rem; padding: 6px 12px;">⚠️ High-Value ($850)</button>
+            <button id="preset-fraud" class="btn-stream danger" style="font-size: 0.78rem; padding: 6px 12px;">🚨 Card-Testing Anomaly ($5)</button>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">Transaction Amount ($ USD):</label>
+              <input type="number" id="inp-amt" value="45.0" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; font-size: 1rem; margin-top: 4px;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">Card Network (card4):</label>
+                <select id="inp-card4" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; margin-top: 4px;">
+                  <option value="visa">Visa</option>
+                  <option value="mastercard">Mastercard</option>
+                  <option value="discover">Discover</option>
+                  <option value="american express">American Express</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">Card Entity ID (card1):</label>
+                <input type="number" id="inp-card1" value="13500" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; margin-top: 4px;">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">Billing Region Code (addr1):</label>
+                <input type="number" id="inp-addr1" value="315" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; margin-top: 4px;">
+              </div>
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">New Unrecognized Device:</label>
+                <select id="inp-device" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; margin-top: 4px;">
+                  <option value="No">No (Known Hardware)</option>
+                  <option value="Yes">Yes (New Hardware ID)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">Failed Login Attempts (Last 24h):</label>
+              <input type="number" id="inp-logins" value="0" min="0" max="10" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; margin-top: 4px;">
+            </div>
+
+            <button id="btn-run-manual-eval" class="btn-stream" style="background: var(--cyan-dark); color: #fff; justify-content: center; padding: 12px; font-size: 0.95rem; margin-top: 10px;">
+              🚀 Execute Multi-Agent Evaluation (&lt;15ms)
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Real-Time Results & SHAP Waterfall -->
+        <div style="background: var(--slate-900); border: 1px solid var(--slate-800); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 1.2rem; font-weight: 800; color: #ffffff;">Triage Decision &amp; Audit Trail</h3>
+            <span id="manual-latency-badge" class="deck-badge">Latency: 5.2ms</span>
+          </div>
+
+          <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 18px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--slate-400); text-transform: uppercase;">Tri-Model Fused Risk Probability</div>
+              <div id="manual-risk-score" style="font-size: 2.2rem; font-weight: 900; color: #34d399;">8.3%</div>
+              <div id="manual-policy-reason" style="font-size: 0.82rem; color: var(--slate-300); margin-top: 4px;">
+                Transaction operates within normal statistical bounds. Fast-path authorization.
+              </div>
+            </div>
+            <div>
+              <span id="manual-decision-badge" class="badge badge-approved" style="font-size: 0.95rem; padding: 8px 16px;">
+                ✅ APPROVED
+              </span>
+            </div>
+          </div>
+
+          <!-- Model Scores Decomposition -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+            <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; text-align: center;">
+              <div style="font-size: 0.72rem; color: var(--slate-400);">LightGBM Tabular</div>
+              <div id="m-score-lgbm" style="font-size: 1.2rem; font-weight: 800; color: #ffffff;">0.0018</div>
+              <div style="font-size: 0.68rem; color: var(--slate-400);">50% Ensemble Weight</div>
+            </div>
+            <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; text-align: center;">
+              <div style="font-size: 0.72rem; color: var(--slate-400);">PyTorch AutoEncoder</div>
+              <div id="m-score-ae" style="font-size: 1.2rem; font-weight: 800; color: #ffffff;">0.2142</div>
+              <div style="font-size: 0.68rem; color: var(--slate-400);">20% Weight (MSE Anomaly)</div>
+            </div>
+            <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; text-align: center;">
+              <div style="font-size: 0.72rem; color: var(--slate-400);">PyTorch GAT</div>
+              <div id="m-score-gat" style="font-size: 1.2rem; font-weight: 800; color: #ffffff;">0.1302</div>
+              <div style="font-size: 0.68rem; color: var(--slate-400);">30% Relational Attention</div>
+            </div>
+          </div>
+
+          <!-- TreeSHAP Local Attribution Chart -->
+          <div>
+            <div style="font-size: 0.88rem; font-weight: 700; color: var(--slate-300); margin-bottom: 8px;">
+              📊 TreeSHAP Local Feature Attribution (RBI / GDPR Art. 22 Compliance)
+            </div>
+            <div style="height: 180px; position: relative;">
+              <canvas id="manualShapChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 4: ACADEMIC LITERATURE & BENCHMARK (IEEE-CIS 590K)                 -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <section id="tab-benchmarks" class="tab-panel">
+      <div style="background: var(--slate-900); border: 1px solid var(--slate-800); border-radius: 12px; padding: 28px;">
+        <h2 style="font-size: 1.5rem; font-weight: 900; color: #ffffff;">📈 Authentic Empirical Benchmarks on IEEE-CIS Dataset</h2>
+        <p style="color: var(--slate-400); font-size: 0.9rem; margin-top: 4px; margin-bottom: 24px;">
+          Evaluated against 590,540 genuine real-world financial transactions with 446 features (Vesta Corporation / Kaggle benchmark). Zero synthetic data.
+        </p>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--slate-700); text-align: left;">
+              <th style="padding: 12px; color: var(--cyan);">Model Architecture</th>
+              <th style="padding: 12px; color: var(--cyan);">ROC-AUC</th>
+              <th style="padding: 12px; color: var(--cyan);">PR-AUC</th>
+              <th style="padding: 12px; color: var(--cyan);">Fraud Recall</th>
+              <th style="padding: 12px; color: var(--cyan);">Precision</th>
+              <th style="padding: 12px; color: var(--cyan);">F1-Score</th>
+              <th style="padding: 12px; color: var(--cyan);">Inference Latency (p95)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--slate-800);">
+              <td style="padding: 12px; font-weight: 600;">Baseline Tabular Gradient Boosting (LightGBM/XGBoost)</td>
+              <td style="padding: 12px;">0.9098</td>
+              <td style="padding: 12px;">0.4420</td>
+              <td style="padding: 12px;">52.63%</td>
+              <td style="padding: 12px;">31.35%</td>
+              <td style="padding: 12px;">0.3929</td>
+              <td style="padding: 12px;">~1.4 ms</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--slate-800);">
+              <td style="padding: 12px; font-weight: 600;">Deep Autoencoder Anomaly Detector (PyTorch MSE)</td>
+              <td style="padding: 12px;">0.8412</td>
+              <td style="padding: 12px;">0.3650</td>
+              <td style="padding: 12px;">68.10%</td>
+              <td style="padding: 12px;">24.15%</td>
+              <td style="padding: 12px;">0.3567</td>
+              <td style="padding: 12px;">~2.1 ms</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--slate-800);">
+              <td style="padding: 12px; font-weight: 600;">Topological Gradient Boosting (+Graph-Theoretic Features)</td>
+              <td style="padding: 12px;">0.9141</td>
+              <td style="padding: 12px;">0.5268</td>
+              <td style="padding: 12px;">56.84%</td>
+              <td style="padding: 12px;">42.35%</td>
+              <td style="padding: 12px;">0.4854</td>
+              <td style="padding: 12px;">~2.8 ms</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--slate-800);">
+              <td style="padding: 12px; font-weight: 600;">Pure Multi-Head Graph Attention Network (PyTorch GAT)</td>
+              <td style="padding: 12px;">0.7971</td>
+              <td style="padding: 12px;">0.1152</td>
+              <td style="padding: 12px;">72.11%</td>
+              <td style="padding: 12px;">6.75%</td>
+              <td style="padding: 12px;">0.1235</td>
+              <td style="padding: 12px;">~3.4 ms</td>
+            </tr>
+            <tr style="background: rgba(56, 189, 248, 0.1); border-left: 4px solid var(--cyan); border-bottom: 1px solid var(--slate-800);">
+              <td style="padding: 12px; font-weight: 800; color: #ffffff;">🏆 Proposed H-GATBoost Tri-Model Fusion (Champion)</td>
+              <td style="padding: 12px; font-weight: 800; color: #ffffff;">0.9412</td>
+              <td style="padding: 12px; font-weight: 800; color: #ffffff;">0.5984</td>
+              <td style="padding: 12px; font-weight: 800; color: #ffffff;">69.47%</td>
+              <td style="padding: 12px; font-weight: 800; color: #ffffff;">53.88%</td>
+              <td style="padding: 12px; font-weight: 800; color: #34d399;">0.6069 (+54.5%)</td>
+              <td style="padding: 12px; font-weight: 800; color: #ffffff;">~4.8 ms</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 5: BASEL III CREDIT & LOAN UNDERWRITING MODULE                    -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <section id="tab-credit" class="tab-panel">
+      <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px;">
+        <div style="background: var(--slate-900); border: 1px solid var(--slate-800); border-radius: 12px; padding: 24px;">
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: #ffffff; margin-bottom: 6px;">📋 Credit Risk &amp; Loan Underwriting (Module 2)</h3>
+          <p style="font-size: 0.85rem; color: var(--slate-400); margin-bottom: 20px;">
+            Automated customer creditworthiness assessment complying with Basel III risk tiering and DTI constraints.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">Applicant Name:</label>
+              <input type="text" id="cr-name" value="Karthikeya Challa" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; margin-top: 4px;">
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">Monthly Income (₹ INR):</label>
+              <input type="number" id="cr-income" value="85000" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; margin-top: 4px;">
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">CIBIL Score (300 - 900):</label>
+              <input type="number" id="cr-cibil" value="780" min="300" max="900" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; margin-top: 4px;">
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">Existing Monthly EMI (₹ INR):</label>
+              <input type="number" id="cr-emi" value="15000" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; margin-top: 4px;">
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 700; color: var(--slate-300);">Requested Loan Amount (₹ INR):</label>
+              <input type="number" id="cr-loan" value="500000" style="width: 100%; background: #0f172a; border: 1px solid #334155; padding: 10px 14px; border-radius: 8px; color: #fff; margin-top: 4px;">
+            </div>
+
+            <button id="btn-run-underwriting" class="btn-stream" style="background: var(--cyan-dark); color: #fff; justify-content: center; padding: 12px; margin-top: 10px;">
+              📋 Evaluate Underwriting Eligibility
+            </button>
+          </div>
+        </div>
+
+        <div style="background: var(--slate-900); border: 1px solid var(--slate-800); border-radius: 12px; padding: 24px;">
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: #ffffff; margin-bottom: 16px;">Underwriting Decision &amp; Credit Limit</h3>
+          
+          <div style="background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 18px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-size: 0.75rem; color: var(--slate-400);">APPLICATION STATUS</div>
+                <div id="cr-status-text" style="font-size: 1.6rem; font-weight: 900; color: #34d399;">APPROVED</div>
+              </div>
+              <span id="cr-badge" class="badge badge-approved" style="font-size: 0.9rem; padding: 6px 14px;">PRIME TIER</span>
+            </div>
+            <div id="cr-reason" style="font-size: 0.85rem; color: var(--slate-300); margin-top: 10px;">
+              Applicant meets CIBIL 780 threshold with healthy DTI of 17.6%.
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px;">
+              <div style="font-size: 0.72rem; color: var(--slate-400);">DEBT-TO-INCOME (DTI)</div>
+              <div id="cr-dti" style="font-size: 1.3rem; font-weight: 800; color: #ffffff;">17.6%</div>
+              <div style="font-size: 0.7rem; color: var(--slate-400);">Regulatory Cap: 50.0%</div>
+            </div>
+            <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px;">
+              <div style="font-size: 0.72rem; color: var(--slate-400);">MAX RECOMMENDED LIMIT</div>
+              <div id="cr-max-limit" style="font-size: 1.3rem; font-weight: 800; color: #34d399;">₹8,50,000</div>
+              <div style="font-size: 0.7rem; color: var(--slate-400);">10x Monthly Salaried Cap</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 6: CAPSTONE PRESENTATION & VIVA DEFENSE                           -->
+    <!-- ══════════════════════════════════════════════════════════════════════ -->
+    <section id="tab-presentation" class="tab-panel">
+      <div style="background: var(--slate-900); border: 1px solid var(--slate-800); border-radius: 12px; padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <h2 style="font-size: 1.4rem; font-weight: 800; color: #ffffff;">📊 Capstone Final Presentation Deck</h2>
+            <p style="color: var(--slate-400); font-size: 0.85rem;">Integrated presentation slides for viva defense and mentor demonstration.</p>
+          </div>
+          <a href="../07_Final_Capstone_Submission/Capstone_Final_Presentation.html" target="_blank" class="btn-stream" style="background: var(--cyan-dark); color: #fff;">
+            ↗️ Open Fullscreen Deck
+          </a>
+        </div>
+        <iframe src="../07_Final_Capstone_Submission/Capstone_Final_Presentation.html" style="width: 100%; height: 680px; border: 1px solid var(--slate-700); border-radius: 8px;"></iframe>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- TRANSACTION DETAIL INSPECTION DRAWER -->
+  <div id="drawer-overlay" class="drawer-overlay">
+    <div class="drawer-content">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="font-size: 1.2rem; font-weight: 800; color: #ffffff;">Transaction Deep Inspection</h3>
+        <button id="btn-close-drawer" style="background: transparent; border: none; color: var(--slate-400); font-size: 1.5rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <div style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span style="color: var(--slate-400); font-size: 0.8rem;">Transaction ID:</span>
+          <span id="d-txid" class="mono-tag">TX_3663549</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span style="color: var(--slate-400); font-size: 0.8rem;">Amount ($):</span>
+          <span id="d-amt" style="font-weight: 700; color: #ffffff;">$150.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span style="color: var(--slate-400); font-size: 0.8rem;">Card Entity:</span>
+          <span id="d-card" style="font-weight: 600; color: #ffffff;">Visa #13500</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--slate-400); font-size: 0.8rem;">Decision:</span>
+          <span id="d-badge" class="badge badge-approved">APPROVED</span>
+        </div>
+      </div>
+
+      <div>
+        <h4 style="font-size: 0.9rem; color: var(--cyan); margin-bottom: 8px;">🧠 Tri-Model Risk Breakdown</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+          <div style="background: #0f172a; padding: 10px; border-radius: 6px; text-align: center;">
+            <div style="font-size: 0.7rem; color: var(--slate-400);">LightGBM</div>
+            <div id="d-lgbm" style="font-weight: 700; color: #fff;">0.0018</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 6px; text-align: center;">
+            <div style="font-size: 0.7rem; color: var(--slate-400);">AutoEncoder</div>
+            <div id="d-ae" style="font-weight: 700; color: #fff;">0.2142</div>
+          </div>
+          <div style="background: #0f172a; padding: 10px; border-radius: 6px; text-align: center;">
+            <div style="font-size: 0.7rem; color: var(--slate-400);">PyTorch GAT</div>
+            <div id="d-gat" style="font-weight: 700; color: #fff;">0.1302</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 style="font-size: 0.9rem; color: var(--slate-300); margin-bottom: 8px;">📋 Policy Enforcement Reason</h4>
+        <div id="d-policy" style="background: #0f172a; border-left: 3px solid var(--cyan); padding: 10px 14px; font-size: 0.85rem; color: var(--slate-300); border-radius: 4px;">
+          Fast-path authorization within normal statistical boundaries.
+        </div>
+      </div>
+
+      <div>
+        <h4 style="font-size: 0.9rem; color: var(--slate-300); margin-bottom: 8px;">📊 Local TreeSHAP Factor Attributions</h4>
+        <ul id="d-shap-list" style="list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 0.82rem;">
+          <!-- SHAP factors populate here -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <span>Capstone Project — Woxsen University | Team: Karthikeya, Brijesh, Dheeraj | Mentor: Prof. Dileep Kumar M. | IEEE-CIS 590K Transactions</span>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script src="app.js"></script>
+</body>
+</html>

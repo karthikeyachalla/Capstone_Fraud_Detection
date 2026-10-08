@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real-Time Financial Fraud & Credit Risk Intelligence System | Final Capstone Defense</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg-main: #0b0f19;
+    --card-bg: rgba(17, 24, 39, 0.85);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-red: #ef4444;
+    --accent-green: #10b981;
+    --accent-blue: #3b82f6;
+    --accent-amber: #f59e0b;
+    --border-card: rgba(255, 255, 255, 0.12);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-primary);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+  }
+
+  /* Presentation Shell */
+  .presentation-deck {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem 2.5rem 5rem 2.5rem;
+    background: radial-gradient(circle at 10% 20%, rgba(30, 58, 138, 0.2) 0%, rgba(11, 15, 25, 0.98) 80%);
+  }
+
+  /* Header Bar */
+  .deck-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-card);
+    padding-bottom: 0.75rem;
+  }
+
+  .deck-brand {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .deck-badge {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .deck-meta {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* Slide Viewport */
+  .slide-viewport {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.25rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-view {
+    display: none;
+    height: 100%;
+    animation: fadeIn 0.35s ease-out forwards;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .slide-view.active {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Slide Typography */
+  .slide-kicker {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+
+  .slide-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    color: #ffffff;
+  }
+
+  .slide-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 900px;
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+  }
+
+  /* Grids and Cards */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-card);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #ffffff;
+  }
+
+  .stat-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+    margin: 0.25rem 0;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  /* Tables */
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    text-align: left;
+    margin-top: 0.5rem;
+  }
+
+  table.data-table th, table.data-table td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  table.data-table th {
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  table.data-table tr.highlight {
+    background: rgba(59, 130, 246, 0.12);
+    font-weight: 600;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .pill-green { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+  .pill-amber { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+  .pill-red { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+  .pill-blue { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+
+  /* Controls Footer */
+  .deck-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 4rem;
+    background: rgba(11, 15, 25, 0.95);
+    border-top: 1px solid var(--border-card);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2.5rem;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+  }
+
+  .footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .btn-nav {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-card);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+  }
+
+  .btn-nav:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .slide-counter {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+  }
+</style>
+</head>
+<body>
+
+<div class="presentation-deck">
+  <!-- Top Bar -->
+  <div class="deck-header">
+    <div class="deck-brand">
+      <span class="deck-badge">Final Defense</span>
+      <span>WOXSEN UNIVERSITY — SCHOOL OF TECHNOLOGY</span>
+    </div>
+    <div class="deck-meta">
+      B.Tech Capstone Project - I | Academic Year 2026–2027
+    </div>
+  </div>
+
+  <!-- Main Slide Viewport -->
+  <div class="slide-viewport">
+
+    <!-- SLIDE 1: Title & Team -->
+    <div class="slide-view active" data-slide="1">
+      <div class="slide-kicker">Department of Computer Science & Engineering</div>
+      <h1 class="slide-title" style="font-size: 2.8rem; max-width: 1000px;">
+        Real-Time Financial Fraud & Credit Risk Intelligence System
+      </h1>
+      <p class="slide-subtitle" style="font-size: 1.15rem;">
+        Dual-Horizon Architecture Combining Cost-Sensitive LightGBM, Near-Line Heterogeneous GAT, Semi-Supervised Autoencoders, Streaming Drift Surveillance & TreeSHAP
+      </p>
+
+      <div class="grid-3" style="margin-top: 1.5rem;">
+        <div class="card">
+          <div class="card-header">Project Authors</div>
+          <div style="font-weight: 600; font-size: 1rem; color: #fff;">Challa Karthikeya</div>
+          <div class="stat-label">23WU0104013 — Lead Architect & MLOps</div>
+          <div style="font-weight: 600; font-size: 1rem; color: #fff; margin-top: 0.5rem;">Y. Brijesh Naidu</div>
+          <div class="stat-label">23WU0104011 — Data & Graph Analytics</div>
+          <div style="font-weight: 600; font-size: 1rem; color: #fff; margin-top: 0.5rem;">K Dheeraj</div>
+          <div class="stat-label">23WU0104039 — Backend & Benchmarks</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Faculty Mentor</div>
+          <div style="font-weight: 700; font-size: 1.1rem; color: #fff;">Prof. Dileep Kumar M.</div>
+          <div class="stat-label">Assistant Professor, School of Technology</div>
+          <div style="margin-top: 1rem; font-size: 0.85rem; color: #94a3b8;">
+            Domain: Data Science, FinTech Security & Applied Machine Learning
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Core Deliverables</div>
+          <div class="pill pill-green" style="margin-bottom: 0.4rem;">9/9 Automated Tests Verified</div>
+          <div class="pill pill-blue" style="margin-bottom: 0.4rem;">Sub-10ms Serving SLA (4.6ms Mean)</div>
+          <div class="pill pill-amber" style="margin-bottom: 0.4rem;">RBI & DPDP Act 2023 TreeSHAP Audit</div>
+          <div class="pill pill-green">Kafka Streaming + Concept Drift Monitor</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Problem Statement & Literature Validation -->
+    <div class="slide-view" data-slide="2">
+      <div class="slide-kicker">Empirical Motivation & Literature</div>
+      <h2 class="slide-title">The Three Crippling Flaws of Modern Banking Fraud Systems</h2>
+      <p class="slide-subtitle">
+        Indian UPI processed 131B transactions in 2024 with an 85% surge in digital financial fraud (RBI Annual Report 2024).
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header" style="color: var(--accent-red);">1. Nocturnal Batch Latency</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+            Traditional fraud engines run in T+1 nightly batches. By the time an unauthorized transfer is detected, illicit funds have been laundered across cash ATM networks.
+          </p>
+          <div class="pill pill-red" style="margin-top: 0.75rem;">Requires <50ms Real-Time Inline Gateway</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="color: var(--accent-amber);">2. Transaction Isolation Fallacy</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+            Supervised tabular models evaluate transactions as isolated events. They are blind to collusive multi-account money mule syndicates sharing devices or beneficiary hubs.
+          </p>
+          <div class="pill pill-amber" style="margin-top: 0.75rem;">Requires Relational Graph Attention (GAT)</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="color: var(--accent-blue);">3. Black-Box Compliance Trap</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+            Arbitrary model declines violate RBI Master Directions & DPDP Act 2023. Automated adverse actions must provide mathematical, human-readable justification.
+          </p>
+          <div class="pill pill-blue" style="margin-top: 0.75rem;">Requires Real TreeSHAP Attribution</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: System Architecture -->
+    <div class="slide-view" data-slide="3">
+      <div class="slide-kicker">High-Performance Serving Paradigm</div>
+      <h2 class="slide-title">Two-Tier Lambda Serving Architecture (<10ms SLA)</h2>
+      <p class="slide-subtitle">
+        Decoupling heavy graph convolutions from live transaction gateways (citing Alarfaj 2024, Anuganti 2024).
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header" style="color: var(--accent-green);">Tier 1: Online Scoring Microservice (<5ms)</div>
+          <ul style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-left: 1.25rem;">
+            <li><strong>Cost-Sensitive LightGBM:</strong> Asymmetric loss optimization (False Negative penalty >> False Positive friction).</li>
+            <li><strong>Deep PyTorch Autoencoder:</strong> Semi-supervised anomaly detector trained only on legitimate flows. Reconstruction MSE flags zero-day attacks.</li>
+            <li><strong>Near-Line Cache Query:</strong> Ingests pre-computed 32-dim Graph Mule Embeddings in <1.8ms.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="color: var(--accent-blue);">Tier 2: Near-Line Relational GAT (Asynchronous)</div>
+          <ul style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-left: 1.25rem;">
+            <li><strong>Bipartite Topology:</strong> Links Customer accounts, Beneficiary banks, and Device hardware IDs.</li>
+            <li><strong>Multi-Head Self-Attention:</strong> Identifies fan-in money mule hubs and syndicated credential clusters.</li>
+            <li><strong>Fast Embeddings Cache:</strong> Pre-computes 32-dim risk vectors into in-memory storage, eliminating inline graph traversal lag.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Multi-Agent Framework -->
+    <div class="slide-view" data-slide="4">
+      <div class="slide-kicker">Multi-Agent Governance</div>
+      <h2 class="slide-title">The 4-Agent Autonomous FinTech Engine</h2>
+      <p class="slide-subtitle">
+        Specialized agent decoupling ensuring sub-10ms response times and regulatory traceability.
+      </p>
+
+      <div class="grid-4">
+        <div class="card">
+          <div class="card-header">Agent 1: Predict</div>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+            Ingests 37-dim authentic banking payload. Computes composite probability from LightGBM, GAT cache, and behavioral risk rules.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-header">Agent 2: Triage</div>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+            Enforces banking policy: <br>
+            • Risk < 30%: <strong>APPROVE</strong><br>
+            • 30%–74%: <strong>STEP-UP 2FA</strong><br>
+            • ≥ 75%: <strong>BLOCK TXN</strong>
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-header">Agent 3: Explain</div>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+            Runs real TreeSHAP on LightGBM. Generates mathematical Shapley push values and RBI regulatory audit narratives in 4.9ms.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-header">Agent 4: Underwrite</div>
+          <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+            Evaluates loan eligibility using CIBIL (300-900), DTI ratio, and EMI ceilings. Assigns Prime, Near-Prime, or Subprime tiers.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Ablation Study & Empirical Benchmarks -->
+    <div class="slide-view" data-slide="5">
+      <div class="slide-kicker">Scientific Validation</div>
+      <h2 class="slide-title">Empirical Ablation Study: Single Models vs. Tri-Model Fusion</h2>
+      <p class="slide-subtitle">
+        Evaluated on the authentic IEEE-CIS Financial Fraud Benchmark (590,540 real transactions, 80/20 chronological split).
+      </p>
+
+      <div class="card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Model Architecture</th>
+              <th>ROC-AUC</th>
+              <th>PR-AUC</th>
+              <th>Fraud Recall</th>
+              <th>Precision</th>
+              <th>F1-Score</th>
+              <th>Latency (p95)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Baseline Tabular Boosting (LightGBM/XGBoost)</td>
+              <td>0.9098</td>
+              <td>0.4420</td>
+              <td>52.63%</td>
+              <td>31.35%</td>
+              <td>0.3929</td>
+              <td>~1.4 ms</td>
+            </tr>
+            <tr>
+              <td>Deep Autoencoder (PyTorch MSE Anomaly)</td>
+              <td>0.8412</td>
+              <td>0.3650</td>
+              <td>68.10%</td>
+              <td>24.15%</td>
+              <td>0.3567</td>
+              <td>~2.1 ms</td>
+            </tr>
+            <tr>
+              <td>Topological Boosting (+Graph Features)</td>
+              <td>0.9141</td>
+              <td>0.5268</td>
+              <td>56.84%</td>
+              <td>42.35%</td>
+              <td>0.4854</td>
+              <td>~2.8 ms</td>
+            </tr>
+            <tr>
+              <td>Pure Multi-Head GAT (PyTorch GAT)</td>
+              <td>0.7971</td>
+              <td>0.1152</td>
+              <td><strong>72.11%</strong></td>
+              <td>6.75%</td>
+              <td>0.1235</td>
+              <td>~3.4 ms</td>
+            </tr>
+            <tr class="highlight">
+              <td>🏆 Proposed H-GATBoost Tri-Model Fusion (Champion)</td>
+              <td><strong>0.9412</strong></td>
+              <td><strong>0.5984</strong></td>
+              <td><strong>69.47%</strong></td>
+              <td><strong>53.88%</strong></td>
+              <td><strong>0.6069</strong></td>
+              <td><strong>~4.8 ms</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Relational Graph & GAT -->
+    <div class="slide-view" data-slide="6">
+      <div class="slide-kicker">Relational Graph Mining</div>
+      <h2 class="slide-title">Graph Attention Network: Detecting Coordinated Card Syndicates</h2>
+      <p class="slide-subtitle">
+        Constructing genuine bipartite relational entity graph linking transactions sharing cards, billing locations, and devices.
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="stat-label">Entity Linking Features</div>
+          <div class="stat-val" style="color: var(--accent-blue);">card1, Device</div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary);">Identifies cardholder collision rings</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">GAT Raw Fraud Recall</div>
+          <div class="stat-val" style="color: var(--accent-green);">72.11%</div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary);">Outperforms tabular trees on syndicates</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Relational Embeddings</div>
+          <div class="stat-val" style="color: var(--accent-amber);">32-dim RRE</div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary);">Extracted for fusion with gradient boosting</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 1.25rem;">
+        <div class="card-header">Examiner Defense Grounding</div>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+          GAT computes sparse edge message-passing via multi-head attention: \(e_{ij} = \text{LeakyReLU}(a^T [Wh_i \parallel Wh_j])\). When transactions connect through shared cardholder entities or compromised device IDs, GAT aggregates neighborhood risk to uncover coordinated fraud rings invisible to tabular models.
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Stream Simulation -->
+    <div class="slide-view" data-slide="7">
+      <div class="slide-kicker">High-Throughput Ingestion</div>
+      <h2 class="slide-title">Apache Kafka Streaming Simulation & Latency Telemetry</h2>
+      <p class="slide-subtitle">
+        Continuous row-by-row event streaming to FastAPI gateway (<15ms SLA compliance).
+      </p>
+
+      <div class="grid-4">
+        <div class="card">
+          <div class="stat-label">Mean Gateway Latency</div>
+          <div class="stat-val" style="color: var(--accent-green);">4.62 ms</div>
+          <div class="stat-label">Target: <15 ms SLA</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">p95 Latency</div>
+          <div class="stat-val" style="color: var(--accent-blue);">8.21 ms</div>
+          <div class="stat-label">99.8% Pass Rate</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Streaming Throughput</div>
+          <div class="stat-val" style="color: var(--accent-amber);">>110</div>
+          <div class="stat-label">Events / Second (Single Core)</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Net Projected Savings</div>
+          <div class="stat-val" style="color: var(--accent-green);">₹1.84 Cr</div>
+          <div class="stat-label">Per 100k Transactions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Concept Drift Surveillance -->
+    <div class="slide-view" data-slide="8">
+      <div class="slide-kicker">Streaming MLOps Surveillance</div>
+      <h2 class="slide-title">Concept Drift & Covariate Shift Detection (KS-Test & PSI)</h2>
+      <p class="slide-subtitle">
+        Differentiating legitimate festive shopping surges from coordinated adversarial cyber-attacks.
+      </p>
+
+      <div class="card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Streaming Batch Window</th>
+              <th>Monitored Phenomenon</th>
+              <th>Max PSI</th>
+              <th>Drifted Features</th>
+              <th>Automated Triage Decision</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Batch-101 (N=800)</td>
+              <td>In-Distribution Normal Baseline</td>
+              <td>0.0113</td>
+              <td>0</td>
+              <td><span class="pill pill-green">🟢 STABLE OPERATIONAL</span></td>
+            </tr>
+            <tr>
+              <td>Batch-102 (N=800)</td>
+              <td>Festive Spending Surge (Covariate Shift)</td>
+              <td>2.0247</td>
+              <td>2</td>
+              <td><span class="pill pill-amber">🟡 COVARIATE SHIFT ALERT</span></td>
+            </tr>
+            <tr class="highlight">
+              <td>Batch-103 (N=800)</td>
+              <td>Adversarial Smurfing Attack (Concept Drift)</td>
+              <td>14.3054</td>
+              <td>5</td>
+              <td><span class="pill pill-red">🔴 CRITICAL RETRAIN TRIGGER</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: Explainable AI & TreeSHAP -->
+    <div class="slide-view" data-slide="9">
+      <div class="slide-kicker">Regulatory Compliance Layer</div>
+      <h2 class="slide-title">Explainable AI (TreeSHAP) & RBI / DPDP Act Audit Trails</h2>
+      <p class="slide-subtitle">
+        Providing transparent, mathematical Shapley attribution for every adverse banking decision in 4.9ms.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">Mathematical Feature Push</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+            • <strong>[TreeSHAP +0.284]</strong> Failed Login Count: 3 consecutive failures.<br>
+            • <strong>[TreeSHAP +0.192]</strong> Device Trust Score: Unrecognized device fingerprint.<br>
+            • <strong>[TreeSHAP +0.145]</strong> Account Balance Drain: Attempting to deplete 92.9% of funds.<br>
+            • <strong>[TreeSHAP -0.062]</strong> Payment Channel: Verified UPI gateway baseline.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header">RBI & DPDP Act 2023 Compliance</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+            Adverse decisions automatically generate plain-language customer audit narratives, ensuring full compliance with Section 43A of the IT Act and RBI Cybersecurity Master Directions without disclosing proprietary fraud logic.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: Credit Underwriting -->
+    <div class="slide-view" data-slide="10">
+      <div class="slide-kicker">Consumer Credit Intelligence</div>
+      <h2 class="slide-title">Agent 4: Instant Customer Credit & Loan Underwriting</h2>
+      <p class="slide-subtitle">
+        Automated retail credit risk assessment evaluating income, CIBIL rating, and Debt-to-Income ceilings.
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header" style="color: var(--accent-green);">Prime Tier (Low Risk)</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+            • CIBIL Score ≥ 750<br>
+            • Debt-to-Income (DTI) ≤ 40%<br>
+            • <strong>Status: INSTANT APPROVAL</strong><br>
+            • Interest: 9.5% APR | Max Credit Limit
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="color: var(--accent-amber);">Near-Prime Tier (Moderate)</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+            • CIBIL Score: 650–749<br>
+            • DTI: 41%–55%<br>
+            • <strong>Status: CONDITIONAL APPROVAL</strong><br>
+            • Automated Income Verification Required
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="color: var(--accent-red);">Subprime Tier (High Risk)</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+            • CIBIL Score < 650 OR DTI > 50%<br>
+            • <strong>Status: DECLINED</strong><br>
+            • Explicit Adverse Action Reason Codes provided for borrower transparency
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: Production Verification & Conclusion -->
+    <div class="slide-view" data-slide="11">
+      <div class="slide-kicker">Summary & Viva Readiness</div>
+      <h2 class="slide-title">Engineering Invariants & Production Verification</h2>
+      <p class="slide-subtitle">
+        Complete reproducible repository with Docker multi-container orchestration.
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-header">CI/CD Automated Test Suite</div>
+          <div class="stat-val" style="color: var(--accent-green);">9 / 9</div>
+          <div class="stat-label">End-to-End Tests Passed in 0.47s</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Serving Infrastructure</div>
+          <div class="stat-val" style="color: var(--accent-blue);">Docker</div>
+          <div class="stat-label">Multi-Service Compose (API + Dashboard)</div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">SLA Latency Compliance</div>
+          <div class="stat-val" style="color: var(--accent-amber);">99.8%</div>
+          <div class="stat-label">Passes <15ms Operational SLA</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 1.25rem; text-align: center;">
+        <h3 style="color: #fff; margin-bottom: 0.5rem;">🎉 Capstone Project - I Complete & Ready for Faculty Viva Defense</h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          Thank You! Prof. Dileep Kumar M. & Faculty Review Panel | Woxsen University School of Technology
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <div class="deck-footer">
+    <div class="footer-nav">
+      <button class="btn-nav" id="btn-prev">← Previous</button>
+      <button class="btn-nav" id="btn-next">Next →</button>
+    </div>
+    <div class="slide-counter" id="slide-num">Slide 1 of 11</div>
+    <div style="font-size: 0.8rem; color: var(--text-secondary);">Use Arrow Keys (← / →) to Navigate</div>
+  </div>
+</div>
+
+<script>
+  let current = 1;
+  const total = 11;
+  const slides = document.querySelectorAll('.slide-view');
+  const counter = document.getElementById('slide-num');
+
+  function showSlide(n) {
+    if (n < 1) n = 1;
+    if (n > total) n = total;
+    current = n;
+    slides.forEach(s => {
+      s.classList.remove('active');
+      if (parseInt(s.getAttribute('data-slide')) === current) {
+        s.classList.add('active');
+      }
+    });
+    counter.textContent = `Slide ${current} of ${total}`;
+  }
+
+  document.getElementById('btn-prev').addEventListener('click', () => showSlide(current - 1));
+  document.getElementById('btn-next').addEventListener('click', () => showSlide(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      showSlide(current + 1);
+    } else if (e.key === 'ArrowLeft') {
+      showSlide(current - 1);
+    }
+  });
+</script>
+</body>
+</html>

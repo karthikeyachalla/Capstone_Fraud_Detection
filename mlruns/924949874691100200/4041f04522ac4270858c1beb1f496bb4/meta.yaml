@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/karthikeyachalla/Capstone%20Project%20%E2%80%94%20Fraud%20Detection/Capstone_Fraud_Detection/mlruns/924949874691100200/4041f04522ac4270858c1beb1f496bb4/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '924949874691100200'
+lifecycle_stage: active
+run_id: 4041f04522ac4270858c1beb1f496bb4
+run_name: IEEE_CIS_Real_Data_Run
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1787831312145
+status: 1
+tags: []
+user_id: karthikeyachalla

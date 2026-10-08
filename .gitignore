@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large Datasets (Avoid GitHub 100MB hard limit)
+data/
+*.zip
+*.csv
+*.csv.gz
+*.pt
+models/lightgbm_model.pkl
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Mac OS metadata
+.DS_Store
+._*
+
+# Logs and databases
+*.log
+.system_generated/

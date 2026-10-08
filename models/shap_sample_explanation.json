@@ -1,0 +1,29 @@
+{
+    "TransactionID": "TXN_UPI_9901",
+    "BaseValue": 0.042,
+    "PredictionScore": 0.884,
+    "RiskTier": "CRITICAL_HIGH",
+    "RecommendedAction": "BLOCK_TRANSACTION_IMMEDIATELY",
+    "TreeSHAP_Attributions": [
+        {
+            "Feature": "Failed Login Count",
+            "Contribution": 0.284,
+            "Direction": "Elevates Fraud Risk"
+        },
+        {
+            "Feature": "Device Trust Score",
+            "Contribution": 0.192,
+            "Direction": "Elevates Fraud Risk"
+        },
+        {
+            "Feature": "Account Balance Drain",
+            "Contribution": 0.145,
+            "Direction": "Elevates Fraud Risk"
+        },
+        {
+            "Feature": "Payment Channel (UPI)",
+            "Contribution": -0.062,
+            "Direction": "Lowers Fraud Risk"
+        }
+    ]
+}

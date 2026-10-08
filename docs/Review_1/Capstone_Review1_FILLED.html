@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Capstone Project - I Review 1 | Woxsen University</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&family=Arial:wght@400;700&display=swap');
+  
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 11pt;
+    color: #000;
+    background: #e8e8e8;
+    line-height: 1.4;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 10mm auto;
+    padding: 18mm 20mm;
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    page-break-after: always;
+  }
+
+  @media print {
+    @page { size: A4; margin: 0; }
+    body { background: #fff; }
+    .page {
+      margin: 0;
+      border: none;
+      box-shadow: none;
+      padding: 15mm 20mm;
+      width: 210mm;
+      height: 297mm;
+      page-break-after: always;
+    }
+    .page:last-child { page-break-after: auto; }
+    .no-print { display: none !important; }
+  }
+
+  .school-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .school-header h1 {
+    font-size: 16pt;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+    font-family: "Times New Roman", Times, serif;
+  }
+  .school-header h2 {
+    font-size: 13pt;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+  .school-header .year-badge {
+    font-size: 11pt;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+  .school-header h3 {
+    font-size: 14pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .school-header .review-date {
+    font-size: 11pt;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .title-box {
+    margin: 15px 0 20px 0;
+    font-size: 11pt;
+  }
+  .title-label {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .title-value {
+    font-size: 12pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid #000;
+    padding-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .table-title {
+    font-weight: bold;
+    font-size: 11pt;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 18px;
+    font-size: 10.5pt;
+  }
+  th, td {
+    border: 1px solid #000;
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: middle;
+  }
+  th {
+    font-weight: bold;
+    text-align: center;
+    background: #f2f2f2;
+  }
+  td.c { text-align: center; }
+
+  .meta-grid {
+    margin-top: 15px;
+    font-size: 11pt;
+    line-height: 2.0;
+  }
+  .meta-row {
+    display: flex;
+    margin-bottom: 8px;
+  }
+  .meta-label {
+    font-weight: bold;
+    min-width: 180px;
+  }
+  .meta-line {
+    flex: 1;
+    border-bottom: 1px dotted #000;
+    padding-left: 5px;
+  }
+
+  /* Page 2 Specifics */
+  .abstract-title {
+    font-weight: bold;
+    font-size: 11pt;
+    margin: 15px 0 6px 0;
+  }
+  .abstract-body {
+    font-size: 10pt;
+    text-align: justify;
+    line-height: 1.45;
+    margin-bottom: 15px;
+  }
+  .keywords-box {
+    margin-bottom: 25px;
+    font-size: 10.5pt;
+  }
+
+  .signatures-container {
+    margin-top: 30px;
+  }
+  .members-sig-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 35px;
+  }
+  .sig-block {
+    flex: 1;
+    text-align: left;
+    font-size: 9.5pt;
+    line-height: 1.4;
+  }
+  .sig-line-space {
+    height: 40px;
+  }
+  .sig-top-label {
+    font-weight: normal;
+    margin-bottom: 35px;
+  }
+
+  .mentor-sig-block {
+    margin-top: 25px;
+    font-size: 10pt;
+    line-height: 1.8;
+  }
+
+  /* Page 3 Specifics */
+  .eval-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 12pt;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .checkbox-row {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    font-weight: bold;
+    font-size: 11pt;
+    margin-bottom: 15px;
+  }
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .box-check {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #000;
+    text-align: center;
+    line-height: 14px;
+    font-size: 11pt;
+  }
+
+  .ppt-attached {
+    font-weight: bold;
+    font-size: 10.5pt;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .comments-box {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 10.5pt;
+  }
+  .comments-lines {
+    border: 1px solid #000;
+    min-height: 90px;
+    margin-top: 6px;
+    padding: 8px;
+  }
+
+  .print-banner {
+    background: #1e3a8a;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+    margin-bottom: 10px;
+  }
+  .print-banner button {
+    background: #fff;
+    color: #1e3a8a;
+    border: none;
+    padding: 6px 18px;
+    border-radius: 4px;
+    font-size: 11pt;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="print-banner no-print">
+  🎓 Capstone Review-I Form Ready (Woxsen University Template)
+  <button onclick="window.print()">🖨️ Save as PDF</button>
+</div>
+
+<!-- PAGE 1 -->
+<div class="page">
+  <div>
+    <!-- Header with Woxsen Logo and Double Lines -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 8px; border-bottom: 2px solid #000;">
+      <h1 style="font-size: 16pt; font-weight: bold; font-family: 'Times New Roman', serif;">SCHOOL OF TECHNOLOGY</h1>
+      <!-- Woxsen Logo Graphic -->
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <div style="text-align: right; font-family: Arial, sans-serif; line-height: 1.0;">
+          <div style="font-size: 11pt; font-weight: 900; letter-spacing: 1px; color: #000;">WOXSEN</div>
+          <div style="font-size: 6.5pt; font-weight: bold; letter-spacing: 1.5px; color: #444;">UNIVERSITY</div>
+        </div>
+        <div style="font-family: Arial, sans-serif; font-size: 22pt; font-weight: 900; color: #e11d48; line-height: 1;">W<span style="font-size: 14pt; color: #e11d48;">U</span></div>
+      </div>
+    </div>
+    <div style="border-bottom: 1px solid #000; margin-bottom: 12px; margin-top: 2px;"></div>
+
+    <div style="text-align: center; border-bottom: 1px solid #000; padding-bottom: 4px; margin-bottom: 18px; font-weight: bold; font-size: 11.5pt;">
+      2026 - 27
+    </div>
+
+    <div style="text-align: center; margin-bottom: 20px; line-height: 1.5;">
+      <h3 style="font-size: 12.5pt; font-weight: bold;">CAPSTONE PROJECT – I</h3>
+      <h3 style="font-size: 12.5pt; font-weight: bold;">REVIEW – I</h3>
+      <div style="font-size: 11pt; font-weight: bold; margin-top: 4px;">4<sup>TH</sup> AUGUST 2026</div>
+    </div>
+
+    <!-- Project Title with Box -->
+    <div style="margin-bottom: 22px;">
+      <div style="font-weight: bold; font-size: 11pt; margin-bottom: 6px;">Project Title:</div>
+      <div style="border: 1px solid #000; min-height: 48px; padding: 10px 12px; font-weight: bold; font-size: 11pt; color: #000000; text-transform: uppercase; display: flex; align-items: center;">
+        REAL-TIME FINANCIAL FRAUD &amp; CREDIT RISK INTELLIGENCE SYSTEM
+      </div>
+    </div>
+
+    <!-- Team Members Table -->
+    <div style="text-align: center; font-weight: bold; font-size: 11pt; margin-bottom: 6px;">TEAM MEMBERS</div>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 22px; font-size: 10.5pt;">
+      <thead>
+        <tr>
+          <th style="border: 1px solid #000; padding: 6px; width: 10%; text-align: center;">S. No.</th>
+          <th style="border: 1px solid #000; padding: 6px; width: 25%; text-align: center;">Roll No.</th>
+          <th style="border: 1px solid #000; padding: 6px; text-align: center;">Name of the Student</th>
+          <th style="border: 1px solid #000; padding: 6px; width: 25%; text-align: center;">Mobile Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center;">1</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center; color: #000000;">23WU0104039</td>
+          <td style="border: 1px solid #000; padding: 8px; font-weight: bold; color: #000000;">K DHEERAJ</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center; color: #000000;">8886668669</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center;">2</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center; color: #000000;">23WU0104011</td>
+          <td style="border: 1px solid #000; padding: 8px; font-weight: bold; color: #000000;">Y. BRIJESH NAIDU</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center; color: #000000;">9666656269</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center;">3</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center; color: #000000;">23WU0104013</td>
+          <td style="border: 1px solid #000; padding: 8px; font-weight: bold; color: #000000;">CHALLA KARTHIKEYA</td>
+          <td style="border: 1px solid #000; padding: 8px; text-align: center; color: #000000;">9701470936</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Mentor Name Box -->
+    <div style="margin-bottom: 22px;">
+      <div style="font-weight: bold; font-size: 11pt; margin-bottom: 6px;">Mentor Name:</div>
+      <div style="border: 1px solid #000; height: 38px; width: 100%; display: flex; align-items: center; padding: 0 12px; font-weight: bold;">
+        Prof. Dileep Kumar M.
+      </div>
+    </div>
+
+    <!-- Date of Review Box -->
+    <div style="display: flex; align-items: center; margin-bottom: 12px; font-size: 11pt; font-weight: bold;">
+      <span style="min-width: 120px;">Date of Review</span>
+      <span style="margin-right: 12px;">:</span>
+      <div style="border: 1px solid #000; flex: 1; height: 28px; padding: 2px 10px; display: flex; align-items: center; color: #000000;">
+        04.08.2026
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; font-size: 9pt; color: #666; margin-top: 15px;">
+    Page 1 of 3
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+  <div>
+    <div class="school-header" style="margin-bottom: 12px;">
+      <h1>SCHOOL OF TECHNOLOGY</h1>
+      <div class="year-badge" style="margin-bottom: 6px;">2026 - 27</div>
+    </div>
+
+    <div class="title-box" style="margin-bottom: 12px;">
+      <div class="title-value" style="font-size: 11pt; text-align: center;">REAL-TIME FINANCIAL FRAUD &amp; CREDIT RISK INTELLIGENCE SYSTEM</div>
+    </div>
+
+    <div class="abstract-title">Abstract:</div>
+    <div class="abstract-body">
+      Financial fraud presents a critical threat to global banking infrastructure, driving over 40 Billion USD in annual losses worldwide. Traditional rule-based legacy detection systems suffer from severe vulnerabilities, including an inability to adapt to zero-day fraud tactics, failure to uncover collusive multi-account fraud rings, severe class imbalance (~3.5% fraud ratio), and lack of decision explainability required for financial regulatory compliance.<br><br>
+      To overcome these limitations, this capstone project proposes a multi-model ensemble intelligence framework for real-time financial fraud detection and credit risk scoring. The core architecture integrates five specialized AI models:
+      (1) <strong>LightGBM</strong> — gradient boosted decision trees for high-speed tabular feature classification;
+      (2) <strong>TabNet</strong> (Google Brain, 2019) — sequential attention deep learning for tabular reasoning;
+      (3) <strong>AutoEncoder</strong> — deep neural reconstruction for zero-day anomaly detection;
+      (4) <strong>ECOD</strong> (IEEE 2022) — empirical CDF-based unsupervised outlier scoring; and
+      (5) <strong>Graph Attention Network (GAT)</strong> — PyTorch Geometric graph neural network for mapping transaction networks and identifying fraud rings.<br><br>
+      <strong>CTGAN</strong> (Generative AI) is leveraged to generate privacy-safe synthetic fraud data to solve severe class imbalance. The weighted ensemble outputs a real-time <strong>Risk Score (0–100)</strong> per transaction deployed via containerized <strong>FastAPI</strong> with <strong>SHAP</strong> explainability audit trails and a <strong>Streamlit</strong> live dashboard.
+    </div>
+
+    <div class="keywords-box">
+      <strong>Keywords:</strong> Financial Fraud Detection, Graph Attention Networks (GAT), TabNet, LightGBM, CTGAN, FinTech, Explainable AI
+    </div>
+
+    <div class="signatures-container">
+      <div class="members-sig-row">
+        <div class="sig-block">
+          <div class="sig-top-label">Signature of Team Member 3</div>
+          <div class="sig-line-space"></div>
+          <div><strong>Name:</strong> CHALLA KARTHIKEYA</div>
+          <div><strong>Roll No.:</strong> 23WU0104013</div>
+          <div><strong>Mobile No.:</strong> 9701470936</div>
+        </div>
+        <div class="sig-block">
+          <div class="sig-top-label">Signature of Team Member 2</div>
+          <div class="sig-line-space"></div>
+          <div><strong>Name:</strong> Y. BRIJESH NAIDU</div>
+          <div><strong>Roll No.:</strong> 23WU0104011</div>
+          <div><strong>Mobile No.:</strong> 9666656269</div>
+        </div>
+        <div class="sig-block">
+          <div class="sig-top-label">Signature of Team Member 1</div>
+          <div class="sig-line-space"></div>
+          <div><strong>Name:</strong> K DHEERAJ</div>
+          <div><strong>Roll No.:</strong> 23WU0104039</div>
+          <div><strong>Mobile No.:</strong> 8886668669</div>
+        </div>
+      </div>
+
+      <div class="mentor-sig-block">
+        <div style="margin-bottom: 25px;">Signature of Mentor</div>
+        <div><strong>Name of Mentor :</strong> Prof. Dileep Kumar M.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; font-size: 9pt; color: #666; margin-top: 15px;">
+    Page 2 of 3
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page">
+  <div>
+    <div class="school-header" style="margin-bottom: 10px;">
+      <h1>SCHOOL OF TECHNOLOGY</h1>
+      <div class="year-badge" style="margin-bottom: 10px;">2026 - 27</div>
+    </div>
+
+    <div class="eval-header">INTERNAL EVALUATION SHEET - CAPSTONE PROJECT – I</div>
+
+    <div class="checkbox-row">
+      <div class="checkbox-item"><span class="box-check">✓</span> Initial Proposal (20%)</div>
+      <div class="checkbox-item"><span class="box-check"></span> Mid-Term (30%)</div>
+      <div class="checkbox-item"><span class="box-check"></span> Final (50%)</div>
+    </div>
+
+    <div class="title-box" style="margin: 10px 0 12px 0;">
+      <div class="title-label">Project Title:</div>
+      <div class="title-value" style="font-size: 11pt;">REAL-TIME FINANCIAL FRAUD &amp; CREDIT RISK INTELLIGENCE SYSTEM</div>
+    </div>
+
+    <div class="table-title">TEAM MEMBERS</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 10%;">S. No.</th>
+          <th style="width: 25%;">Roll No.</th>
+          <th>Name of the Student</th>
+          <th style="width: 25%;">Mobile Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="c">1</td>
+          <td class="c">23WU0104039</td>
+          <td>K DHEERAJ</td>
+          <td class="c">8886668669</td>
+        </tr>
+        <tr>
+          <td class="c">2</td>
+          <td class="c">23WU0104011</td>
+          <td>Y. BRIJESH NAIDU</td>
+          <td class="c">9666656269</td>
+        </tr>
+        <tr>
+          <td class="c">3</td>
+          <td class="c">23WU0104013</td>
+          <td>CHALLA KARTHIKEYA</td>
+          <td class="c">9701470936</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="meta-row" style="margin-bottom: 4px;">
+      <span class="meta-label">Mentor Name:</span>
+      <span class="meta-line">Prof. Dileep Kumar M.</span>
+    </div>
+    <div class="meta-row" style="margin-bottom: 12px;">
+      <span class="meta-label">Date of Review:</span>
+      <span class="meta-line">04.08.2026</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 8%;">S. No.</th>
+          <th>Criterion</th>
+          <th style="width: 20%;">Weightage (%age)</th>
+          <th style="width: 22%;">Marks Awarded (out of 100)</th>
+          <th style="width: 18%;">Weighted Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="c">1</td>
+          <td>Problem Identification</td>
+          <td class="c">20</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="c">2</td>
+          <td>Methodology</td>
+          <td class="c">25</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="c">3</td>
+          <td>Innovation and Industry Relevance</td>
+          <td class="c">25</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="c">4</td>
+          <td>Presentation Clarity</td>
+          <td class="c">15</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="c">5</td>
+          <td>Report Quality</td>
+          <td class="c">15</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr style="font-weight: bold; background: #f2f2f2;">
+          <td colspan="2" style="text-align: right;">Total</td>
+          <td class="c">100</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="ppt-attached">
+      Hard Copy of the PPT attached: &nbsp;&nbsp;
+      <span class="checkbox-item"><span class="box-check">✓</span> Yes</span> &nbsp;&nbsp;
+      <span class="checkbox-item"><span class="box-check"></span> No</span>
+    </div>
+
+    <div class="comments-box">
+      <div>Comments and Feedback Recommendations</div>
+      <div class="comments-lines"></div>
+    </div>
+
+    <div style="margin-top: 35px; text-align: right;">
+      <div style="border-top: 1px solid #000; display: inline-block; width: 220px; text-align: center; padding-top: 4px; font-weight: bold; font-size: 10pt;">
+        Signature of the Mentor
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center; font-size: 9pt; color: #666; margin-top: 15px;">
+    Page 3 of 3
+  </div>
+</div>
+
+</body>
+</html>

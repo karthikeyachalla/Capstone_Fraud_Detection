@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real-Time Financial Fraud & Credit Risk Intelligence System | Woxsen Capstone Review 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg-dark: #070b14;
+    --card-bg: rgba(15, 23, 42, 0.95);
+    --card-border: rgba(56, 189, 248, 0.4);
+    --card-hover-border: rgba(56, 189, 248, 0.9);
+    --accent-sky: #38bdf8;
+    --accent-amber: #fbbf24;
+    --accent-indigo: #818cf8;
+    --accent-emerald: #34d399;
+    --accent-rose: #f43f5e;
+    --text-main: #ffffff;
+    --text-muted: #cbd5e1;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+  }
+
+  /* Print elements hidden in Web View */
+  .print-only-hdr, .print-only-ftr {
+    display: none !important;
+  }
+
+  /* Ambient Glowing Background Lights */
+  .bg-glow {
+    position: absolute;
+    width: 650px;
+    height: 650px;
+    border-radius: 50%;
+    filter: blur(170px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.38;
+  }
+  .glow-1 { top: -180px; left: -180px; background: #0284c7; }
+  .glow-2 { bottom: -220px; right: -180px; background: #4f46e5; }
+  .glow-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); background: #d97706; opacity: 0.12; }
+
+  /* App Shell - Full Screen Viewport */
+  .presentation-deck {
+    position: relative;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem 2.25rem 5.25rem 2.25rem;
+  }
+
+  /* Slide Top Header Bar */
+  .deck-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding-bottom: 0.65rem;
+    height: 3rem;
+  }
+
+  .brand-badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .badge-tag {
+    background: linear-gradient(135deg, #0284c7, #4f46e5);
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 0.35rem 0.9rem;
+    border-radius: 6px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(2, 132, 199, 0.5);
+  }
+
+  .header-title-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    letter-spacing: 0.5px;
+  }
+
+  .woxsen-tag {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--accent-sky);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Main Viewport Workspace */
+  .slide-viewport {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    margin: 0.75rem 0;
+  }
+
+  /* Slide Panels with Slide-In Animations */
+  .slide-panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(40px) scale(0.98);
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .slide-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0) scale(1);
+  }
+
+  .slide-panel.exit-prev {
+    transform: translateX(-40px) scale(0.98);
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* Typography */
+  .slide-tagline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--accent-sky);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .slide-heading {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.3rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+  }
+
+  /* Content Grids */
+  .content-grid {
+    flex: 1;
+    display: grid;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .grid-2x2 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  /* Glass Cards with Full Space Utilization */
+  .glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1.5px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.6rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-sky), transparent);
+    opacity: 0.9;
+  }
+
+  .glass-card.amber-top::before {
+    background: linear-gradient(90deg, var(--accent-amber), transparent);
+  }
+
+  .glass-card:hover {
+    border-color: var(--card-hover-border);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(56, 189, 248, 0.3);
+  }
+
+  .card-icon-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.2);
+    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .card-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--accent-sky);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .card-icon.amber {
+    background: rgba(251, 191, 36, 0.2);
+    border-color: rgba(251, 191, 36, 0.4);
+  }
+  .card-icon.amber svg { stroke: var(--accent-amber); }
+
+  .card-icon.indigo {
+    background: rgba(129, 140, 248, 0.2);
+    border-color: rgba(129, 140, 248, 0.4);
+  }
+  .card-icon.indigo svg { stroke: var(--accent-indigo); }
+
+  .card-icon.emerald {
+    background: rgba(52, 211, 153, 0.2);
+    border-color: rgba(52, 211, 153, 0.4);
+  }
+  .card-icon.emerald svg { stroke: var(--accent-emerald); }
+
+  .card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--accent-sky);
+    margin: 0;
+    letter-spacing: -0.3px;
+  }
+  .card-title.amber { color: var(--accent-amber); }
+
+  .card-body-text {
+    font-size: 1.12rem;
+    color: #ffffff;
+    line-height: 1.75;
+    font-weight: 500;
+  }
+
+  .card-body-text strong {
+    color: var(--accent-sky);
+    font-weight: 800;
+  }
+
+  /* List Item Box Styling inside Cards to fill space */
+  .card-list-item {
+    background: rgba(30, 41, 59, 0.6);
+    border-left: 3px solid var(--accent-sky);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-list-item.amber {
+    border-left-color: var(--accent-amber);
+  }
+
+  .card-list-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .item-head {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+  }
+
+  .item-desc {
+    font-size: 1.02rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+  }
+
+  /* ROADMAP STYLES (SLIDE 8 HIGH READABILITY & FULL SPACE) */
+  .roadmap-card {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(25px);
+    border: 1.5px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.5rem 1.85rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s ease;
+  }
+
+  .roadmap-card:hover {
+    border-color: var(--accent-sky);
+    transform: translateY(-2px);
+  }
+
+  .roadmap-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .roadmap-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .status-badge {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .status-badge.completed {
+    background: rgba(52, 211, 153, 0.2);
+    border: 1.5px solid var(--accent-emerald);
+    color: var(--accent-emerald);
+  }
+
+  .status-badge.active {
+    background: rgba(56, 189, 248, 0.25);
+    border: 1.5px solid var(--accent-sky);
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+  }
+
+  .status-badge.planned {
+    background: rgba(251, 191, 36, 0.2);
+    border: 1.5px solid var(--accent-amber);
+    color: var(--accent-amber);
+  }
+
+  .roadmap-bullets {
+    font-size: 1.08rem;
+    color: #ffffff;
+    line-height: 1.75;
+    font-weight: 500;
+  }
+
+  .roadmap-bullets strong {
+    color: var(--accent-sky);
+    font-weight: 800;
+  }
+
+  /* VISUAL FLOWCHART LAYOUT FOR SLIDE 6 */
+  .flowchart-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.25rem;
+  }
+
+  .flowchart-pipeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    position: relative;
+  }
+
+  .flow-card {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1.5px solid var(--accent-sky);
+    border-radius: 16px;
+    padding: 1.6rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s ease;
+  }
+
+  .flow-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-amber);
+    box-shadow: 0 15px 35px rgba(251, 191, 36, 0.3);
+  }
+
+  .flow-arrow-right {
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    background: var(--bg-dark);
+    border: 1.5px solid var(--accent-sky);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+  }
+
+  .flow-arrow-right svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--accent-sky);
+    fill: none;
+    stroke-width: 2.5;
+  }
+
+  .flow-card:last-child .flow-arrow-right {
+    display: none;
+  }
+
+  .flow-stage-badge {
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 900;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    letter-spacing: 1px;
+    margin-bottom: 0.85rem;
+    box-shadow: 0 0 12px rgba(14, 165, 233, 0.4);
+  }
+
+  .flow-stage-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(56, 189, 248, 0.2);
+    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.85rem;
+  }
+
+  .flow-stage-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--accent-sky);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .flow-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+  }
+
+  .flow-desc {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    line-height: 1.45;
+  }
+
+  .flow-tech-pill {
+    margin-top: 0.85rem;
+    background: rgba(30, 41, 59, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--accent-amber);
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 0.3rem 0.7rem;
+    border-radius: 8px;
+  }
+
+  /* Architecture Banner Graphic */
+  .arch-summary-banner {
+    background: rgba(30, 41, 59, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    border-radius: 16px;
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .arch-stat {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .arch-stat-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.9rem;
+    font-weight: 900;
+    color: var(--accent-sky);
+  }
+
+  .arch-stat-lbl {
+    font-size: 0.92rem;
+    color: #f1f5f9;
+    font-weight: 700;
+  }
+
+  /* Custom Table */
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.02rem;
+    margin-bottom: 1rem;
+  }
+  .custom-table th, .custom-table td {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1rem 1.2rem;
+    text-align: left;
+  }
+  .custom-table th {
+    background: rgba(30, 41, 59, 0.95);
+    color: var(--accent-sky);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
+  .custom-table td {
+    background: rgba(15, 23, 42, 0.85);
+    color: #ffffff;
+  }
+
+  /* Title Hero Slide */
+  .title-hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .main-hero-h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3.6rem;
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #ffffff 40%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+  }
+
+  .main-hero-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent-amber);
+    margin-bottom: 2rem;
+  }
+
+  .team-panel {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1.5px solid var(--accent-sky);
+    border-radius: 16px;
+    padding: 1.75rem 2.25rem;
+    box-shadow: 0 0 35px rgba(56, 189, 248, 0.25);
+  }
+
+  .team-hdr {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--accent-sky);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .team-row {
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+  }
+
+  /* Thank You Slide Styles */
+  .thankyou-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    gap: 1.5rem;
+  }
+
+  .thankyou-h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffffff 30%, #38bdf8 70%, #fbbf24 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  .thankyou-sub {
+    font-size: 1.6rem;
+    color: var(--accent-sky);
+    font-weight: 800;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Floating Glass Controls Dock */
+  .nav-dock {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(25px);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    padding: 0.65rem 1.6rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    z-index: 100;
+  }
+
+  .dock-btn {
+    background: rgba(30, 41, 59, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    padding: 0.55rem 1.35rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .dock-btn:hover {
+    background: var(--accent-sky);
+    color: #0f172a;
+    border-color: var(--accent-sky);
+    transform: translateY(-2px);
+  }
+
+  .dock-btn.accent {
+    background: linear-gradient(135deg, #0284c7, #4f46e5);
+    border: none;
+    box-shadow: 0 0 15px rgba(2, 132, 199, 0.5);
+  }
+
+  .dock-counter {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--accent-sky);
+    padding: 0 0.5rem;
+  }
+
+  .thumb-dots {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .dot-btn {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dot-btn.active {
+    background: var(--accent-sky);
+    width: 26px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px var(--accent-sky);
+  }
+
+  /* PDF Print Rules */
+  @media print {
+    @page { size: A4 landscape; margin: 0; }
+    body { background: #0f172a !important; color: #ffffff !important; overflow: visible !important; height: auto !important; width: auto !important; }
+    .bg-glow, .nav-dock, .deck-header { display: none !important; }
+    .presentation-deck { padding: 0 !important; height: auto !important; width: auto !important; display: block !important; }
+    .slide-viewport { margin: 0 !important; display: block !important; height: auto !important; width: auto !important; }
+    .slide-panel {
+      position: relative !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      width: 297mm !important;
+      height: 210mm !important;
+      padding: 12mm 16mm !important;
+      box-sizing: border-box !important;
+      page-break-after: always !important;
+      page-break-inside: avoid !important;
+      background: #0f172a !important;
+      border: 1px solid #334155 !important;
+    }
+    .slide-panel:last-child { page-break-after: auto !important; }
+    .print-only-hdr { display: flex !important; justify-content: space-between !important; align-items: flex-end !important; border-bottom: 2px solid #38bdf8 !important; padding-bottom: 6px !important; margin-bottom: 10px !important; }
+    .print-only-ftr { display: flex !important; justify-content: space-between !important; align-items: center !important; border-top: 1px solid #334155 !important; padding-top: 6px !important; margin-top: 8px !important; font-size: 10pt !important; color: #94a3b8 !important; font-weight: 700 !important; }
+    .main-hero-h1 { font-size: 24pt !important; color: #ffffff !important; background: none !important; -webkit-background-clip: initial !important; -webkit-text-fill-color: #ffffff !important; text-shadow: none !important; }
+    .main-hero-sub { font-size: 13pt !important; color: #fbbf24 !important; }
+    .thankyou-h1 { font-size: 36pt !important; color: #ffffff !important; background: none !important; -webkit-background-clip: initial !important; -webkit-text-fill-color: #ffffff !important; text-shadow: none !important; }
+    .slide-heading { font-size: 18pt !important; color: #ffffff !important; -webkit-text-fill-color: initial !important; margin-bottom: 8px !important; }
+    .glass-card { background: #1e293b !important; border: 1px solid #334155 !important; padding: 12px 16px !important; box-shadow: none !important; backdrop-filter: none !important; }
+    .card-title { font-size: 13pt !important; color: #38bdf8 !important; }
+    .card-title.amber { color: #fbbf24 !important; }
+    .card-body-text { font-size: 10.5pt !important; color: #f8fafc !important; line-height: 1.5 !important; }
+    .flow-card { background: #1e293b !important; border: 1px solid #38bdf8 !important; padding: 10px 8px !important; }
+    .flow-arrow-right { display: none !important; }
+    .custom-table { font-size: 10pt !important; margin-bottom: 8px !important; }
+    .custom-table th { background: #1e293b !important; color: #38bdf8 !important; padding: 8px 10px !important; font-size: 10.5pt !important; }
+    .custom-table td { background: #0f172a !important; padding: 8px 10px !important; color: #f1f5f9 !important; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Ambient Glowing Background Lights -->
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="bg-glow glow-3"></div>
+
+  <!-- Main Presentation Container -->
+  <div class="presentation-deck">
+
+    <!-- Top Header -->
+    <div class="deck-header">
+      <div class="brand-badge">
+        <span class="badge-tag">WOXSEN CAPSTONE - I</span>
+        <span class="header-title-text">Real-Time Financial Fraud &amp; Credit Risk Intelligence System</span>
+      </div>
+      <div class="woxsen-tag">SCHOOL OF TECHNOLOGY • ACADEMIC YEAR 2026-27</div>
+    </div>
+
+    <!-- Main Slide Workspace -->
+    <div class="slide-viewport">
+
+      <!-- SLIDE 1: TITLE HERO -->
+      <div class="slide-panel active" data-slide="1">
+        <div class="print-only-hdr">
+          <div style="font-size: 11pt; font-weight: 800; color: #38bdf8; letter-spacing: 1.5px;">WOXSEN UNIVERSITY — SCHOOL OF TECHNOLOGY</div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">ACADEMIC YEAR 2026 - 27</div>
+        </div>
+
+        <div class="title-hero">
+          <div style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--accent-sky); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 0.75rem;">
+            CAPSTONE PROJECT - I REVIEW 1 PRESENTATION
+          </div>
+          <h1 class="main-hero-h1">Real-Time Financial Fraud &amp;<br>Credit Risk Intelligence System</h1>
+          <div class="main-hero-sub">A 5-Model Ensemble Framework with Graph Neural Networks &amp; Explainable AI</div>
+
+          <div class="team-panel">
+            <div class="team-hdr">Mentor &amp; Team Details</div>
+            <div class="team-row">• <strong>Faculty Mentor:</strong> Prof. Dileep Kumar M. | Review Date: 04.08.2026</div>
+            <div class="team-row" style="margin-top: 0.85rem; color: var(--accent-sky); font-weight: 800;">Student Team Members:</div>
+            <div class="team-row">• <strong>Challa Karthikeya</strong> (23WU0104013) — Mobile: +91 97014 70936</div>
+            <div class="team-row">• <strong>Y. Brijesh Naidu</strong> (23WU0104011) — Mobile: +91 96666 56269</div>
+            <div class="team-row">• <strong>K Dheeraj</strong> (23WU0104039) — Mobile: +91 88866 68669</div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Capstone Review - I Presentation</span>
+          <span>Slide 1 of 10</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: PROBLEM STATEMENT -->
+      <div class="slide-panel" data-slide="2">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">PROJECT BACKGROUND &amp; BOTTLENECKS</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Problem Statement &amp; Core Industry Challenges</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">PROJECT BACKGROUND &amp; BOTTLENECKS</div>
+          <h2 class="slide-heading">Problem Statement &amp; Core Industry Challenges</h2>
+        </div>
+
+        <div class="content-grid grid-2x2">
+          <div class="glass-card amber-top">
+            <div class="card-icon-header">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              </div>
+              <h3 class="card-title amber">1. Massive Financial Losses (₹3.3 Lakh Crore)</h3>
+            </div>
+            <p class="card-body-text">Digital payment fraud causes over <strong>₹3.3 Lakh Crore ($40B+) in annual losses worldwide</strong>, severely threatening high-volume Indian UPI, IMPS, and banking gateways with mounting operational risk.</p>
+          </div>
+
+          <div class="glass-card amber-top">
+            <div class="card-icon-header">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              </div>
+              <h3 class="card-title amber">2. Vulnerability of Legacy Rule Engines</h3>
+            </div>
+            <p class="card-body-text">Traditional banking security relies on manual static rules that fail to detect novel zero-day fraud tactics, adaptive criminal behaviors, and dynamic multi-account collusive attacks.</p>
+          </div>
+
+          <div class="glass-card amber-top">
+            <div class="card-icon-header">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <h3 class="card-title amber">3. Severe ~3.5% Fraud Data Imbalance</h3>
+            </div>
+            <p class="card-body-text">Because genuine transactions dominate (~96.5%), standard AI models suffer from severe majority-class bias, missing real fraud or causing high false-positive rejections for legitimate users.</p>
+          </div>
+
+          <div class="glass-card amber-top">
+            <div class="card-icon-header">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              </div>
+              <h3 class="card-title amber">4. Lack of Regulatory Transparency</h3>
+            </div>
+            <p class="card-body-text">Black-box deep learning models fail to provide clear, human-understandable explanations for credit or loan rejections, violating strict RBI, FCRA, and GDPR regulatory compliance laws.</p>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Capstone Review - I Presentation</span>
+          <span>Slide 2 of 10</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: REAL-WORLD MOTIVATION -->
+      <div class="slide-panel" data-slide="3">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">THE STORY THAT INSPIRED OUR PROJECT</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Real-World Motivation</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">THE STORY THAT INSPIRED OUR PROJECT</div>
+          <h2 class="slide-heading">Real-World Motivation</h2>
+        </div>
+
+        <div class="content-grid grid-2x2">
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              </div>
+              <h3 class="card-title">Multi-Crore Financial Impact</h3>
+            </div>
+            <p class="card-body-text">Indian digital payment networks (UPI, IMPS, Cards) process billions of transactions monthly. Undetected fraud breaches cause direct multi-Crore losses to banks and destroy customer trust.</p>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon indigo">
+                <svg viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+              </div>
+              <h3 class="card-title" style="color: var(--accent-indigo);">Collusive Fraud Rings</h3>
+            </div>
+            <p class="card-body-text">Organized criminal syndicates operate complex inter-account networks to launder illicit funds across banks. Standard tabular classifiers fail to identify these multi-node graph relationships.</p>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+              </div>
+              <h3 class="card-title" style="color: var(--accent-emerald);">RBI Compliance &amp; Audit Trails</h3>
+            </div>
+            <p class="card-body-text">Financial regulators strictly require explainable feature attributions (SHAP values) whenever loan requests or credit card applications are flagged or rejected to ensure complete audit compliance.</p>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <h3 class="card-title">Sub-100ms Live Execution</h3>
+            </div>
+            <p class="card-body-text">High-speed payment gateways demand instantaneous real-time inference under 100 milliseconds to block fraudulent payment attempts before transaction finalization.</p>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Capstone Review - I Presentation</span>
+          <span>Slide 3 of 10</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: OBJECTIVES & APPLICATIONS (EXPANDED TO FULL VERTICAL SPACE) -->
+      <div class="slide-panel" data-slide="4">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">PROJECT SCOPE &amp; TARGETS</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Objectives and Applications</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">PROJECT SCOPE &amp; TARGETS</div>
+          <h2 class="slide-heading">Objectives and Industry Applications</h2>
+        </div>
+
+        <div class="content-grid grid-2x2" style="grid-template-rows: 1fr;">
+          
+          <!-- LEFT BOX: 5-MODEL ENSEMBLE CORE OBJECTIVES -->
+          <div class="glass-card" style="grid-row: span 2; padding: 1.8rem 2.2rem;">
+            <div class="card-icon-header" style="margin-bottom: 1.25rem;">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+              </div>
+              <h3 class="card-title" style="font-size: 1.55rem;">5-Model Ensemble Core Objectives</h3>
+            </div>
+
+            <div class="card-list-item">
+              <div class="item-head">1. Sub-100ms Inference API Gateway</div>
+              <div class="item-desc">Architect high-throughput FastAPI REST microservices serving real-time risk predictions for high-volume banking payment gateways.</div>
+            </div>
+
+            <div class="card-list-item">
+              <div class="item-head">2. Graph Neural Ring Mining (PyTorch GAT)</div>
+              <div class="item-desc">Construct multi-account transaction graphs to uncover organized money laundering rings &amp; syndicate accounts across banks.</div>
+            </div>
+
+            <div class="card-list-item">
+              <div class="item-head">3. Synthetic Data Balancing (CTGAN)</div>
+              <div class="item-desc">Generate privacy-preserving synthetic transaction samples to balance the severe ~3.5% minority fraud distribution to 50:50.</div>
+            </div>
+
+            <div class="card-list-item">
+              <div class="item-head">4. Regulatory Explainability &amp; Audit Logs (SHAP)</div>
+              <div class="item-desc">Compute instant Shapley feature attributions to satisfy RBI, FCRA, and GDPR transparency &amp; auditability requirements.</div>
+            </div>
+          </div>
+
+          <!-- RIGHT BOX: INDUSTRY APPLICATIONS & DOMAINS -->
+          <div class="glass-card amber-top" style="grid-row: span 2; padding: 1.8rem 2.2rem;">
+            <div class="card-icon-header" style="margin-bottom: 1.25rem;">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              </div>
+              <h3 class="card-title amber" style="font-size: 1.55rem;">Industry Applications &amp; Deployment</h3>
+            </div>
+
+            <div class="card-list-item amber">
+              <div class="item-head">1. Real-Time UPI &amp; Credit Card Interception</div>
+              <div class="item-desc">Instant transaction risk scoring prior to payment settlement on merchant gateways &amp; card processing networks.</div>
+            </div>
+
+            <div class="card-list-item amber">
+              <div class="item-head">2. Automated Digital Lending &amp; Credit Risk (INR ₹)</div>
+              <div class="item-desc">Dynamic credit risk scoring (0–100 scale) for personal loan approval automation &amp; default prevention.</div>
+            </div>
+
+            <div class="card-list-item amber">
+              <div class="item-head">3. Enterprise Anti-Money Laundering (AML)</div>
+              <div class="item-desc">Continuous graph-based fraud ring monitoring for high-frequency financial institutions and regulatory agencies.</div>
+            </div>
+
+            <div class="card-list-item amber">
+              <div class="item-head">4. Core Banking &amp; NetBanking Protection</div>
+              <div class="item-desc">Real-time anomaly filtering for high-value IMPS, NEFT, and RTGS electronic fund transfers.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Capstone Review - I Presentation</span>
+          <span>Slide 4 of 10</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: LITERATURE REVIEW TABLE -->
+      <div class="slide-panel" data-slide="5">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">PRIOR ACADEMIC STUDIES COMPARISON</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Literature Review &amp; Research Gap</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">PRIOR ACADEMIC STUDIES COMPARISON</div>
+          <h2 class="slide-heading">Literature Review &amp; Research Gap</h2>
+        </div>
+
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Paper</th>
+                <th style="width: 25%;">Approach</th>
+                <th style="width: 25%;">Strength</th>
+                <th style="width: 25%;">Limitation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Arik et al., 2021 – TabNet</strong></td>
+                <td>Sequential attention for tabular feature selection</td>
+                <td>High tabular interpretability &amp; feature selection</td>
+                <td>Higher computational overhead than LightGBM</td>
+              </tr>
+              <tr>
+                <td><strong>Li et al., 2022 – ECOD (IEEE)</strong></td>
+                <td>Empirical cumulative distribution scoring</td>
+                <td>Parameter-free, replaces legacy Isolation Forest</td>
+                <td>Does not capture inter-account graph relationships</td>
+              </tr>
+              <tr>
+                <td><strong>Veličković et al., 2018 – GAT</strong></td>
+                <td>Self-attention over node graph structures</td>
+                <td>Mines multi-account collusive fraud rings</td>
+                <td>Requires graph construction pipeline overhead</td>
+              </tr>
+              <tr>
+                <td><strong>Xu et al., 2019 – CTGAN</strong></td>
+                <td>Conditional GANs for imbalanced tabular data</td>
+                <td>Generates high-fidelity synthetic fraud samples</td>
+                <td>Requires careful tuning to avoid mode collapse</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="glass-card amber-top" style="padding: 1.3rem 1.8rem;">
+            <div class="card-title amber" style="font-size: 1.25rem; margin-bottom: 0.4rem;">Research Gap Identified:</div>
+            <p class="card-body-text">
+              • No prior financial fraud study unifies <strong>LightGBM + TabNet + AutoEncoder + ECOD + PyTorch GAT</strong> in a single real-time ensemble with CTGAN balancing and SHAP explainability under &lt;100ms constraints.
+            </p>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Capstone Review - I Presentation</span>
+          <span>Slide 5 of 10</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: METHODOLOGY PIPELINE -->
+      <div class="slide-panel" data-slide="6">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">END-TO-END DEEP LEARNING PIPELINE</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Methodology &amp; System Architecture Flowchart</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">END-TO-END DEEP LEARNING PIPELINE</div>
+          <h2 class="slide-heading">Methodology &amp; System Architecture Flowchart</h2>
+        </div>
+
+        <div class="flowchart-container">
+          <!-- VISUAL GRAPHICAL PIPELINE FLOWCHART -->
+          <div class="flowchart-pipeline">
+
+            <!-- STAGE 1 -->
+            <div class="flow-card">
+              <span class="flow-stage-badge">STAGE 01</span>
+              <div class="flow-stage-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+              </div>
+              <div class="flow-title">Data Ingestion</div>
+              <div class="flow-desc">Offline Benchmark Logs (IEEE-CIS) &amp; Live API Payload Stream</div>
+              <div class="flow-tech-pill">Feature Store</div>
+              <div class="flow-arrow-right">
+                <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+
+            <!-- STAGE 2 -->
+            <div class="flow-card">
+              <span class="flow-stage-badge">STAGE 02</span>
+              <div class="flow-stage-icon" style="background: rgba(251, 191, 36, 0.2); border-color: rgba(251, 191, 36, 0.4);">
+                <svg viewBox="0 0 24 24" style="stroke: var(--accent-amber);"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L5.603 15.12a2 2 0 00-1.022.547l-1.004 1.004a2 2 0 00.547 3.044l.872.436a6 6 0 003.86.517l.318-.158a6 6 0 013.86-.517l2.387.477a2 2 0 001.022-.547l1.004-1.004a2 2 0 00-.547-3.044l-.872-.436z"/></svg>
+              </div>
+              <div class="flow-title">CTGAN Oversampling</div>
+              <div class="flow-desc">Generative Synthetic Fraud Balancing (~3.5% → 50%)</div>
+              <div class="flow-tech-pill" style="color: var(--accent-amber);">Conditional GAN</div>
+              <div class="flow-arrow-right">
+                <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+
+            <!-- STAGE 3 -->
+            <div class="flow-card" style="border-color: var(--accent-amber);">
+              <span class="flow-stage-badge" style="background: linear-gradient(135deg, #d97706, #b45309);">STAGE 03</span>
+              <div class="flow-stage-icon" style="background: rgba(129, 140, 248, 0.2); border-color: rgba(129, 140, 248, 0.4);">
+                <svg viewBox="0 0 24 24" style="stroke: var(--accent-indigo);"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              </div>
+              <div class="flow-title">5-Model Ensemble</div>
+              <div class="flow-desc">LightGBM + TabNet + AutoEncoder + ECOD + PyTorch GAT</div>
+              <div class="flow-tech-pill" style="color: var(--accent-indigo);">Deep &amp; Graph Models</div>
+              <div class="flow-arrow-right">
+                <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+
+            <!-- STAGE 4 -->
+            <div class="flow-card">
+              <span class="flow-stage-badge">STAGE 04</span>
+              <div class="flow-stage-icon" style="background: rgba(52, 211, 153, 0.2); border-color: rgba(52, 211, 153, 0.4);">
+                <svg viewBox="0 0 24 24" style="stroke: var(--accent-emerald);"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <div class="flow-title">Risk Synthesis</div>
+              <div class="flow-desc">Weighted Score Synthesis &amp; SHAP Explainability Engine</div>
+              <div class="flow-tech-pill" style="color: var(--accent-emerald);">Score 0 - 100</div>
+              <div class="flow-arrow-right">
+                <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+
+            <!-- STAGE 5 -->
+            <div class="flow-card">
+              <span class="flow-stage-badge">STAGE 05</span>
+              <div class="flow-stage-icon">
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </div>
+              <div class="flow-title">FastAPI Gateway</div>
+              <div class="flow-desc">Sub-100ms Inference API &amp; Live Streamlit Dashboard</div>
+              <div class="flow-tech-pill">&lt; 100ms API</div>
+            </div>
+
+          </div>
+
+          <!-- Architecture Banner Summary -->
+          <div class="arch-summary-banner">
+            <div class="arch-stat">
+              <div class="arch-stat-val">5</div>
+              <div class="arch-stat-lbl">Ensembled Model Layers<br>(Tabular, Outlier &amp; Graph)</div>
+            </div>
+            <div class="arch-stat">
+              <div class="arch-stat-val" style="color: var(--accent-amber);">&lt; 100ms</div>
+              <div class="arch-stat-lbl">Target Real-Time<br>Inference Latency</div>
+            </div>
+            <div class="arch-stat">
+              <div class="arch-stat-val" style="color: var(--accent-emerald);">100%</div>
+              <div class="arch-stat-lbl">RBI &amp; FCRA Regulatory<br>Audit Compliance</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Capstone Review - I Presentation</span>
+          <span>Slide 6 of 10</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 7: NOVELTY OF THE IDEA -->
+      <div class="slide-panel" data-slide="7">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">CORE INNOVATION PILLARS</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Novelty of the Idea – What Makes Our Project Unique</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">CORE INNOVATION PILLARS</div>
+          <h2 class="slide-heading">Novelty of the Idea – What Makes Our Project Unique</h2>
+        </div>
+
+        <div class="content-grid grid-2x2">
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L5.603 15.12a2 2 0 00-1.022.547l-1.004 1.004a2 2 0 00.547 3.044l.872.436a6 6 0 003.86.517l.318-.158a6 6 0 013.86-.517l2.387.477a2 2 0 001.022-.547l1.004-1.004a2 2 0 00-.547-3.044l-.872-.436z"/></svg>
+              </div>
+              <h3 class="card-title">Hybrid 5-Model Ensemble</h3>
+            </div>
+            <p class="card-body-text">Combines tabular speed (<strong>LightGBM</strong>), deep attention (<strong>TabNet</strong>), zero-day anomalies (<strong>AutoEncoder</strong>), empirical cumulative outliers (<strong>ECOD</strong>), and graph rings (<strong>GAT</strong>).</p>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              </div>
+              <h3 class="card-title amber">Generative Data Balancing (CTGAN)</h3>
+            </div>
+            <p class="card-body-text">Solves severe <strong>~3.5% class imbalance</strong> via privacy-preserving synthetic transaction generation, expanding fraud coverage without overfitting.</p>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <h3 class="card-title" style="color: var(--accent-emerald);">Explainable AI &amp; Audit Logging (SHAP)</h3>
+            </div>
+            <p class="card-body-text">Provides instant <strong>Shapley feature attributions</strong> for full <strong>RBI, FCRA &amp; GDPR compliance</strong> on flagged and rejected loan or transaction attempts.</p>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon indigo">
+                <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <h3 class="card-title" style="color: var(--accent-indigo);">Production MLOps &amp; Drift Monitoring</h3>
+            </div>
+            <p class="card-body-text">Continuous automated data drift &amp; concept decay monitoring powered by <strong>Evidently AI</strong> and <strong>FastAPI microservice integration</strong>.</p>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Capstone Review - I Presentation</span>
+          <span>Slide 7 of 10</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 8: ROADMAP & NEXT STEPS -->
+      <div class="slide-panel" data-slide="8">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">CAPSTONE MILESTONES &amp; TIMELINE</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Project Implementation Roadmap &amp; Next Steps</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">CAPSTONE MILESTONES &amp; TIMELINE</div>
+          <h2 class="slide-heading">Project Implementation Roadmap &amp; Next Steps</h2>
+        </div>
+
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 1.15rem; justify-content: center;">
+          
+          <!-- PHASE 1 -->
+          <div class="roadmap-card">
+            <div class="roadmap-header">
+              <div class="roadmap-title">Phase 1: Foundation &amp; Initial Review (Weeks 1–4)</div>
+              <span class="status-badge completed">✔ COMPLETED</span>
+            </div>
+            <div class="roadmap-bullets">
+              • <strong>Dataset &amp; Problem Setup:</strong> Acquired Kaggle / IEEE-CIS financial transactions &amp; extracted baseline features<br>
+              • <strong>Baseline Prototyping:</strong> Evaluated initial LightGBM classifier &amp; ECOD statistical outlier detector<br>
+              • <strong>Review Submission:</strong> Completed comprehensive literature review &amp; Review-1 defense documentation
+            </div>
+          </div>
+
+          <!-- PHASE 2 -->
+          <div class="roadmap-card" style="border-color: var(--accent-sky); background: rgba(14, 165, 233, 0.16); box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);">
+            <div class="roadmap-header">
+              <div class="roadmap-title" style="color: var(--accent-sky);">Phase 2: Model Training &amp; Feature Integration (Weeks 5–8)</div>
+              <span class="status-badge active">⚡ NEXT STEPS / IN PROGRESS</span>
+            </div>
+            <div class="roadmap-bullets">
+              • <strong>Synthetic Data Generation:</strong> Train CTGAN to solve severe ~3.5% fraud class imbalance<br>
+              • <strong>Deep Neural &amp; Graph Models:</strong> Implement TabNet attention &amp; PyTorch Graph Attention Networks (GAT)<br>
+              • <strong>Explainable AI (XAI):</strong> Integrate SHAP Shapley values to generate regulatory decision audit logs
+            </div>
+          </div>
+
+          <!-- PHASE 3 -->
+          <div class="roadmap-card">
+            <div class="roadmap-header">
+              <div class="roadmap-title">Phase 3: System Deployment &amp; Final Evaluation (Weeks 9–12)</div>
+              <span class="status-badge planned">🎯 TARGET GOAL</span>
+            </div>
+            <div class="roadmap-bullets">
+              • <strong>FastAPI Backend Gateway:</strong> Build real-time scoring microservice (&lt;100ms response time)<br>
+              • <strong>Live Interactive Dashboard:</strong> Streamlit frontend for real-time fraud monitoring &amp; credit risk simulation<br>
+              • <strong>System Benchmarking:</strong> Conduct stress testing, data drift evaluation &amp; final Review-2 presentation
+            </div>
+          </div>
+
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Capstone Review - I Presentation</span>
+          <span>Slide 8 of 10</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 9: REFERENCES -->
+      <div class="slide-panel" data-slide="9">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">CITATIONS &amp; FRAMEWORKS</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Academic References &amp; Technical Tools</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">CITATIONS &amp; FRAMEWORKS</div>
+          <h2 class="slide-heading">Academic References &amp; Technical Tools</h2>
+        </div>
+
+        <div class="glass-card" style="flex: 1; justify-content: flex-start; padding: 2rem 2.5rem;">
+          <h4 style="color: var(--accent-sky); font-family: 'Outfit', sans-serif; font-size: 1.45rem; margin-bottom: 1.25rem;">Academic References:</h4>
+          <p class="card-body-text" style="margin-bottom: 1.2rem; font-size: 1.15rem;">1. Arik, S. O., &amp; Pfister, T. (2021). <em>TabNet: Attentive Tabular Learning</em>. AAAI Conference on Artificial Intelligence (AAAI 2021).</p>
+          <p class="card-body-text" style="margin-bottom: 1.2rem; font-size: 1.15rem;">2. Li, Z., Zhao, Y., Botta, N., Ionescu, C., &amp; Hu, X. (2022). <em>ECOD: Unsupervised Outlier Detection Using Empirical Cumulative Distribution Functions</em>. IEEE TKDE (2022).</p>
+          <p class="card-body-text" style="margin-bottom: 1.2rem; font-size: 1.15rem;">3. Veličković, P., Cucurull, G., Casanova, A., Romero, A., Liò, P., &amp; Bengio, Y. (2018). <em>Graph Attention Networks</em>. ICLR (2018).</p>
+          <p class="card-body-text" style="margin-bottom: 1.2rem; font-size: 1.15rem;">4. Xu, L., Skoularidou, M., Cuesta-Infante, A., &amp; Veeramachaneni, K. (2019). <em>Modeling Tabular Data using Conditional GAN</em>. NeurIPS (2019).</p>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Capstone Review - I Presentation</span>
+          <span>Slide 9 of 10</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 10: THANK YOU SLIDE -->
+      <div class="slide-panel" data-slide="10">
+        <div class="print-only-hdr">
+          <div style="font-size: 11pt; font-weight: 800; color: #38bdf8; letter-spacing: 1.5px;">WOXSEN UNIVERSITY — SCHOOL OF TECHNOLOGY</div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">ACADEMIC YEAR 2026 - 27</div>
+        </div>
+
+        <div class="thankyou-container">
+          <h1 class="thankyou-h1">Thank You!</h1>
+          <div class="thankyou-sub">Real-Time Financial Fraud &amp; Credit Risk Intelligence System</div>
+
+          <div class="glass-card" style="padding: 2rem 3.5rem; margin-top: 1rem; width: 88%;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 800; color: var(--accent-sky); margin-bottom: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px;">
+              Project Team &amp; Faculty Mentor Acknowledgment
+            </div>
+            <div class="card-body-text" style="font-size: 1.2rem; line-height: 1.9;">
+              • <strong>Faculty Mentor:</strong> Prof. Dileep Kumar M.<br>
+              • <strong>Team Members:</strong> Challa Karthikeya (23WU0104013) | Y. Brijesh Naidu (23WU0104011) | K Dheeraj (23WU0104039)<br>
+              • <strong>Woxsen University — School of Technology</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Capstone Review - I Presentation</span>
+          <span>Slide 10 of 10</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Floating Glass Controls Dock -->
+    <div class="nav-dock">
+      <button id="btn-dock-prev" class="dock-btn">◀ Prev</button>
+      
+      <div class="thumb-dots" id="dot-container"></div>
+
+      <span id="dock-counter" class="dock-counter">1 / 10</span>
+
+      <button id="btn-dock-next" class="dock-btn accent">Next ▶</button>
+      <button id="btn-dock-fs" class="dock-btn">⛶ Fullscreen</button>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 10;
+
+    const panels = document.querySelectorAll('.slide-panel');
+    const dockCounter = document.getElementById('dock-counter');
+    const dotContainer = document.getElementById('dot-container');
+    const btnPrev = document.getElementById('btn-dock-prev');
+    const btnNext = document.getElementById('btn-dock-next');
+    const btnFs = document.getElementById('btn-dock-fs');
+
+    for (let i = 1; i <= totalSlides; i++) {
+      const dot = document.createElement('button');
+      dot.className = `dot-btn ${i === 1 ? 'active' : ''}`;
+      dot.addEventListener('click', () => goToSlide(i));
+      dotContainer.appendChild(dot);
+    }
+
+    function goToSlide(slideNum) {
+      if (slideNum < 1) slideNum = 1;
+      if (slideNum > totalSlides) slideNum = totalSlides;
+
+      currentSlide = slideNum;
+
+      panels.forEach(p => {
+        const sNum = parseInt(p.getAttribute('data-slide'));
+        if (sNum === currentSlide) {
+          p.classList.add('active');
+          p.classList.remove('exit-prev');
+        } else {
+          p.classList.remove('active');
+          if (sNum < currentSlide) {
+            p.classList.add('exit-prev');
+          } else {
+            p.classList.remove('exit-prev');
+          }
+        }
+      });
+
+      const dots = dotContainer.querySelectorAll('.dot-btn');
+      dots.forEach((d, idx) => {
+        if (idx + 1 === currentSlide) {
+          d.classList.add('active');
+        } else {
+          d.classList.remove('active');
+        }
+      });
+
+      dockCounter.textContent = `${currentSlide} / ${totalSlides}`;
+    }
+
+    btnPrev.addEventListener('click', () => goToSlide(currentSlide - 1));
+    btnNext.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowLeft') {
+        goToSlide(currentSlide - 1);
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      }
+    });
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    btnFs.addEventListener('click', toggleFullscreen);
+  </script>
+</body>
+</html>

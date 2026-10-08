@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real-Time Financial Fraud & Credit Risk Intelligence System | Review 2 Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg-main: #ffffff;
+    --text-primary: #000000;
+    --text-secondary: #334155;
+    --accent-red: #dc2626;
+    --accent-red-bright: #ef4444;
+    --accent-red-bg: #fef2f2;
+    --border-color: #000000;
+    --card-border: #cbd5e1;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f8fafc;
+    color: var(--text-primary);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+  }
+
+  .print-only-hdr, .print-only-ftr {
+    display: none !important;
+  }
+
+  /* Presentation Shell */
+  .presentation-deck {
+    position: relative;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem 2.25rem 5.25rem 2.25rem;
+    background: #ffffff;
+  }
+
+  /* Header Bar */
+  .deck-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--text-primary);
+    padding-bottom: 0.65rem;
+    height: 3rem;
+  }
+
+  .brand-badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .badge-tag {
+    background: var(--accent-red);
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 0.35rem 0.9rem;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .header-title-text {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+  }
+
+  .woxsen-tag {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Slide Viewport */
+  .slide-viewport {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    margin: 0.75rem 0;
+  }
+
+  .slide-panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(40px) scale(0.98);
+    transition: all 0.35s ease;
+  }
+
+  .slide-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0) scale(1);
+  }
+
+  .slide-panel.exit-prev {
+    transform: translateX(-40px) scale(0.98);
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* Typography */
+  .slide-tagline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--accent-red);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .slide-heading {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+  }
+
+  .highlight-red {
+    color: var(--accent-red);
+    font-weight: 800;
+  }
+
+  /* Content Grids */
+  .content-grid {
+    flex: 1;
+    display: grid;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .grid-2x2 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .grid-3col {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* Black & White Cards with Red Top Accent Line */
+  .card-box {
+    background: #ffffff;
+    border: 1.5px solid #000000;
+    border-radius: 8px;
+    padding: 1.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--accent-red);
+  }
+
+  .card-header-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card-header-title .dot-red {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: var(--accent-red);
+    border-radius: 50%;
+  }
+
+  .card-body-text {
+    font-size: 1.02rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-weight: 500;
+  }
+
+  .card-body-text strong {
+    color: var(--text-primary);
+    font-weight: 800;
+  }
+
+  /* Metric Stat Displays */
+  .stat-big {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: var(--accent-red);
+    line-height: 1.0;
+    margin: 0.4rem 0;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* List Item Box Styling */
+  .card-list-item {
+    background: var(--accent-red-bg);
+    border-left: 4px solid var(--accent-red);
+    padding: 0.65rem 0.9rem;
+    border-radius: 4px;
+    margin-bottom: 0.65rem;
+    border-top: 1px solid #fecaca;
+    border-right: 1px solid #fecaca;
+    border-bottom: 1px solid #fecaca;
+  }
+
+  .card-list-item:last-child { margin-bottom: 0; }
+
+  .item-head {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.2rem;
+  }
+
+  .item-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+  }
+
+  /* Custom Black & White Table */
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.0rem;
+    margin-bottom: 1rem;
+  }
+  .custom-table th, .custom-table td {
+    border: 1px solid #000000;
+    padding: 0.85rem 1.1rem;
+    text-align: left;
+  }
+  .custom-table th {
+    background: #f1f5f9;
+    color: #000000;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+  .custom-table td {
+    background: #ffffff;
+    color: #000000;
+  }
+  .custom-table tr.highlight-row {
+    background: var(--accent-red-bg);
+  }
+
+  /* Title Hero Slide */
+  .title-hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .main-hero-h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3.4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    color: #000000;
+    margin-bottom: 0.8rem;
+    letter-spacing: -1px;
+  }
+
+  .main-hero-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-red);
+    margin-bottom: 1.8rem;
+  }
+
+  .team-panel {
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    position: relative;
+  }
+  .team-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--accent-red);
+  }
+
+  .team-hdr {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--accent-red);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .team-row {
+    font-size: 1.05rem;
+    color: #000000;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  /* Roadmap Cards */
+  .roadmap-card {
+    background: #ffffff;
+    border: 1.5px solid #000000;
+    border-radius: 8px;
+    padding: 1.4rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    position: relative;
+  }
+
+  .roadmap-card.active-card {
+    border: 2px solid var(--accent-red);
+    background: var(--accent-red-bg);
+  }
+
+  .roadmap-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .roadmap-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #000000;
+  }
+
+  .status-badge {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1px solid #000000;
+  }
+
+  .status-badge.completed {
+    background: #f1f5f9;
+    color: #000000;
+  }
+
+  .status-badge.active {
+    background: var(--accent-red);
+    color: #ffffff;
+    border-color: var(--accent-red);
+  }
+
+  .status-badge.planned {
+    background: #ffffff;
+    color: var(--accent-red);
+    border-color: var(--accent-red);
+  }
+
+  .roadmap-bullets {
+    font-size: 1.02rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    font-weight: 500;
+  }
+
+  .roadmap-bullets strong {
+    color: var(--accent-red);
+    font-weight: 800;
+  }
+
+  /* Floating Dock */
+  .nav-dock {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+    padding: 0.65rem 1.6rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+  }
+
+  .dock-btn {
+    background: #1e293b;
+    border: 1px solid #475569;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    padding: 0.55rem 1.35rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .dock-btn:hover {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+  }
+
+  .dock-btn.accent {
+    background: var(--accent-red);
+    border: none;
+  }
+
+  .dock-counter {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .thumb-dots {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .dot-btn {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #475569;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dot-btn.active {
+    background: var(--accent-red);
+    width: 24px;
+    border-radius: 12px;
+  }
+
+  /* PDF Print Rules */
+  @media print {
+    @page { size: A4 landscape; margin: 0; }
+    body { background: #ffffff !important; color: #000000 !important; overflow: visible !important; height: auto !important; width: auto !important; }
+    .nav-dock, .deck-header { display: none !important; }
+    .presentation-deck { padding: 0 !important; height: auto !important; width: auto !important; display: block !important; background: #ffffff !important; }
+    .slide-viewport { margin: 0 !important; display: block !important; height: auto !important; width: auto !important; }
+    .slide-panel {
+      position: relative !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      width: 297mm !important;
+      height: 210mm !important;
+      padding: 12mm 16mm !important;
+      box-sizing: border-box !important;
+      page-break-after: always !important;
+      page-break-inside: avoid !important;
+      background: #ffffff !important;
+      border: 1px solid #000000 !important;
+    }
+    .slide-panel:last-child { page-break-after: auto !important; }
+    .print-only-hdr { display: flex !important; justify-content: space-between !important; align-items: flex-end !important; border-bottom: 2px solid #000000 !important; padding-bottom: 6px !important; margin-bottom: 10px !important; }
+    .print-only-ftr { display: flex !important; justify-content: space-between !important; align-items: center !important; border-top: 1px solid #000000 !important; padding-top: 6px !important; margin-top: 8px !important; font-size: 10pt !important; color: #000000 !important; font-weight: 700 !important; }
+    .main-hero-h1 { font-size: 24pt !important; color: #000000 !important; }
+    .main-hero-sub { font-size: 13pt !important; color: #dc2626 !important; }
+    .slide-heading { font-size: 18pt !important; color: #000000 !important; margin-bottom: 8px !important; }
+    .card-box { background: #ffffff !important; border: 1.5px solid #000000 !important; padding: 12px 16px !important; box-shadow: none !important; }
+    .card-header-title { font-size: 13pt !important; color: #000000 !important; }
+    .card-body-text { font-size: 10.5pt !important; color: #000000 !important; line-height: 1.45 !important; }
+    .custom-table { font-size: 10pt !important; margin-bottom: 8px !important; }
+    .custom-table th { background: #f1f5f9 !important; color: #000000 !important; padding: 8px 10px !important; font-size: 10.5pt !important; }
+    .custom-table td { background: #ffffff !important; padding: 8px 10px !important; color: #000000 !important; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Main Presentation Shell -->
+  <div class="presentation-deck">
+
+    <!-- Top Web Header -->
+    <div class="deck-header">
+      <div class="brand-badge">
+        <span class="badge-tag">WOXSEN CAPSTONE - REVIEW II</span>
+        <span class="header-title-text">Real-Time Financial Fraud &amp; Credit Risk Intelligence System</span>
+      </div>
+      <div class="woxsen-tag">SCHOOL OF TECHNOLOGY • ACADEMIC YEAR 2026-27</div>
+    </div>
+
+    <!-- Slide Viewport -->
+    <div class="slide-viewport">
+
+      <!-- SLIDE 1: Title Hero -->
+      <div class="slide-panel active" id="slide-1">
+        <div class="print-only-hdr">
+          <div style="font-weight: 900; color: #000000; font-size: 11pt;">WOXSEN UNIVERSITY • SCHOOL OF TECHNOLOGY</div>
+          <div style="font-weight: 900; color: #dc2626; font-size: 11pt;">CAPSTONE PROJECT – I (REVIEW – II)</div>
+        </div>
+
+        <div class="title-hero">
+          <div class="slide-tagline">CAPSTONE PROJECT – I (REVIEW II PROGRESS DEFENSE)</div>
+          <h1 class="main-hero-h1">Real-Time Financial Fraud &amp;<br>Credit Risk Intelligence System</h1>
+          <div class="main-hero-sub">Tri-Model ML Fusion: LightGBM, PyTorch AutoEncoder &amp; Graph Attention Network (GAT)</div>
+
+          <div class="team-panel">
+            <div class="team-hdr">PROJECT TEAM &amp; SUPERVISION</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+              <div>
+                <div class="team-row">👤 <strong>Challa Karthikey</strong> (23WU0104013)</div>
+                <div class="team-row">👤 <strong>Y. Brijesh Naidu</strong> (23WU0104011)</div>
+                <div class="team-row">👤 <strong>K Dheeraj</strong> (23WU0104039)</div>
+              </div>
+              <div>
+                <div class="team-row">👨‍🏫 <strong>Mentor:</strong> Prof. Dileep Kumar M.</div>
+                <div class="team-row">📅 <strong>Review Date:</strong> 27th August 2026</div>
+                <div class="team-row">🏫 <strong>Department:</strong> CSE &amp; BIC, Woxsen University</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <div>Real-Time Financial Fraud &amp; Credit Risk Intelligence System</div>
+          <div>Slide 1 of 8</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: Progress Achieved Matrix -->
+      <div class="slide-panel" id="slide-2">
+        <div class="print-only-hdr">
+          <div style="font-weight: 900; color: #000000; font-size: 11pt;">WOXSEN UNIVERSITY • CAPSTONE REVIEW II</div>
+          <div style="font-weight: 900; color: #dc2626; font-size: 11pt;">PROGRESS ACHIEVED MATRIX</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">REVIEW 1 BASELINE VS REVIEW 2 ACHIEVEMENTS</div>
+          <h2 class="slide-heading">Milestone Progress &amp; Implementation Accomplishments</h2>
+        </div>
+
+        <div class="content-grid grid-2x2">
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> IEEE-CIS Data Ingestion</div>
+              <div class="card-list-item">
+                <div class="item-head">590,540 Authentic Records</div>
+                <div class="item-desc">Ingested raw IEEE-CIS transaction &amp; identity tables with 434 total features.</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head"><span class="highlight-red">SMOTE 50/50 Balancing</span></div>
+                <div class="item-desc">Overcame 3.5% minority fraud ratio generating 455,902 synthetic minority rows.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> Cloud GPU Training Pipeline</div>
+              <div class="card-list-item">
+                <div class="item-head">Kaggle GPU Infrastructure</div>
+                <div class="item-desc">Executed Kaggle GPU kernel (`ieee-cis-fraud-trimodel-v7`) via Kaggle API.</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head">Tri-Model Suite Execution</div>
+                <div class="item-desc">Trained LightGBM (0.9177 AUC), PyTorch AutoEncoder (0.8450 AUC), and Graph GAT (0.8920 AUC).</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> Tri-Model Soft-Voting Fusion</div>
+              <div class="card-list-item">
+                <div class="item-head"><span class="highlight-red">ROC-AUC: 0.9340 (93.4%)</span></div>
+                <div class="item-desc">Probability fusion ($0.5 \cdot \text{LGBM} + 0.3 \cdot \text{GAT} + 0.2 \cdot \text{AE}$) outperforms all baselines.</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head"><span class="highlight-red">90.20% Fraud Recall</span></div>
+                <div class="item-desc">High sensitivity minimizes missed fraudulent transactions and financial leakage.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> PyTorch GAT &amp; FastAPI Backend</div>
+              <div class="card-list-item">
+                <div class="item-head">PyTorch Geometric GAT</div>
+                <div class="item-desc">Mapped transaction graph edges via shared cards (`card1`) and email domains (`P_emaildomain`).</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head">Production FastAPI Endpoint</div>
+                <div class="item-desc">Deployed REST endpoint (`src/fastapi_app.py`) providing sub-100ms risk categorization.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <div>Real-Time Financial Fraud &amp; Credit Risk Intelligence System</div>
+          <div>Slide 2 of 8</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: SMOTE Class Balancing -->
+      <div class="slide-panel" id="slide-3">
+        <div class="print-only-hdr">
+          <div style="font-weight: 900; color: #000000; font-size: 11pt;">WOXSEN UNIVERSITY • CAPSTONE REVIEW II</div>
+          <div style="font-weight: 900; color: #dc2626; font-size: 11pt;">DATA ENGINEERING &amp; SMOTE BALANCING</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">DATASET PREPROCESSING &amp; SMOTE RESAMPLING</div>
+          <h2 class="slide-heading">Handling Extreme Financial Class Imbalance</h2>
+        </div>
+
+        <div class="content-grid grid-3col">
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> Raw Class Imbalance</div>
+              <div class="stat-big">3.5%</div>
+              <div class="stat-label">Minority Fraud Ratio</div>
+              <div style="margin-top: 1rem;" class="card-body-text">
+                Out of <strong>590,540</strong> raw transactions, only <strong>20,663</strong> are fraudulent vs <strong>569,877</strong> legitimate transactions. Standard ML algorithms bias towards majority class without resampling.
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> SMOTE Oversampling</div>
+              <div class="stat-big">455.9K</div>
+              <div class="stat-label">Balanced Minority Samples</div>
+              <div style="margin-top: 1rem;" class="card-body-text">
+                Applied Synthetic Minority Over-sampling Technique (SMOTE) in feature space, generating <strong class="highlight-red">455,902 synthetic fraud records</strong> to achieve a perfect <strong>50/50 training ratio</strong>.
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> Feature Scaling &amp; Encoding</div>
+              <div class="stat-big">434</div>
+              <div class="stat-label">Engineered Features</div>
+              <div style="margin-top: 1rem;" class="card-body-text">
+                Imputed missing identity features (`dist1`, `addr1`), label-encoded high-cardinality categoricals (`card1-card6`, `P_emaildomain`), and robustly scaled transaction amounts.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <div>Real-Time Financial Fraud &amp; Credit Risk Intelligence System</div>
+          <div>Slide 3 of 8</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: Tri-Model Ensemble Architecture (Strictly Review 1 Definition) -->
+      <div class="slide-panel" id="slide-4">
+        <div class="print-only-hdr">
+          <div style="font-weight: 900; color: #000000; font-size: 11pt;">WOXSEN UNIVERSITY • CAPSTONE REVIEW II</div>
+          <div style="font-weight: 900; color: #dc2626; font-size: 11pt;">TRI-MODEL ENSEMBLE ARCHITECTURE</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">TABULAR + ANOMALY + GRAPH RELATIONAL FUSION (REVIEW 1 FRAMEWORK)</div>
+          <h2 class="slide-heading">Tri-Model Machine Learning Fusion Architecture</h2>
+        </div>
+
+        <div class="content-grid grid-3col">
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> 1. LightGBM Supervised</div>
+              <div class="card-list-item">
+                <div class="item-head">Paradigm: Supervised Boosting</div>
+                <div class="item-desc">Leaf-wise gradient boosting optimized for high-speed tabular feature split evaluation.</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head"><span class="highlight-red">ROC-AUC: 0.9177</span></div>
+                <div class="item-desc">Primary workhorse for single-row transaction risk scoring.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> 2. PyTorch AutoEncoder</div>
+              <div class="card-list-item">
+                <div class="item-head">Paradigm: Unsupervised Anomaly</div>
+                <div class="item-desc">Deep bottleneck neural network detecting zero-day fraud via Reconstruction Error (MSE).</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head"><span class="highlight-red">ROC-AUC: 0.8450</span></div>
+                <div class="item-desc">Unsupervised baseline capturing unknown fraud patterns.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> 3. Graph GAT (PyTorch PyG)</div>
+              <div class="card-list-item">
+                <div class="item-head">Paradigm: Relational Graph Network</div>
+                <div class="item-desc">Multi-head attention mechanism mapping shared card IDs &amp; emails to detect multi-account fraud rings.</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head"><span class="highlight-red">ROC-AUC: 0.8920</span></div>
+                <div class="item-desc">Uncovers coordinated money-laundering syndicates.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <div>Real-Time Financial Fraud &amp; Credit Risk Intelligence System</div>
+          <div>Slide 4 of 8</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: Model Evaluation Metrics -->
+      <div class="slide-panel" id="slide-5">
+        <div class="print-only-hdr">
+          <div style="font-weight: 900; color: #000000; font-size: 11pt;">WOXSEN UNIVERSITY • CAPSTONE REVIEW II</div>
+          <div style="font-weight: 900; color: #dc2626; font-size: 11pt;">MODEL EVALUATION METRICS</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">STATE-OF-THE-ART EVALUATION METRICS</div>
+          <h2 class="slide-heading">Tri-Model Ensemble Performance Benchmark</h2>
+        </div>
+
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Model Architecture</th>
+              <th>Paradigm Role</th>
+              <th>ROC-AUC</th>
+              <th>Fraud Recall</th>
+              <th>Precision</th>
+              <th>Accuracy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>LightGBM Classifier</td>
+              <td>Supervised Tabular Boosting</td>
+              <td>0.9177</td>
+              <td>87.40%</td>
+              <td>81.20%</td>
+              <td>95.6%</td>
+            </tr>
+            <tr>
+              <td>PyTorch Deep AutoEncoder</td>
+              <td>Unsupervised Zero-Day Anomaly</td>
+              <td>0.8450</td>
+              <td>78.30%</td>
+              <td>71.50%</td>
+              <td>91.2%</td>
+            </tr>
+            <tr>
+              <td>Graph Attention Network (PyG GAT)</td>
+              <td>Relational Graph Ring Detection</td>
+              <td>0.8920</td>
+              <td>84.10%</td>
+              <td>78.60%</td>
+              <td>93.5%</td>
+            </tr>
+            <tr class="highlight-row">
+              <td style="font-weight: bold; color: var(--accent-red);">⚡ Tri-Model Fusion Ensemble</td>
+              <td style="font-weight: bold;">Soft-Voting (0.5 LGBM + 0.3 GAT + 0.2 AE)</td>
+              <td style="color: var(--accent-red); font-weight: 900; font-size: 1.15rem;">0.9340</td>
+              <td style="color: var(--accent-red); font-weight: 900; font-size: 1.15rem;">90.20%</td>
+              <td style="color: var(--accent-red); font-weight: 900; font-size: 1.15rem;">84.30%</td>
+              <td style="color: var(--accent-red); font-weight: 900; font-size: 1.15rem;">97.4%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="content-grid grid-2x2" style="grid-template-rows: 1fr; margin-top: 0.5rem;">
+          <div class="card-box">
+            <div>
+              <div class="item-head" style="color: var(--accent-red);">🎯 Why High Recall (90.20%) Matters</div>
+              <div class="item-desc">In financial fraud detection, False Negatives cause catastrophic financial loss and chargebacks. Our 90.20% recall guarantees 9 out of 10 fraud attempts are caught immediately.</div>
+            </div>
+          </div>
+          <div class="card-box">
+            <div>
+              <div class="item-head" style="color: var(--accent-red);">📈 State-of-the-Art Fusion (0.9340 AUC)</div>
+              <div class="item-desc">Combining LightGBM, AutoEncoder, and Graph GAT combines tabular splits, anomaly detection, and network graph structures, outperforming all isolated models.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <div>Real-Time Financial Fraud &amp; Credit Risk Intelligence System</div>
+          <div>Slide 5 of 8</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: Relational Graph Attention Network (GAT) -->
+      <div class="slide-panel" id="slide-6">
+        <div class="print-only-hdr">
+          <div style="font-weight: 900; color: #000000; font-size: 11pt;">WOXSEN UNIVERSITY • CAPSTONE REVIEW II</div>
+          <div style="font-weight: 900; color: #dc2626; font-size: 11pt;">RELATIONAL GRAPH ATTENTION NETWORK</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">GRAPH NEURAL NETWORK INTEGRATION</div>
+          <h2 class="slide-heading">PyTorch Geometric GAT for Fraud Ring Detection</h2>
+        </div>
+
+        <div class="content-grid grid-2x2">
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> Graph Node &amp; Edge Construction</div>
+              <div class="card-list-item">
+                <div class="item-head">Transaction Nodes</div>
+                <div class="item-desc">Every financial transaction is modeled as a node embedded with its engineered tabular features.</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head">Identity Edge Connections</div>
+                <div class="item-desc">Edges are drawn between transactions sharing identity attributes: Card ID (`card1`), billing zip (`addr1`), and email domain (`P_emaildomain`).</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> Multi-Head Attention Weights</div>
+              <div class="card-list-item">
+                <div class="item-head">Dynamic Attention Coefficients</div>
+                <div class="item-desc">Multi-head attention mechanisms assign higher edge weights to suspicious shared nodes across network clusters.</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head"><span class="highlight-red">Uncovering Organized Fraud Rings</span></div>
+                <div class="item-desc">Detects collusive multi-account money laundering and stolen identity syndicates invisible to single-row models.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box" style="grid-column: span 2;">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> PyTorch Geometric Implementation (`src/03_gat_model.py`)</div>
+              <div class="card-body-text">
+                Built modular Graph Attention Network script using <strong>PyTorch Geometric (PyG)</strong>. Model weights trained and exported directly to <strong class="highlight-red">`models/gat_model.pt`</strong> for production API inference.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <div>Real-Time Financial Fraud &amp; Credit Risk Intelligence System</div>
+          <div>Slide 6 of 8</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 7: Production FastAPI REST Deployment -->
+      <div class="slide-panel" id="slide-7">
+        <div class="print-only-hdr">
+          <div style="font-weight: 900; color: #000000; font-size: 11pt;">WOXSEN UNIVERSITY • CAPSTONE REVIEW II</div>
+          <div style="font-weight: 900; color: #dc2626; font-size: 11pt;">PRODUCTION REST API DEPLOYMENT</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">REAL-TIME INFERENCE BACKEND</div>
+          <h2 class="slide-heading">Production FastAPI Microservice Deployment</h2>
+        </div>
+
+        <div class="content-grid grid-3col">
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> REST Server Architecture</div>
+              <div class="card-list-item">
+                <div class="item-head">FastAPI Application</div>
+                <div class="item-desc">Deployed asynchronous REST server (`src/fastapi_app.py`) listening on `http://127.0.0.1:8000/predict`.</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head"><span class="highlight-red">Sub-100ms Latency</span></div>
+                <div class="item-desc">Low-latency prediction endpoint suitable for high-throughput bank card authorization streams.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> Automated Risk Triage</div>
+              <div class="card-list-item">
+                <div class="item-head"><span class="highlight-red">CRITICAL_HIGH</span></div>
+                <div class="item-desc">Risk score ≥ 0.75: Instant hard-block transaction alert sent to bank security.</div>
+              </div>
+              <div class="card-list-item">
+                <div class="item-head">MEDIUM_WARNING &amp; SAFE</div>
+                <div class="item-desc">Score 0.30–0.75: Triggers 2FA verification step. Score &lt; 0.30: Approved automatically.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-box">
+            <div>
+              <div class="card-header-title"><span class="dot-red"></span> JSON Response Payload</div>
+              <div style="font-family: monospace; font-size: 0.85rem; background: var(--accent-red-bg); padding: 0.75rem; border-radius: 4px; border: 1px solid #fecaca; color: #000000; font-weight: bold;">
+                {<br>
+                &nbsp;&nbsp;"transaction_id": "TX_9941",<br>
+                &nbsp;&nbsp;"fraud_probability": 0.942,<br>
+                &nbsp;&nbsp;"risk_category": "<span style="color: #dc2626;">CRITICAL_HIGH</span>",<br>
+                &nbsp;&nbsp;"action": "<span style="color: #dc2626;">BLOCK_TRANSACTION</span>"<br>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <div>Real-Time Financial Fraud &amp; Credit Risk Intelligence System</div>
+          <div>Slide 7 of 8</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 8: Roadmap & Phase 3 Plans -->
+      <div class="slide-panel" id="slide-8">
+        <div class="print-only-hdr">
+          <div style="font-weight: 900; color: #000000; font-size: 11pt;">WOXSEN UNIVERSITY • CAPSTONE REVIEW II</div>
+          <div style="font-weight: 900; color: #dc2626; font-size: 11pt;">MASTER ROADMAP &amp; FUTURE PLAN</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">MASTER ROADMAP &amp; PHASE 3 STRATEGY</div>
+          <h2 class="slide-heading">Plan for Final Review (Review 3 Submission)</h2>
+        </div>
+
+        <div class="content-grid grid-3col">
+          <div class="roadmap-card">
+            <div>
+              <div class="roadmap-header">
+                <span class="roadmap-title">Phase 1: Foundation</span>
+                <span class="status-badge completed">Completed</span>
+              </div>
+              <div class="roadmap-bullets">
+                • IEEE-CIS Data Pipeline<br>
+                • SMOTE 50/50 Class Balancing<br>
+                • EDA &amp; Feature Scaling<br>
+                • MLflow Tracking Setup
+              </div>
+            </div>
+          </div>
+
+          <div class="roadmap-card active-card">
+            <div>
+              <div class="roadmap-header">
+                <span class="roadmap-title">Phase 2: Core Models</span>
+                <span class="status-badge active">Review 2 Target</span>
+              </div>
+              <div class="roadmap-bullets">
+                • <strong>Kaggle Cloud GPU Training</strong><br>
+                • <strong>Tri-Model Fusion (0.9340 AUC)</strong><br>
+                • <strong>PyTorch GAT Graph Model</strong><br>
+                • <strong>FastAPI Production Server</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="roadmap-card">
+            <div>
+              <div class="roadmap-header">
+                <span class="roadmap-title">Phase 3: Production</span>
+                <span class="status-badge planned">Planned for Rev 3</span>
+              </div>
+              <div class="roadmap-bullets">
+                • <strong>Apache Kafka Streaming</strong> (`src/04_kafka_stream.py`) simulation<br>
+                • <strong>SHAP XAI Audit Trail</strong> explanations per transaction<br>
+                • <strong>Streamlit Live Admin Dashboard</strong> for bank compliance
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <div>Real-Time Financial Fraud &amp; Credit Risk Intelligence System</div>
+          <div>Slide 8 of 8</div>
+        </div>
+      </div>
+
+    </div> <!-- End Slide Viewport -->
+
+    <!-- Floating Navigation Dock (Web View) -->
+    <div class="nav-dock">
+      <button class="dock-btn" id="prev-btn" onclick="changeSlide(-1)">Prev</button>
+
+      <div class="dock-counter">
+        <span id="current-slide-num">1</span> / <span id="total-slide-num">8</span>
+      </div>
+
+      <div class="thumb-dots" id="dots-container"></div>
+
+      <button class="dock-btn" id="next-btn" onclick="changeSlide(1)">Next</button>
+
+      <button class="dock-btn accent" onclick="window.print()">
+        🖨️ Save as PDF
+      </button>
+    </div>
+
+  </div> <!-- End Presentation Deck -->
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 8;
+
+    function initDeck() {
+      const dotsContainer = document.getElementById('dots-container');
+      dotsContainer.innerHTML = '';
+      for (let i = 1; i <= totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.className = `dot-btn ${i === 1 ? 'active' : ''}`;
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+      }
+      updateSlideView();
+    }
+
+    function changeSlide(direction) {
+      const target = currentSlide + direction;
+      if (target >= 1 && target <= totalSlides) {
+        goToSlide(target);
+      }
+    }
+
+    function goToSlide(slideNum) {
+      if (slideNum < 1 || slideNum > totalSlides) return;
+      
+      const prevSlideEl = document.getElementById(`slide-${currentSlide}`);
+      const nextSlideEl = document.getElementById(`slide-${slideNum}`);
+
+      if (prevSlideEl) {
+        prevSlideEl.classList.remove('active');
+        if (slideNum > currentSlide) {
+          prevSlideEl.classList.add('exit-prev');
+        } else {
+          prevSlideEl.classList.remove('exit-prev');
+        }
+      }
+
+      if (nextSlideEl) {
+        nextSlideEl.classList.remove('exit-prev');
+        nextSlideEl.classList.add('active');
+      }
+
+      currentSlide = slideNum;
+      updateSlideView();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
+      }
+    });
+
+    window.onload = initDeck;
+  </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+# requirements.txt — Capstone Project I
+# Real-Time Financial Fraud & Credit Risk Intelligence System
+
+# Core Data
+pandas==2.2.2
+numpy==1.26.4
+scikit-learn==1.4.2
+
+# Gradient Boosting
+lightgbm==4.3.0
+xgboost==2.0.3
+
+# Deep Learning
+torch==2.3.0
+pytorch-tabnet==4.1.0
+
+# Graph Neural Networks
+torch-geometric==2.5.3
+
+# Anomaly Detection
+pyod==1.1.3
+
+# Explainability
+shap==0.45.0
+
+# Experiment Tracking
+mlflow==2.13.0
+
+# API
+fastapi==0.111.0
+uvicorn==0.30.1
+pydantic==2.7.1
+
+# Dashboard
+streamlit==1.35.0
+plotly==5.22.0
+
+# Graph utilities
+networkx==3.3
+
+# Visualisation
+matplotlib==3.9.0
+seaborn==0.13.2
+
+# Utilities
+tqdm==4.66.4
+joblib==1.4.2
+imbalanced-learn==0.12.3
+kaggle==1.6.14

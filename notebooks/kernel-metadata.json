@@ -1,0 +1,16 @@
+{
+  "id": "karthikeya013/capstone-banking-fraud-pipeline",
+  "title": "Capstone Banking Fraud Pipeline",
+  "code_file": "kaggle_full_training_pipeline.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [
+    "ealaxi/paysim1"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

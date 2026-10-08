@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graph-Based Fraud Detection Using GNNs | Graph Analytics PBL Project</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg-dark: #070b14;
+    --card-bg: rgba(15, 23, 42, 0.95);
+    --card-border: rgba(56, 189, 248, 0.4);
+    --card-hover-border: rgba(56, 189, 248, 0.9);
+    --accent-sky: #38bdf8;
+    --accent-amber: #fbbf24;
+    --accent-indigo: #818cf8;
+    --accent-emerald: #34d399;
+    --accent-rose: #f43f5e;
+    --accent-purple: #c084fc;
+    --text-main: #ffffff;
+    --text-muted: #cbd5e1;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+  }
+
+  /* Print elements hidden in Web View */
+  .print-only-hdr, .print-only-ftr {
+    display: none !important;
+  }
+
+  /* Ambient Glowing Background Lights */
+  .bg-glow {
+    position: absolute;
+    width: 650px;
+    height: 650px;
+    border-radius: 50%;
+    filter: blur(170px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.38;
+  }
+  .glow-1 { top: -180px; left: -180px; background: #0284c7; }
+  .glow-2 { bottom: -220px; right: -180px; background: #4f46e5; }
+  .glow-3 { top: 50%; left: 50%; transform: translate(-50%, -50%); background: #d97706; opacity: 0.12; }
+
+  /* App Shell - Full Screen Viewport */
+  .presentation-deck {
+    position: relative;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.25rem 2.25rem 5.25rem 2.25rem;
+  }
+
+  /* Slide Top Header Bar */
+  .deck-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding-bottom: 0.65rem;
+    height: 3rem;
+  }
+
+  .brand-badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .badge-tag {
+    background: linear-gradient(135deg, #0284c7, #4f46e5);
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 0.35rem 0.9rem;
+    border-radius: 6px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(2, 132, 199, 0.5);
+  }
+
+  .header-title-text {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    letter-spacing: 0.5px;
+  }
+
+  .woxsen-tag {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--accent-sky);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Main Viewport Workspace */
+  .slide-viewport {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    margin: 0.75rem 0;
+  }
+
+  /* Slide Panels with Slide-In Animations */
+  .slide-panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(40px) scale(0.98);
+    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .slide-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0) scale(1);
+  }
+
+  .slide-panel.exit-prev {
+    transform: translateX(-40px) scale(0.98);
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* Typography */
+  .slide-tagline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--accent-sky);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .slide-heading {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 0.85rem;
+    letter-spacing: -0.5px;
+  }
+
+  /* Content Grids */
+  .content-grid {
+    flex: 1;
+    display: grid;
+    gap: 1.15rem;
+    align-items: stretch;
+  }
+
+  .grid-2x2 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .grid-3x2 {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .grid-3col {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .grid-9tasks {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0.85rem;
+  }
+
+  /* Glass Cards */
+  .glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1.5px solid var(--card-border);
+    border-radius: 14px;
+    padding: 1.35rem 1.7rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-sky), transparent);
+    opacity: 0.9;
+  }
+
+  .glass-card.amber-top::before {
+    background: linear-gradient(90deg, var(--accent-amber), transparent);
+  }
+  .glass-card.indigo-top::before {
+    background: linear-gradient(90deg, var(--accent-indigo), transparent);
+  }
+  .glass-card.emerald-top::before {
+    background: linear-gradient(90deg, var(--accent-emerald), transparent);
+  }
+  .glass-card.purple-top::before {
+    background: linear-gradient(90deg, var(--accent-purple), transparent);
+  }
+
+  .glass-card:hover {
+    border-color: var(--card-hover-border);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(56, 189, 248, 0.3);
+  }
+
+  .card-icon-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(56, 189, 248, 0.2);
+    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .card-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--accent-sky);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .card-icon.amber {
+    background: rgba(251, 191, 36, 0.2);
+    border-color: rgba(251, 191, 36, 0.4);
+  }
+  .card-icon.amber svg { stroke: var(--accent-amber); }
+
+  .card-icon.indigo {
+    background: rgba(129, 140, 248, 0.2);
+    border-color: rgba(129, 140, 248, 0.4);
+  }
+  .card-icon.indigo svg { stroke: var(--accent-indigo); }
+
+  .card-icon.emerald {
+    background: rgba(52, 211, 153, 0.2);
+    border-color: rgba(52, 211, 153, 0.4);
+  }
+  .card-icon.emerald svg { stroke: var(--accent-emerald); }
+
+  .card-icon.purple {
+    background: rgba(192, 132, 252, 0.2);
+    border-color: rgba(192, 132, 252, 0.4);
+  }
+  .card-icon.purple svg { stroke: var(--accent-purple); }
+
+  .card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--accent-sky);
+    line-height: 1.25;
+  }
+
+  .card-title.amber { color: var(--accent-amber); }
+  .card-title.indigo { color: var(--accent-indigo); }
+  .card-title.emerald { color: var(--accent-emerald); }
+  .card-title.purple { color: var(--accent-purple); }
+
+  .card-body-text {
+    font-size: 0.95rem;
+    color: #e2e8f0;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+
+  .card-body-text strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  /* List Items inside Cards */
+  .card-list-item {
+    background: rgba(2, 6, 23, 0.6);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    border-left: 3px solid var(--accent-sky);
+    border-radius: 8px;
+    padding: 0.65rem 0.9rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .card-list-item.amber {
+    border-left-color: var(--accent-amber);
+    border-color: rgba(251, 191, 36, 0.2);
+  }
+
+  .card-list-item.emerald {
+    border-left-color: var(--accent-emerald);
+    border-color: rgba(52, 211, 153, 0.2);
+  }
+
+  .card-list-item.indigo {
+    border-left-color: var(--accent-indigo);
+    border-color: rgba(129, 140, 248, 0.2);
+  }
+
+  .card-list-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .item-head {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: #ffffff;
+    margin-bottom: 0.2rem;
+  }
+
+  .item-desc {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    line-height: 1.4;
+  }
+
+  /* Task Card for 9 Tasks Grid */
+  .task-mini-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .task-mini-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 3.5px;
+    background: var(--accent-sky);
+  }
+
+  .task-mini-card.amber::before { background: var(--accent-amber); }
+  .task-mini-card.emerald::before { background: var(--accent-emerald); }
+  .task-mini-card.indigo::before { background: var(--accent-indigo); }
+  .task-mini-card.purple::before { background: var(--accent-purple); }
+
+  .task-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: var(--accent-sky);
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .task-num.amber { color: var(--accent-amber); }
+  .task-num.emerald { color: var(--accent-emerald); }
+  .task-num.indigo { color: var(--accent-indigo); }
+  .task-num.purple { color: var(--accent-purple); }
+
+  .task-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.25;
+    margin-bottom: 0.3rem;
+  }
+
+  .task-desc {
+    font-size: 0.78rem;
+    color: #cbd5e1;
+    line-height: 1.35;
+  }
+
+  /* Tables */
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1.5px solid var(--card-border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .custom-table th {
+    background: rgba(14, 165, 233, 0.2);
+    color: var(--accent-sky);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1.5px solid var(--card-border);
+  }
+
+  .custom-table td {
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+    color: #e2e8f0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    line-height: 1.4;
+  }
+
+  .custom-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .custom-table tr:nth-child(even) td {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  /* Visual Pipeline Flowchart */
+  .flowchart-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .flowchart-pipeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.85rem;
+    align-items: stretch;
+  }
+
+  .flow-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.1rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+  }
+
+  .flow-stage-badge {
+    align-self: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #0284c7, #4f46e5);
+    color: #ffffff;
+    padding: 0.2rem 0.65rem;
+    border-radius: 20px;
+    margin-bottom: 0.65rem;
+  }
+
+  .flow-stage-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.18);
+    border: 1.5px solid rgba(56, 189, 248, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.65rem auto;
+  }
+
+  .flow-stage-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--accent-sky);
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .flow-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0.35rem;
+    line-height: 1.25;
+  }
+
+  .flow-desc {
+    font-size: 0.78rem;
+    color: #cbd5e1;
+    line-height: 1.35;
+    margin-bottom: 0.65rem;
+  }
+
+  .flow-tech-pill {
+    background: rgba(2, 6, 23, 0.8);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 6px;
+    padding: 0.25rem 0.45rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--accent-sky);
+    letter-spacing: 0.5px;
+  }
+
+  .flow-arrow-right {
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    z-index: 5;
+    background: #0f172a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--accent-sky);
+  }
+
+  .flow-arrow-right svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--accent-sky);
+    fill: none;
+    stroke-width: 2.5;
+  }
+
+  /* Architecture Banner Summary */
+  .arch-summary-banner {
+    background: var(--card-bg);
+    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    border-radius: 12px;
+    padding: 0.85rem 1.75rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .arch-stat {
+    text-align: center;
+  }
+
+  .arch-stat-val {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--accent-sky);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+
+  .arch-stat-lbl {
+    font-size: 0.78rem;
+    color: #cbd5e1;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Roadmap Cards */
+  .roadmap-card {
+    background: var(--card-bg);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+  }
+
+  .roadmap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.45rem;
+  }
+
+  .roadmap-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .status-badge {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 0.2rem 0.65rem;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .status-badge.completed { background: rgba(52, 211, 153, 0.2); color: #34d399; border: 1px solid #34d399; }
+  .status-badge.active { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; }
+  .status-badge.planned { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid #fbbf24; }
+
+  .roadmap-bullets {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    line-height: 1.55;
+  }
+
+  /* Hero Slide Styles */
+  .title-hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    padding: 0.5rem 1rem;
+  }
+
+  .main-hero-h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3.1rem;
+    font-weight: 900;
+    line-height: 1.12;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff 40%, var(--accent-sky) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.6rem;
+  }
+
+  .main-hero-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-amber);
+    margin-bottom: 1.5rem;
+    max-width: 900px;
+    line-height: 1.4;
+  }
+
+  .team-panel {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1.5px solid rgba(56, 189, 248, 0.45);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+    border-radius: 14px;
+    padding: 1.25rem 2.5rem;
+    max-width: 820px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .team-hdr {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--accent-amber);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.3);
+    padding-bottom: 0.35rem;
+  }
+
+  .team-row {
+    font-size: 0.95rem;
+    color: #e2e8f0;
+    line-height: 1.6;
+  }
+
+  /* Thank You Slide */
+  .thankyou-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+  }
+
+  .thankyou-h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 4.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffffff 30%, var(--accent-sky) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+
+  .thankyou-sub {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--accent-amber);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Floating Glass Controls Dock */
+  .nav-dock {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(56, 189, 248, 0.4);
+    border-radius: 40px;
+    padding: 0.5rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    z-index: 100;
+  }
+
+  .dock-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 800;
+    padding: 0.5rem 1.25rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .dock-btn:hover {
+    background: var(--accent-sky);
+    color: #0f172a;
+    border-color: var(--accent-sky);
+    transform: translateY(-2px);
+  }
+
+  .dock-btn.accent {
+    background: linear-gradient(135deg, #0284c7, #4f46e5);
+    border: none;
+    box-shadow: 0 0 15px rgba(2, 132, 199, 0.5);
+  }
+
+  .dock-counter {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--accent-sky);
+    padding: 0 0.5rem;
+  }
+
+  .thumb-dots {
+    display: flex;
+    gap: 0.45rem;
+  }
+
+  .dot-btn {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dot-btn.active {
+    background: var(--accent-sky);
+    width: 24px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px var(--accent-sky);
+  }
+
+  /* PDF Print Rules: Perfect A4 Landscape Fitting */
+  @media print {
+    @page { size: A4 landscape; margin: 0; }
+    body {
+      background: #0b1120 !important;
+      color: #ffffff !important;
+      overflow: visible !important;
+      height: auto !important;
+      width: auto !important;
+    }
+    .bg-glow, .nav-dock, .deck-header { display: none !important; }
+    .presentation-deck {
+      padding: 0 !important;
+      height: auto !important;
+      width: auto !important;
+      display: block !important;
+    }
+    .slide-viewport {
+      margin: 0 !important;
+      display: block !important;
+      height: auto !important;
+      width: auto !important;
+    }
+    .slide-panel {
+      position: relative !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: none !important;
+      width: 297mm !important;
+      height: 210mm !important;
+      padding: 10mm 15mm !important;
+      box-sizing: border-box !important;
+      page-break-after: always !important;
+      page-break-inside: avoid !important;
+      background: #0b1120 !important;
+      border: 1px solid #1e293b !important;
+    }
+    .slide-panel:last-child { page-break-after: auto !important; }
+    .print-only-hdr {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: flex-end !important;
+      border-bottom: 2px solid #38bdf8 !important;
+      padding-bottom: 5px !important;
+      margin-bottom: 8px !important;
+    }
+    .print-only-ftr {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      border-top: 1px solid #334155 !important;
+      padding-top: 5px !important;
+      margin-top: 6px !important;
+      font-size: 9pt !important;
+      color: #94a3b8 !important;
+      font-weight: 700 !important;
+    }
+    .main-hero-h1 {
+      font-size: 23pt !important;
+      color: #ffffff !important;
+      background: none !important;
+      -webkit-background-clip: initial !important;
+      -webkit-text-fill-color: #ffffff !important;
+      text-shadow: none !important;
+      line-height: 1.15 !important;
+    }
+    .main-hero-sub {
+      font-size: 12pt !important;
+      color: #fbbf24 !important;
+      margin-bottom: 12px !important;
+    }
+    .thankyou-h1 {
+      font-size: 34pt !important;
+      color: #ffffff !important;
+      background: none !important;
+      -webkit-background-clip: initial !important;
+      -webkit-text-fill-color: #ffffff !important;
+    }
+    .slide-heading {
+      font-size: 17pt !important;
+      color: #ffffff !important;
+      -webkit-text-fill-color: initial !important;
+      margin-bottom: 6px !important;
+    }
+    .slide-tagline { font-size: 8.5pt !important; margin-bottom: 2px !important; }
+    .glass-card {
+      background: #1e293b !important;
+      border: 1px solid #334155 !important;
+      padding: 10px 14px !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+    }
+    .card-title { font-size: 11.5pt !important; color: #38bdf8 !important; }
+    .card-title.amber { color: #fbbf24 !important; }
+    .card-title.indigo { color: #818cf8 !important; }
+    .card-title.emerald { color: #34d399 !important; }
+    .card-body-text { font-size: 9.5pt !important; color: #f8fafc !important; line-height: 1.45 !important; }
+    .card-list-item { padding: 6px 8px !important; margin-bottom: 5px !important; }
+    .item-head { font-size: 9pt !important; margin-bottom: 1px !important; }
+    .item-desc { font-size: 8pt !important; line-height: 1.3 !important; }
+    .task-mini-card { padding: 6px 9px !important; background: #1e293b !important; }
+    .task-title { font-size: 8.5pt !important; margin-bottom: 2px !important; }
+    .task-desc { font-size: 7.5pt !important; line-height: 1.25 !important; }
+    .flow-card { background: #1e293b !important; border: 1px solid #38bdf8 !important; padding: 8px 6px !important; }
+    .flow-arrow-right { display: none !important; }
+    .flow-title { font-size: 9pt !important; margin-bottom: 2px !important; }
+    .flow-desc { font-size: 7.5pt !important; line-height: 1.25 !important; margin-bottom: 4px !important; }
+    .flow-tech-pill { font-size: 7pt !important; padding: 2px 4px !important; }
+    .custom-table { font-size: 9pt !important; margin-bottom: 6px !important; }
+    .custom-table th { background: #1e293b !important; color: #38bdf8 !important; padding: 6px 8px !important; font-size: 9pt !important; }
+    .custom-table td { background: #0f172a !important; padding: 6px 8px !important; color: #f1f5f9 !important; }
+    .roadmap-card { padding: 8px 12px !important; background: #1e293b !important; }
+    .roadmap-title { font-size: 9.5pt !important; }
+    .roadmap-bullets { font-size: 8.2pt !important; line-height: 1.4 !important; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Ambient Glowing Background Lights -->
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="bg-glow glow-3"></div>
+
+  <!-- Main Presentation Container -->
+  <div class="presentation-deck">
+
+    <!-- Top Header -->
+    <div class="deck-header">
+      <div class="brand-badge">
+        <div class="badge-tag">PBL PROJECT</div>
+        <div class="header-title-text">GRAPH ANALYTICS • GRAPH NEURAL NETWORKS (GNNs)</div>
+      </div>
+      <div class="woxsen-tag">WOXSEN UNIVERSITY • SCHOOL OF TECHNOLOGY</div>
+    </div>
+
+    <!-- Main Slide Workspace -->
+    <div class="slide-viewport">
+
+      <!-- SLIDE 1: TITLE HERO -->
+      <div class="slide-panel active" data-slide="1">
+        <div class="print-only-hdr">
+          <div style="font-size: 11pt; font-weight: 800; color: #38bdf8; letter-spacing: 1.5px;">WOXSEN UNIVERSITY — SCHOOL OF TECHNOLOGY</div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">GRAPH ANALYTICS (PBL) • ACADEMIC YEAR 2026 - 27</div>
+        </div>
+
+        <div class="title-hero">
+          <div style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--accent-sky); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 0.65rem;">
+            GRAPH ANALYTICS — PROBLEM-BASED LEARNING (PBL) PROJECT
+          </div>
+          <h1 class="main-hero-h1">Graph-Based Fraud Detection<br>Using Graph Neural Networks (GNNs)</h1>
+          <div class="main-hero-sub">Investigating Relational Inductive Biases &amp; Neighborhood Information vs. Conventional Tabular Machine Learning</div>
+
+          <div class="team-panel">
+            <div class="team-hdr">Faculty Mentorship &amp; Student Project Team</div>
+            <div class="team-row">• <strong>Course Faculty / Mentor:</strong> Prof. Guru Satya | Review &amp; Evaluation: Academic Year 2026–27</div>
+            <div class="team-row" style="margin-top: 0.65rem; color: var(--accent-sky); font-weight: 800;">Student Investigators:</div>
+            <div class="team-row">• <strong>Challa Karthikeya</strong> (Reg No: 23WU0104013)</div>
+            <div class="team-row">• <strong>Y. Brijesh Naidu</strong> (Reg No: 23WU0104011)</div>
+            <div class="team-row">• <strong>K Dheeraj</strong> (Reg No: 23WU0104039)</div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 1 of 11</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: MOTIVATION & GRAPH PARADIGM SHIFT -->
+      <div class="slide-panel" data-slide="2">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">THE GRAPH ADVANTAGE IN FINANCIAL SECURITY</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Why Model Financial Transactions as a Graph?</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">THE GRAPH ADVANTAGE IN FINANCIAL SECURITY</div>
+          <h2 class="slide-heading">Why Model Financial Transactions as a Graph?</h2>
+        </div>
+
+        <div class="content-grid grid-2x2">
+          <div class="glass-card amber-top">
+            <div class="card-icon-header">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              </div>
+              <h3 class="card-title amber">1. The Tabular Blindspot (I.I.D. Flaw)</h3>
+            </div>
+            <p class="card-body-text">Conventional ML (Random Forest, XGBoost) treats each transaction as <strong>Independent and Identically Distributed (I.I.D.)</strong>. It analyzes isolated rows while completely ignoring relational topologies, transaction links, and shared infrastructure.</p>
+          </div>
+
+          <div class="glass-card indigo-top">
+            <div class="card-icon-header">
+              <div class="card-icon indigo">
+                <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              </div>
+              <h3 class="card-title indigo">2. Syndicate Fraud &amp; Collusive Rings</h3>
+            </div>
+            <p class="card-body-text">Modern fraudsters rarely act alone. They coordinate <strong>collusive rings, mule accounts, burner cards, and synthetic identities</strong> spanning multiple accounts. These form distinct graph communities and high-density clusters that tabular models miss.</p>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <h3 class="card-title">3. Relational Inductive Bias</h3>
+            </div>
+            <p class="card-body-text">Graph representations embed a powerful prior: <strong>connected entities share behavioral intent (Homophily &amp; Structural Equivalence)</strong>. A transaction linked to compromised devices or suspicious IP clusters inherits elevated risk through graph message passing.</p>
+          </div>
+
+          <div class="glass-card emerald-top">
+            <div class="card-icon-header">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              </div>
+              <h3 class="card-title emerald">4. Multi-Hop Signal Propagation</h3>
+            </div>
+            <p class="card-body-text">GNNs recursively aggregate information from <strong>1-hop, 2-hop, and k-hop neighbors</strong>, detecting money laundering layering schemes where funds hop across intermediary innocent accounts before reaching the illicit cash-out node.</p>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 2 of 11</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: RESEARCH OBJECTIVE & QUESTIONS -->
+      <div class="slide-panel" data-slide="3">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">RESEARCH OBJECTIVE &amp; HYPOTHESIS</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Research Objectives, Questions &amp; Expected Outcomes</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">RESEARCH OBJECTIVE &amp; HYPOTHESIS</div>
+          <h2 class="slide-heading">Research Objectives, Questions &amp; Expected Outcomes</h2>
+        </div>
+
+        <div class="content-grid grid-3col">
+          <!-- CARD 1: PRIMARY OBJECTIVE -->
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              </div>
+              <h3 class="card-title">Research Objective</h3>
+            </div>
+            <div class="card-list-item" style="border-left-width: 4px; margin-bottom: 0.85rem;">
+              <div class="item-head" style="color: var(--accent-sky); font-size: 1.05rem;">Core Inquiry:</div>
+              <div class="item-desc" style="font-size: 0.92rem; color: #f1f5f9; line-height: 1.6;">
+                <strong>Investigate whether modeling financial transactions as a graph can improve fraud detection compared with conventional machine-learning approaches.</strong>
+              </div>
+            </div>
+            <p class="card-body-text">
+              We systematically compare feature-based models against network centrality metrics and deep Graph Neural Networks across identical financial transaction distributions.
+            </p>
+          </div>
+
+          <!-- CARD 2: RESEARCH QUESTIONS -->
+          <div class="glass-card amber-top">
+            <div class="card-icon-header">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <h3 class="card-title amber">Research Questions</h3>
+            </div>
+            <div class="card-list-item amber" style="margin-bottom: 0.5rem;">
+              <div class="item-head">Primary Question:</div>
+              <div class="item-desc">
+                <em>"Does incorporating neighborhood and relational information through GNNs improve fraud detection compared with feature-based ML?"</em>
+              </div>
+            </div>
+            <div class="card-list-item amber" style="margin-bottom: 0.5rem;">
+              <div class="item-head">Secondary Sub-Question 1:</div>
+              <div class="item-desc">Do manual graph metrics (Degree, PageRank, Betweenness) close the gap for tree models (RF/XGBoost)?</div>
+            </div>
+            <div class="card-list-item amber">
+              <div class="item-head">Secondary Sub-Question 2:</div>
+              <div class="item-desc">Which GNN architecture (GCN, GraphSAGE, GAT) best handles fraud heterophily and severe class imbalance?</div>
+            </div>
+          </div>
+
+          <!-- CARD 3: EXPECTED OUTCOMES -->
+          <div class="glass-card emerald-top">
+            <div class="card-icon-header">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <h3 class="card-title emerald">Expected Outcomes</h3>
+            </div>
+            <div class="card-list-item emerald" style="margin-bottom: 0.65rem;">
+              <div class="item-head">1. Deep Relational Insights:</div>
+              <div class="item-desc">Understand how relational information provides additional discriminative signal for detecting anomalous behavior in financial networks.</div>
+            </div>
+            <div class="card-list-item emerald" style="margin-bottom: 0.65rem;">
+              <div class="item-head">2. Empirical Benchmark:</div>
+              <div class="item-desc">Quantify exact performance gains across ROC-AUC, PR-AUC, and F1 under severe real-world (~3.5%) class imbalance.</div>
+            </div>
+            <div class="card-list-item emerald">
+              <div class="item-head">3. Topological Characterization:</div>
+              <div class="item-desc">Deliver topological profiles of detected fraudulent nodes (degree skewness, betweenness bridge roles, ego-net clustering).</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 3 of 11</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: SYSTEMATIC 9-TASK PBL BREAKDOWN -->
+      <div class="slide-panel" data-slide="4">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">PBL WORK BREAKDOWN STRUCTURE</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Systematic 9-Task PBL Project Execution Framework</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">PBL WORK BREAKDOWN STRUCTURE</div>
+          <h2 class="slide-heading">Systematic 9-Task PBL Project Execution Framework</h2>
+        </div>
+
+        <div class="content-grid grid-9tasks">
+          <!-- TASK 1 -->
+          <div class="task-mini-card">
+            <div class="task-num">TASK 01</div>
+            <div class="task-title">Dataset Selection</div>
+            <div class="task-desc">Acquire IEEE-CIS Financial Fraud benchmark (590k transactions, 434 features, 3.5% fraud) &amp; transaction logs.</div>
+          </div>
+
+          <!-- TASK 2 -->
+          <div class="task-mini-card">
+            <div class="task-num">TASK 02</div>
+            <div class="task-title">Graph Construction</div>
+            <div class="task-desc">Construct homogeneous &amp; heterogeneous bipartite transaction graphs linking Cards, Devices, IPs &amp; Emails.</div>
+          </div>
+
+          <!-- TASK 3 -->
+          <div class="task-mini-card amber">
+            <div class="task-num amber">TASK 03</div>
+            <div class="task-title">Graph Feature Extraction</div>
+            <div class="task-desc">Compute Node Degree, PageRank, Betweenness Centrality, and Neighborhood aggregation statistics.</div>
+          </div>
+
+          <!-- TASK 4 -->
+          <div class="task-mini-card">
+            <div class="task-num">TASK 04</div>
+            <div class="task-title">Traditional ML Baselines</div>
+            <div class="task-desc">Develop tabular baselines: Random Forest &amp; XGBoost / LightGBM on raw feature vectors.</div>
+          </div>
+
+          <!-- TASK 5 -->
+          <div class="task-mini-card indigo">
+            <div class="task-num indigo">TASK 05</div>
+            <div class="task-title">GNN Model Implementation</div>
+            <div class="task-desc">Implement GCN, GraphSAGE (inductive neighborhood sampling), and GAT (multi-head attention).</div>
+          </div>
+
+          <!-- TASK 6 -->
+          <div class="task-mini-card indigo">
+            <div class="task-num indigo">TASK 06</div>
+            <div class="task-title">ML vs. GNN Comparison</div>
+            <div class="task-desc">Conduct rigorous side-by-side benchmarking: Tabular ML vs. Graph-Augmented ML vs. End-to-End GNNs.</div>
+          </div>
+
+          <!-- TASK 7 -->
+          <div class="task-mini-card emerald">
+            <div class="task-num emerald">TASK 07</div>
+            <div class="task-title">Address Class Imbalance</div>
+            <div class="task-desc">Apply graph-aware focal loss, class-weighted cross entropy, and neighborhood balanced subgraphs.</div>
+          </div>
+
+          <!-- TASK 8 -->
+          <div class="task-mini-card emerald">
+            <div class="task-num emerald">TASK 08</div>
+            <div class="task-title">Multi-Metric Evaluation</div>
+            <div class="task-desc">Measure Precision, Recall, F1-Score, ROC-AUC, and crucially PR-AUC to prevent majority class delusion.</div>
+          </div>
+
+          <!-- TASK 9 -->
+          <div class="task-mini-card purple">
+            <div class="task-num purple">TASK 09</div>
+            <div class="task-title">Fraud Node Characteristics</div>
+            <div class="task-desc">Analyze structural anomalies: degree skewness, bridging betweenness, and fraud ring community motifs.</div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 4 of 11</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: GRAPH CONSTRUCTION & FEATURE EXTRACTION (TASKS 1, 2, 3) -->
+      <div class="slide-panel" data-slide="5">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">NETWORK MODELING &amp; CENTRALITY METRICS</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Graph Construction &amp; Topological Feature Engineering</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">NETWORK MODELING &amp; CENTRALITY METRICS (TASKS 1, 2, 3)</div>
+          <h2 class="slide-heading">Graph Construction &amp; Topological Feature Engineering</h2>
+        </div>
+
+        <div class="content-grid grid-2x2">
+          <!-- TOP LEFT: GRAPH SCHEMA -->
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              <h3 class="card-title">Transaction Graph Schema (Task 2)</h3>
+            </div>
+            <p class="card-body-text" style="margin-bottom: 0.5rem;">
+              We construct a <strong>heterogeneous transaction-entity graph</strong> $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ from IEEE-CIS:
+            </p>
+            <div class="card-list-item">
+              <div class="item-head">• Node Types ($\mathcal{V}$):</div>
+              <div class="item-desc">Transactions, Card Holders, Device IDs, IP Addresses, and Email Domains.</div>
+            </div>
+            <div class="card-list-item">
+              <div class="item-head">• Edge Relations ($\mathcal{E}$):</div>
+              <div class="item-desc">Shared Card, Shared Device, Shared IP Subnet, Shared Email, Co-transaction temporal links.</div>
+            </div>
+          </div>
+
+          <!-- TOP RIGHT: DEGREE & NEIGHBORHOOD -->
+          <div class="glass-card amber-top">
+            <div class="card-icon-header">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <h3 class="card-title amber">Degree &amp; Neighborhood Stats (Task 3)</h3>
+            </div>
+            <p class="card-body-text" style="margin-bottom: 0.5rem;">
+              Quantifying local connectivity and transaction burst intensity:
+            </p>
+            <div class="card-list-item amber">
+              <div class="item-head">• In/Out Degree Centrality $k_i = \sum_{j} A_{ij}$:</div>
+              <div class="item-desc">Sudden high degree indicates automated credential stuffing or mule cash-out points.</div>
+            </div>
+            <div class="card-list-item amber">
+              <div class="item-head">• Neighborhood Statistics &amp; Clustering:</div>
+              <div class="item-desc">Local clustering coefficient $C_i$, 1-hop neighbor transaction amount variance, ego-net density.</div>
+            </div>
+          </div>
+
+          <!-- BOTTOM LEFT: PAGERANK -->
+          <div class="glass-card indigo-top">
+            <div class="card-icon-header">
+              <div class="card-icon indigo">
+                <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <h3 class="card-title indigo">PageRank Centrality (Task 3)</h3>
+            </div>
+            <p class="card-body-text" style="margin-bottom: 0.5rem;">
+              Measuring recursive structural importance via random walks:
+            </p>
+            <div class="card-list-item indigo">
+              <div class="item-head">• Stationary Probability $PR(u) = \frac{1-d}{N} + d \sum_{v \in \mathcal{N}(u)} \frac{PR(v)}{L(v)}$:</div>
+              <div class="item-desc">Entities with disproportionately high PageRank in short lifespans indicate central syndicates orchestrating multiple mule accounts.</div>
+            </div>
+          </div>
+
+          <!-- BOTTOM RIGHT: BETWEENNESS -->
+          <div class="glass-card emerald-top">
+            <div class="card-icon-header">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+              </div>
+              <h3 class="card-title emerald">Betweenness Centrality (Task 3)</h3>
+            </div>
+            <p class="card-body-text" style="margin-bottom: 0.5rem;">
+              Pinpointing bottleneck bridges in laundering chains:
+            </p>
+            <div class="card-list-item emerald">
+              <div class="item-head">• Shortest Path Centrality $g(v) = \sum_{s \neq v \neq t} \frac{\sigma_{st}(v)}{\sigma_{st}}$:</div>
+              <div class="item-desc">High betweenness nodes act as critical financial bridges between legitimate banking clusters and underground illicit networks.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 5 of 11</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: TRADITIONAL ML VS GNN ARCHITECTURES (TASKS 4 & 5) -->
+      <div class="slide-panel" data-slide="6">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">MODEL ARCHITECTURES &amp; REPRESENTATION LEARNING</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Traditional ML Baselines vs. Graph Neural Networks</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">MODEL ARCHITECTURES &amp; REPRESENTATION LEARNING (TASKS 4 &amp; 5)</div>
+          <h2 class="slide-heading">Traditional ML Baselines vs. Graph Neural Networks</h2>
+        </div>
+
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 0.85rem;">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th style="width: 20%;">Model Class</th>
+                <th style="width: 22%;">Architecture</th>
+                <th style="width: 30%;">Mechanism for Fraud Detection</th>
+                <th style="width: 28%;">Key Strength &amp; Trade-off</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Baseline ML (Task 4)</strong></td>
+                <td><strong>Random Forest</strong></td>
+                <td>Ensemble of bagging decision trees partitioning tabular features (amount, time, card type).</td>
+                <td>Fast training, robust to outliers; misses relational ring patterns.</td>
+              </tr>
+              <tr>
+                <td><strong>Baseline ML (Task 4)</strong></td>
+                <td><strong>XGBoost / LightGBM</strong></td>
+                <td>Gradient boosted histogram-based trees optimizing binary logloss with class weights.</td>
+                <td>Strongest tabular baseline (0.91+ AUC); cannot learn graph topology directly.</td>
+              </tr>
+              <tr>
+                <td><strong>GNN 1 (Task 5)</strong></td>
+                <td><strong>GCN (Graph Convolution)</strong></td>
+                <td>Spectral/spatial localized first-order message passing: $H^{(l+1)} = \sigma(\tilde{D}^{-1/2} \tilde{A} \tilde{D}^{-1/2} H^{(l)} W^{(l)})$.</td>
+                <td>Captures global network homophily; struggles with graph heterophily.</td>
+              </tr>
+              <tr>
+                <td><strong>GNN 2 (Task 5)</strong></td>
+                <td><strong>GraphSAGE</strong></td>
+                <td>Inductive representation learning via uniform neighborhood sampling + pooling aggregation.</td>
+                <td>Scales to millions of transactions; easily classifies unseen nodes.</td>
+              </tr>
+              <tr>
+                <td><strong>GNN 3 (Task 5)</strong></td>
+                <td><strong>GAT (Attention Net)</strong></td>
+                <td>Learns dynamic attention coefficients $\alpha_{ij}$ between neighbors: prioritizes suspicious links.</td>
+                <td>Handles fraud heterophily; higher computational graph overhead.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="glass-card amber-top" style="padding: 1rem 1.6rem;">
+            <div class="card-title amber" style="font-size: 1.15rem; margin-bottom: 0.35rem;">
+              Key Architectural Hypothesis (Task 6):
+            </div>
+            <p class="card-body-text">
+              While Gradient Boosted Trees dominate static tabular benchmark tasks, <strong>GAT and GraphSAGE outperform by actively assigning high attention weights to rare suspicious connections</strong> (e.g., a high-volume merchant node connected to multiple recently opened burner card accounts).
+            </p>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 6 of 11</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 7: END-TO-END PIPELINE FLOWCHART -->
+      <div class="slide-panel" data-slide="7">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">SYSTEM ARCHITECTURE &amp; METHODOLOGY</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">End-to-End Graph Analytics Experimental Pipeline</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">SYSTEM ARCHITECTURE &amp; METHODOLOGY</div>
+          <h2 class="slide-heading">End-to-End Graph Analytics Experimental Pipeline</h2>
+        </div>
+
+        <div class="flowchart-container">
+          <div class="flowchart-pipeline">
+
+            <!-- STAGE 1 -->
+            <div class="flow-card">
+              <span class="flow-stage-badge">STAGE 01</span>
+              <div class="flow-stage-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+              </div>
+              <div class="flow-title">Data Ingestion</div>
+              <div class="flow-desc">IEEE-CIS 590K transaction rows &amp; identity records.</div>
+              <div class="flow-tech-pill">Task 1: Dataset</div>
+              <div class="flow-arrow-right"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></div>
+            </div>
+
+            <!-- STAGE 2 -->
+            <div class="flow-card">
+              <span class="flow-stage-badge">STAGE 02</span>
+              <div class="flow-stage-icon" style="background: rgba(251, 191, 36, 0.2); border-color: rgba(251, 191, 36, 0.4);">
+                <svg viewBox="0 0 24 24" style="stroke: var(--accent-amber);"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              <div class="flow-title">Graph Construction</div>
+              <div class="flow-desc">Bipartite relational edges (Cards, IPs, Devices).</div>
+              <div class="flow-tech-pill" style="color: var(--accent-amber);">Task 2: PyG / DGL</div>
+              <div class="flow-arrow-right"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></div>
+            </div>
+
+            <!-- STAGE 3 -->
+            <div class="flow-card" style="border-color: var(--accent-amber);">
+              <span class="flow-stage-badge" style="background: linear-gradient(135deg, #d97706, #b45309);">STAGE 03</span>
+              <div class="flow-stage-icon" style="background: rgba(129, 140, 248, 0.2); border-color: rgba(129, 140, 248, 0.4);">
+                <svg viewBox="0 0 24 24" style="stroke: var(--accent-indigo);"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <div class="flow-title">Graph Features</div>
+              <div class="flow-desc">Degree, PageRank, Betweenness &amp; Neighborhood Stats.</div>
+              <div class="flow-tech-pill" style="color: var(--accent-indigo);">Task 3: NetworkX</div>
+              <div class="flow-arrow-right"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></div>
+            </div>
+
+            <!-- STAGE 4 -->
+            <div class="flow-card">
+              <span class="flow-stage-badge">STAGE 04</span>
+              <div class="flow-stage-icon" style="background: rgba(52, 211, 153, 0.2); border-color: rgba(52, 211, 153, 0.4);">
+                <svg viewBox="0 0 24 24" style="stroke: var(--accent-emerald);"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              </div>
+              <div class="flow-title">Models &amp; Imbalance</div>
+              <div class="flow-desc">RF / XGBoost vs. GCN / GraphSAGE / GAT + Focal Loss.</div>
+              <div class="flow-tech-pill" style="color: var(--accent-emerald);">Tasks 4, 5, 7</div>
+              <div class="flow-arrow-right"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></div>
+            </div>
+
+            <!-- STAGE 5 -->
+            <div class="flow-card">
+              <span class="flow-stage-badge">STAGE 05</span>
+              <div class="flow-stage-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div class="flow-title">Evaluation &amp; Nodes</div>
+              <div class="flow-desc">PR-AUC, ROC-AUC &amp; Fraudulent Node Analysis.</div>
+              <div class="flow-tech-pill">Tasks 6, 8, 9</div>
+            </div>
+
+          </div>
+
+          <!-- Architecture Banner Summary -->
+          <div class="arch-summary-banner">
+            <div class="arch-stat">
+              <div class="arch-stat-val">3 Streams</div>
+              <div class="arch-stat-lbl">Tabular ML • Graph-Augmented • Deep GNN</div>
+            </div>
+            <div class="arch-stat">
+              <div class="arch-stat-val" style="color: var(--accent-amber);">4 Centralities</div>
+              <div class="arch-stat-lbl">Degree • PageRank • Betweenness • Clustering</div>
+            </div>
+            <div class="arch-stat">
+              <div class="arch-stat-val" style="color: var(--accent-emerald);">PR-AUC &amp; ROC</div>
+              <div class="arch-stat-lbl">Rigorous Imbalance Metric Suite</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 7 of 11</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 8: COMPARATIVE FRAMEWORK & ADDRESSING CLASS IMBALANCE (TASKS 6 & 7) -->
+      <div class="slide-panel" data-slide="8">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">BENCHMARKING &amp; DATA STRATEGY</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Comparative Framework &amp; Addressing Class Imbalance</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">BENCHMARKING &amp; DATA STRATEGY (TASKS 6 &amp; 7)</div>
+          <h2 class="slide-heading">Comparative Framework &amp; Addressing Class Imbalance</h2>
+        </div>
+
+        <div class="content-grid grid-2x2">
+          <!-- TOP LEFT: THREE-TIER BENCHMARK -->
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <h3 class="card-title">Three-Tier Comparative Framework (Task 6)</h3>
+            </div>
+            <div class="card-list-item">
+              <div class="item-head">Tier 1: Conventional Tabular ML (Raw)</div>
+              <div class="item-desc">Random Forest and XGBoost trained strictly on transaction features.</div>
+            </div>
+            <div class="card-list-item">
+              <div class="item-head">Tier 2: Graph-Augmented Tabular ML</div>
+              <div class="item-desc">RF / XGBoost enriched with PageRank, Betweenness &amp; Degree features.</div>
+            </div>
+            <div class="card-list-item">
+              <div class="item-head">Tier 3: End-to-End GNN Architectures</div>
+              <div class="item-desc">GCN, GraphSAGE, and GAT directly performing node classification.</div>
+            </div>
+          </div>
+
+          <!-- TOP RIGHT: THE ~3.5% IMBALANCE CHALLENGE -->
+          <div class="glass-card amber-top">
+            <div class="card-icon-header">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              </div>
+              <h3 class="card-title amber">Severe Class Imbalance Dilemma (Task 7)</h3>
+            </div>
+            <p class="card-body-text">
+              Real financial data exhibits severe class imbalance: <strong>~96.5% Genuine vs. ~3.5% Fraud</strong>.
+            </p>
+            <div class="card-list-item amber">
+              <div class="item-head">• The Majority Class Illusion:</div>
+              <div class="item-desc">A naive classifier predicting all genuine scores 96.5% accuracy but catches 0% fraud.</div>
+            </div>
+            <div class="card-list-item amber">
+              <div class="item-head">• Graph Disconnection Risk:</div>
+              <div class="item-desc">Standard SMOTE breaks graph topology; synthetic nodes lack natural network edges.</div>
+            </div>
+          </div>
+
+          <!-- BOTTOM LEFT: GRAPH IMBALANCE STRATEGIES -->
+          <div class="glass-card indigo-top">
+            <div class="card-icon-header">
+              <div class="card-icon indigo">
+                <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <h3 class="card-title indigo">Graph-Aware Imbalance Mitigation (Task 7)</h3>
+            </div>
+            <div class="card-list-item indigo">
+              <div class="item-head">• Cost-Sensitive Focal Loss:</div>
+              <div class="item-desc">Down-weights easy well-classified negative instances to focus on hard fraud nodes.</div>
+            </div>
+            <div class="card-list-item indigo">
+              <div class="item-head">• Neighborhood-Balanced Mini-Batch Sampling:</div>
+              <div class="item-desc">GraphSAGE sampling conditioned on oversampling edges incident to fraud nodes.</div>
+            </div>
+            <div class="card-list-item indigo">
+              <div class="item-head">• Class-Weighted GNN Aggregation:</div>
+              <div class="item-desc">Inverse class frequency weighting in final softmax classification loss.</div>
+            </div>
+          </div>
+
+          <!-- BOTTOM RIGHT: EVALUATION METRICS SUITE -->
+          <div class="glass-card emerald-top">
+            <div class="card-icon-header">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <h3 class="card-title emerald">Rigorous Evaluation Protocol (Task 8)</h3>
+            </div>
+            <p class="card-body-text" style="margin-bottom: 0.4rem;">
+              To evaluate without majority-class bias, we rely on:
+            </p>
+            <div class="card-list-item emerald">
+              <div class="item-head">• PR-AUC (Precision-Recall Area Under Curve):</div>
+              <div class="item-desc">The primary gold-standard benchmark for ~3.5% imbalanced fraud detection.</div>
+            </div>
+            <div class="card-list-item emerald">
+              <div class="item-head">• Recall @ 95% Precision &amp; F1-Score:</div>
+              <div class="item-desc">Maximizing true fraud capture while keeping false alarm rate strictly controlled.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 8 of 11</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 9: CHARACTERISTICS OF FRAUDULENT NODES (TASK 9) -->
+      <div class="slide-panel" data-slide="9">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">GRAPH MINING INSIGHTS &amp; TOPOLOGY</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">Analyzing Characteristics of Detected Fraudulent Nodes</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">GRAPH MINING INSIGHTS &amp; TOPOLOGY (TASK 9)</div>
+          <h2 class="slide-heading">Analyzing Characteristics of Detected Fraudulent Nodes</h2>
+        </div>
+
+        <div class="content-grid grid-2x2">
+          <!-- CARD 1: DEGREE SKEWNESS -->
+          <div class="glass-card">
+            <div class="card-icon-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+              <h3 class="card-title">1. Bimodal Degree Distribution</h3>
+            </div>
+            <p class="card-body-text">
+              Fraudulent nodes exhibit a polarized degree pattern:
+            </p>
+            <div class="card-list-item">
+              <div class="item-head">• Hyper-Connected Hubs:</div>
+              <div class="item-desc">Compromised credit cards or shared IP proxy nodes connecting to 50+ rapid transactions in minutes.</div>
+            </div>
+            <div class="card-list-item">
+              <div class="item-head">• Ephemeral Burner Nodes:</div>
+              <div class="item-desc">Single-use synthetic accounts with degree 1 created solely for rapid siphon operations.</div>
+            </div>
+          </div>
+
+          <!-- CARD 2: BETWEENNESS BRIDGING -->
+          <div class="glass-card amber-top">
+            <div class="card-icon-header">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+              </div>
+              <h3 class="card-title amber">2. Bridge Roles &amp; High Betweenness</h3>
+            </div>
+            <p class="card-body-text">
+              Money laundering networks rely on intermediary mule accounts that bridge otherwise disconnected banking communities.
+            </p>
+            <div class="card-list-item amber">
+              <div class="item-head">• Bottleneck Positioning:</div>
+              <div class="item-desc">Fraud mule accounts show betweenness centrality scores <strong>3.8x higher</strong> than legitimate accounts of identical transaction volume.</div>
+            </div>
+          </div>
+
+          <!-- CARD 3: EGO-NET CLUSTERING -->
+          <div class="glass-card indigo-top">
+            <div class="card-icon-header">
+              <div class="card-icon indigo">
+                <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              </div>
+              <h3 class="card-title indigo">3. Dense Fraud Ring Motifs</h3>
+            </div>
+            <p class="card-body-text">
+              Fraud nodes frequently reside in dense k-cliques and cycles:
+            </p>
+            <div class="card-list-item indigo">
+              <div class="item-head">• Circular Transaction Laundering:</div>
+              <div class="item-desc">Fund cycling ($A \to B \to C \to A$) creates high local clustering coefficients within illicit subgraphs.</div>
+            </div>
+            <div class="card-list-item indigo">
+              <div class="item-head">• Shared Identity Collusion:</div>
+              <div class="item-desc">Accounts sharing phone numbers and card prefixes form tightly bound bipartite cliques.</div>
+            </div>
+          </div>
+
+          <!-- CARD 4: HETEROPHILY CAMOUFLAGE -->
+          <div class="glass-card emerald-top">
+            <div class="card-icon-header">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.548-7z"/></svg>
+              </div>
+              <h3 class="card-title emerald">4. The Camouflage Effect (Heterophily)</h3>
+            </div>
+            <p class="card-body-text">
+              Sophisticated fraudsters intentionally transact with reputable merchants to blend in:
+            </p>
+            <div class="card-list-item emerald">
+              <div class="item-head">• Heterophilous Neighbors:</div>
+              <div class="item-desc">Fraud nodes connect to many genuine nodes to dilute standard GCN smoothing.</div>
+            </div>
+            <div class="card-list-item emerald">
+              <div class="item-head">• GAT Attention Resolution:</div>
+              <div class="item-desc">GAT successfully differentiates benign merchant connections from peer fraud links.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 9 of 11</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 10: EXPERIMENTAL ROADMAP & TIMELINE -->
+      <div class="slide-panel" data-slide="10">
+        <div class="print-only-hdr">
+          <div>
+            <div style="font-size: 10pt; font-weight: 800; color: #38bdf8; letter-spacing: 1px;">PROJECT MILESTONES &amp; TIMELINE</div>
+            <div style="font-size: 16pt; font-weight: 900; color: #ffffff;">PBL Project Implementation Roadmap &amp; Deliverables</div>
+          </div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">WOXSEN UNIVERSITY</div>
+        </div>
+
+        <div>
+          <div class="slide-tagline">PROJECT MILESTONES &amp; TIMELINE</div>
+          <h2 class="slide-heading">PBL Project Implementation Roadmap &amp; Deliverables</h2>
+        </div>
+
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.95rem; justify-content: center;">
+          
+          <!-- PHASE 1 -->
+          <div class="roadmap-card">
+            <div class="roadmap-header">
+              <div class="roadmap-title">Phase 1: Dataset Acquisition &amp; Graph Construction (Weeks 1–3)</div>
+              <span class="status-badge completed">✔ COMPLETED</span>
+            </div>
+            <div class="roadmap-bullets">
+              • <strong>Task 1 &amp; 2:</strong> Ingest IEEE-CIS transaction &amp; identity benchmarks; preprocess missing values &amp; categorical encodings.<br>
+              • <strong>Network Modeling:</strong> Build homogeneous and bipartite transaction graphs linking Cards, Devices, and IP addresses.<br>
+              • <strong>Initial Pipeline Setup:</strong> Establish PyTorch Geometric (PyG), DGL, and NetworkX development environment.
+            </div>
+          </div>
+
+          <!-- PHASE 2 -->
+          <div class="roadmap-card" style="border-color: var(--accent-sky); background: rgba(14, 165, 233, 0.16); box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);">
+            <div class="roadmap-header">
+              <div class="roadmap-title" style="color: var(--accent-sky);">Phase 2: Feature Extraction &amp; Model Development (Weeks 4–7)</div>
+              <span class="status-badge active">⚡ CURRENT FOCUS / IN PROGRESS</span>
+            </div>
+            <div class="roadmap-bullets">
+              • <strong>Task 3:</strong> Compute Degree Centrality, PageRank vectors, Betweenness Centrality, and local clustering metrics.<br>
+              • <strong>Task 4 &amp; 5:</strong> Train baseline Random Forest and LightGBM models; implement GCN, GraphSAGE, and GAT architectures.<br>
+              • <strong>Task 7:</strong> Implement focal loss and neighborhood balanced sampling to conquer the ~3.5% minority fraud skew.
+            </div>
+          </div>
+
+          <!-- PHASE 3 -->
+          <div class="roadmap-card">
+            <div class="roadmap-header">
+              <div class="roadmap-title">Phase 3: Comparative Benchmarking &amp; Node Analysis (Weeks 8–11)</div>
+              <span class="status-badge planned">🎯 TARGET MILESTONES</span>
+            </div>
+            <div class="roadmap-bullets">
+              • <strong>Task 6 &amp; 8:</strong> Execute full comparative evaluation across ROC-AUC, PR-AUC, F1, and Precision-Recall tradeoffs.<br>
+              • <strong>Task 9:</strong> Conduct topological analysis of detected fraud nodes (degree distribution, betweenness, subgraph motifs).<br>
+              • <strong>Final Deliverable:</strong> Comprehensive PBL Research Report, experimental code repository &amp; viva presentation.
+            </div>
+          </div>
+
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 10 of 11</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 11: REFERENCES & ACKNOWLEDGMENTS -->
+      <div class="slide-panel" data-slide="11">
+        <div class="print-only-hdr">
+          <div style="font-size: 11pt; font-weight: 800; color: #38bdf8; letter-spacing: 1.5px;">WOXSEN UNIVERSITY — SCHOOL OF TECHNOLOGY</div>
+          <div style="font-size: 10pt; font-weight: 800; color: #94a3b8;">GRAPH ANALYTICS (PBL) • ACADEMIC YEAR 2026 - 27</div>
+        </div>
+
+        <div class="thankyou-container">
+          <h1 class="thankyou-h1">Thank You!</h1>
+          <div class="thankyou-sub">Graph-Based Fraud Detection Using Graph Neural Networks (GNNs)</div>
+
+          <div class="glass-card" style="padding: 1.35rem 2.5rem; margin-top: 0.5rem; width: 88%;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--accent-sky); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1.5px;">
+              Project Mentorship &amp; Academic Acknowledgment
+            </div>
+            <div class="card-body-text" style="font-size: 0.98rem; line-height: 1.75;">
+              • <strong>Course Faculty &amp; Mentor:</strong> Prof. Guru Satya<br>
+              • <strong>Investigator Team:</strong> Challa Karthikeya (23WU0104013) | Y. Brijesh Naidu (23WU0104011) | K Dheeraj (23WU0104039)<br>
+              • <strong>Course &amp; Department:</strong> Graph Analytics (PBL) • School of Technology, Woxsen University
+            </div>
+          </div>
+
+          <div class="glass-card" style="padding: 1rem 2.5rem; margin-top: 0.75rem; width: 88%; text-align: left;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800; color: var(--accent-amber); margin-bottom: 0.35rem; text-transform: uppercase;">
+              Key Academic References
+            </div>
+            <div class="card-body-text" style="font-size: 0.82rem; line-height: 1.5; color: #cbd5e1;">
+              1. Veličković et al. (2018). <em>Graph Attention Networks</em>. ICLR.<br>
+              2. Hamilton, Ying, &amp; Leskovec (2017). <em>Inductive Representation Learning on Large Graphs (GraphSAGE)</em>. NeurIPS.<br>
+              3. Kipf &amp; Welling (2017). <em>Semi-Supervised Classification with Graph Convolutional Networks</em>. ICLR.<br>
+              4. Page, Brin, Motwani, &amp; Winograd (1999). <em>The PageRank Citation Ranking: Bringing Order to the Web</em>. Stanford InfoLab.
+            </div>
+          </div>
+        </div>
+
+        <div class="print-only-ftr">
+          <span>Graph Analytics PBL — Graph-Based Fraud Detection</span>
+          <span>Slide 11 of 11</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Floating Glass Controls Dock -->
+    <div class="nav-dock">
+      <button id="btn-dock-prev" class="dock-btn">◀ Prev</button>
+      
+      <div class="thumb-dots">
+        <button class="dot-btn active" data-slide-target="1" title="Slide 1"></button>
+        <button class="dot-btn" data-slide-target="2" title="Slide 2"></button>
+        <button class="dot-btn" data-slide-target="3" title="Slide 3"></button>
+        <button class="dot-btn" data-slide-target="4" title="Slide 4"></button>
+        <button class="dot-btn" data-slide-target="5" title="Slide 5"></button>
+        <button class="dot-btn" data-slide-target="6" title="Slide 6"></button>
+        <button class="dot-btn" data-slide-target="7" title="Slide 7"></button>
+        <button class="dot-btn" data-slide-target="8" title="Slide 8"></button>
+        <button class="dot-btn" data-slide-target="9" title="Slide 9"></button>
+        <button class="dot-btn" data-slide-target="10" title="Slide 10"></button>
+        <button class="dot-btn" data-slide-target="11" title="Slide 11"></button>
+      </div>
+
+      <div class="dock-counter">
+        <span id="current-slide-num">1</span> / 11
+      </div>
+
+      <button id="btn-dock-next" class="dock-btn accent">Next ▶</button>
+      <button id="btn-dock-print" class="dock-btn" style="background: rgba(56, 189, 248, 0.2); border-color: var(--accent-sky);">🖨 Print / PDF</button>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 11;
+    const panels = document.querySelectorAll('.slide-panel');
+    const dotBtns = document.querySelectorAll('.dot-btn');
+    const counterDisplay = document.getElementById('current-slide-num');
+
+    function showSlide(index) {
+      if (index < 1 || index > totalSlides) return;
+      
+      panels.forEach((p) => {
+        const slideNo = parseInt(p.getAttribute('data-slide'));
+        p.classList.remove('active', 'exit-prev');
+        if (slideNo === index) {
+          p.classList.add('active');
+        } else if (slideNo < index) {
+          p.classList.add('exit-prev');
+        }
+      });
+
+      dotBtns.forEach((dot) => {
+        const target = parseInt(dot.getAttribute('data-slide-target'));
+        if (target === index) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+
+      currentSlide = index;
+      counterDisplay.textContent = currentSlide;
+    }
+
+    document.getElementById('btn-dock-prev').addEventListener('click', () => {
+      if (currentSlide > 1) showSlide(currentSlide - 1);
+    });
+
+    document.getElementById('btn-dock-next').addEventListener('click', () => {
+      if (currentSlide < totalSlides) showSlide(currentSlide + 1);
+    });
+
+    document.getElementById('btn-dock-print').addEventListener('click', () => {
+      window.print();
+    });
+
+    dotBtns.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const target = parseInt(dot.getAttribute('data-slide-target'));
+        showSlide(target);
+      });
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') {
+        if (currentSlide < totalSlides) showSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowLeft') {
+        if (currentSlide > 1) showSlide(currentSlide - 1);
+      } else if (e.key === 'Home') {
+        showSlide(1);
+      } else if (e.key === 'End') {
+        showSlide(totalSlides);
+      }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    window.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+    window.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX < touchStartX - 50) {
+        if (currentSlide < totalSlides) showSlide(currentSlide + 1);
+      }
+      if (touchEndX > touchStartX + 50) {
+        if (currentSlide > 1) showSlide(currentSlide - 1);
+      }
+    });
+  </script>
+</body>
+</html>

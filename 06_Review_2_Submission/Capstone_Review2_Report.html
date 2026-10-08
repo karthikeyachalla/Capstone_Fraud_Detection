@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woxsen Capstone Review 2 Progress Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Outfit:wght@600;800&display=swap');
+  
+  :root {
+    --primary: #0f172a;
+    --accent-sky: #0284c7;
+    --accent-indigo: #4f46e5;
+    --accent-rose: #e11d48;
+    --bg-card: #f8fafc;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    background: #ffffff;
+    line-height: 1.6;
+    margin: 0;
+    padding: 2rem;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .header {
+    border-bottom: 3px solid var(--accent-sky);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .badge {
+    background: var(--primary);
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+  }
+  
+  h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .sub-h1 {
+    font-size: 1.1rem;
+    color: var(--accent-sky);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .metadata-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    background: var(--bg-card);
+    padding: 1.25rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  
+  .meta-item strong {
+    color: var(--primary);
+  }
+  
+  h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary);
+    border-left: 4px solid var(--accent-sky);
+    padding-left: 10px;
+    margin-top: 2rem;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+  
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border: 1px solid var(--border);
+  }
+  
+  th {
+    background: var(--primary);
+    color: #ffffff;
+    font-weight: 600;
+  }
+  
+  tr:nth-child(even) {
+    background: var(--bg-card);
+  }
+  
+  .highlight-tr {
+    background: rgba(2, 132, 199, 0.1) !important;
+    font-weight: 700;
+  }
+  
+  .code-box {
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 1.25rem;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--accent-sky), var(--accent-indigo));
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+  }
+  
+  @media print {
+    .print-btn { display: none; }
+    body { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ Print Report to PDF</button>
+
+<div class="container">
+  <div class="header">
+    <span class="badge">WOXSEN UNIVERSITY • SCHOOL OF TECHNOLOGY</span>
+    <h1>Real-Time Financial Fraud &amp; Credit Risk Intelligence System</h1>
+    <div class="sub-h1">Capstone Project Review 2 Academic Progress Report</div>
+  </div>
+
+  <div class="metadata-grid">
+    <div class="meta-item"><strong>Faculty Mentor:</strong> Prof. Dileep Kumar M.</div>
+    <div class="meta-item"><strong>Review Date:</strong> 27.08.2026</div>
+    <div class="meta-item"><strong>Team Lead:</strong> Challa Karthikeya (23WU0104013)</div>
+    <div class="meta-item"><strong>Team Members:</strong> Y. Brijesh Naidu, K Dheeraj</div>
+  </div>
+
+  <h2>1. Executive Summary</h2>
+  <p>This report documents the completion of Review 2 deliverables for the Capstone project. The theoretical pipeline presented in Review 1 has been realized into a fully functional, local Python training system using the IEEE-CIS financial fraud dataset structure. The system features a 3-model fusion engine, sub-20ms FastAPI inference endpoint, SHAP audit logs, and Kafka streaming simulator.</p>
+
+  <h2>2. System Architecture &amp; Tri-Model Core</h2>
+  <div class="code-box">
+STAGE 01: Data Ingestion (IEEE-CIS Transactions &amp; Kafka Streaming Simulator)
+STAGE 02: Preprocessing &amp; Scaling (Log Amount, Frequency Encoding, StandardScaler)
+STAGE 03: Tri-Model Core (CatBoost GBDT 70% + PyTorch AutoEncoder 15% + PyTorch GCN 15%)
+STAGE 04: Risk Synthesis &amp; Explainable AI (SHAP attributions per transaction)
+STAGE 05: FastAPI Microservice Gateway (sub-100ms REST endpoint: http://127.0.0.1:8000/predict)
+  </div>
+
+  <h2>3. Project Ablation Performance Table</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Model Paradigm</th>
+        <th>Thresh</th>
+        <th>Accuracy</th>
+        <th>Precision</th>
+        <th>Recall</th>
+        <th>F1-Score</th>
+        <th>AUC-ROC</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>CatBoost GBDT</strong> (Supervised)</td>
+        <td>0.50</td>
+        <td>79.07%</td>
+        <td>40.93%</td>
+        <td>60.61%</td>
+        <td>48.86%</td>
+        <td>78.24%</td>
+      </tr>
+      <tr>
+        <td><strong>PyTorch AutoEncoder</strong> (Anomaly)</td>
+        <td>0.10</td>
+        <td>83.50%</td>
+        <td>50.00%</td>
+        <td>0.20%</td>
+        <td>0.40%</td>
+        <td>65.44%</td>
+      </tr>
+      <tr>
+        <td><strong>PyTorch GCN</strong> (Graph Mining)</td>
+        <td>0.10</td>
+        <td>44.80%</td>
+        <td>20.43%</td>
+        <td><strong>81.01%</strong></td>
+        <td>32.63%</td>
+        <td>65.88%</td>
+      </tr>
+      <tr class="highlight-tr">
+        <td>🏆 Fused Ensemble Core</td>
+        <td>0.30</td>
+        <td><strong>81.13%</strong></td>
+        <td>44.11%</td>
+        <td>53.74%</td>
+        <td>48.45%</td>
+        <td><strong>77.33%</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>4. Explainable AI (SHAP) Regulatory Audit Output</h2>
+  <p>Sample output for flagged Transaction #3670884 (Inference Latency: 15.83ms):</p>
+  <ul>
+    <li><strong>TransactionAmt:</strong> +0.35 contribution (Increases Risk)</li>
+    <li><strong>ProductCD:</strong> +0.18 contribution (Mobile Call Center Channel)</li>
+    <li><strong>P_emaildomain:</strong> +0.12 contribution (anonymous.com)</li>
+    <li><strong>DeviceType:</strong> +0.10 contribution (mobile)</li>
+    <li><strong>card6:</strong> +0.08 contribution (credit card)</li>
+  </ul>
+
+  <h2>5. Microservice &amp; Codebase Summary</h2>
+  <p>The code is organized into modular scripts within <code>src/</code> including model training (<code>02_model_training.py</code>, <code>train_indian_fraud.py</code>), graph attention network (<code>03_gat_model.py</code>), evaluation (<code>03_evaluation_metrics.py</code>), streaming simulator (<code>04_kafka_stream_simulator.py</code>), concept drift surveillance (<code>05_concept_drift_monitor.py</code>), and REST API (<code>fastapi_app.py</code>).</p>
+</div>
+
+</body>
+</html>

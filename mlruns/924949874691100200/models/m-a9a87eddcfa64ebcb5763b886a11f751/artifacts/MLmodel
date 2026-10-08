@@ -1,0 +1,21 @@
+artifact_path: file:///Users/karthikeyachalla/Capstone%20Project%20%E2%80%94%20Fraud%20Detection/Capstone_Fraud_Detection/mlruns/924949874691100200/models/m-a9a87eddcfa64ebcb5763b886a11f751/artifacts
+flavors:
+  lightgbm:
+    code: null
+    data: model.lgb
+    lgb_version: 4.6.0
+    model_class: lightgbm.basic.Booster
+  python_function:
+    data: model.lgb
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.lightgbm
+    python_version: 3.9.6
+mlflow_version: 3.1.4
+model_id: m-a9a87eddcfa64ebcb5763b886a11f751
+model_size_bytes: 2184723
+model_uuid: m-a9a87eddcfa64ebcb5763b886a11f751
+prompts: null
+run_id: 4041f04522ac4270858c1beb1f496bb4
+utc_time_created: '2026-08-27 11:55:50.578583'

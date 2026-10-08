@@ -1,0 +1,78 @@
+[
+    {
+        "window_name": "Window-1: Mid-Cycle Operational Stream",
+        "window_size": 15000,
+        "overall_status": "STABLE",
+        "max_psi": 0.0249,
+        "drifted_features_count": 4,
+        "recommended_action": "\u2705 Pipeline operating within normal bounds.",
+        "feature_metrics": {
+            "TransactionAmt": {
+                "ks_statistic": 0.0175,
+                "ks_p_value": 0.02034,
+                "psi_score": 0.0086,
+                "drift_detected": true,
+                "severity_tier": "STABLE"
+            },
+            "card1": {
+                "ks_statistic": 0.0334,
+                "ks_p_value": 0.0,
+                "psi_score": 0.0249,
+                "drift_detected": true,
+                "severity_tier": "STABLE"
+            },
+            "C1": {
+                "ks_statistic": 0.0429,
+                "ks_p_value": 0.0,
+                "psi_score": 0.0099,
+                "drift_detected": true,
+                "severity_tier": "STABLE"
+            },
+            "C2": {
+                "ks_statistic": 0.0541,
+                "ks_p_value": 0.0,
+                "psi_score": 0.0147,
+                "drift_detected": true,
+                "severity_tier": "STABLE"
+            }
+        }
+    },
+    {
+        "window_name": "Window-2: End-of-Cycle Temporal Shift Stream",
+        "window_size": 15000,
+        "overall_status": "STABLE",
+        "max_psi": 0.0394,
+        "drifted_features_count": 4,
+        "recommended_action": "\u2705 Pipeline operating within normal bounds.",
+        "feature_metrics": {
+            "TransactionAmt": {
+                "ks_statistic": 0.0189,
+                "ks_p_value": 0.00948,
+                "psi_score": 0.005,
+                "drift_detected": true,
+                "severity_tier": "STABLE"
+            },
+            "card1": {
+                "ks_statistic": 0.0381,
+                "ks_p_value": 0.0,
+                "psi_score": 0.0394,
+                "drift_detected": true,
+                "severity_tier": "STABLE"
+            },
+            "C1": {
+                "ks_statistic": 0.0481,
+                "ks_p_value": 0.0,
+                "psi_score": 0.0195,
+                "drift_detected": true,
+                "severity_tier": "STABLE"
+            },
+            "C2": {
+                "ks_statistic": 0.0692,
+                "ks_p_value": 0.0,
+                "psi_score": 0.0342,
+                "drift_detected": true,
+                "severity_tier": "STABLE"
+            }
+        }
+    }
+]
