@@ -78,6 +78,12 @@ def load_transaction_pool(n: int = 1000):
 @app.on_event("startup")
 def startup_event():
     load_transaction_pool(n=1000)
+    if mas is not None:
+        try:
+            mas.evaluate_transaction({"TransactionAmt": 100.0, "card1": 13500})
+            print("⚡ Warmed up Tri-Model AI Pipeline (<15ms SLA active).")
+        except Exception as e:
+            print(f"Warmup notice: {e}")
     print("🚀 Real-Time Apache Kafka Multi-Agent Gateway running on port 8000.")
 
 
