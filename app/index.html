@@ -785,6 +785,85 @@
       font-weight: 700;
     }
 
+    /* ───────── PROMINENT STREAM IGNITION BAR ───────── */
+    .stream-ignition-bar {
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-start-stream-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 16px 24px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.16) 0%, rgba(16, 185, 129, 0.18) 100%);
+      border: 1.5px solid var(--border-cyan);
+      box-shadow: 0 4px 24px rgba(6, 182, 212, 0.2);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      color: #fff;
+      text-align: left;
+    }
+
+    .hero-start-stream-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(6, 182, 212, 0.35);
+      border-color: var(--cyan);
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.24) 0%, rgba(16, 185, 129, 0.26) 100%);
+    }
+
+    .hero-start-stream-btn.streaming-active {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(6, 182, 212, 0.12) 100%);
+      border-color: var(--mint);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
+    }
+
+    .stream-btn-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(6, 182, 212, 0.2);
+      border: 1px solid var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+      color: var(--cyan);
+    }
+
+    .streaming-active .stream-btn-icon-wrap {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: var(--mint);
+      color: var(--mint);
+      animation: pulse-stream 1.8s infinite;
+    }
+
+    @keyframes pulse-stream {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+      70% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .stream-btn-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: #fff;
+    }
+
+    .stream-btn-sub {
+      font-size: 0.8rem;
+      color: var(--slate);
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+
     /* ───────── SLEEK STREAMLINED CONTROLS TOOLBAR ───────── */
     .toolbar {
       background: rgba(12, 17, 32, 0.85);
@@ -1515,6 +1594,19 @@
       </div>
     </div>
 
+    <!-- ══════════════════════════════════════════════════════════════════════
+       PRIMARY IGNITION: BIG INTERACTIVE START / PAUSE STREAM BUTTON
+       ══════════════════════════════════════════════════════════════════════ -->
+    <div class="stream-ignition-bar">
+      <button id="btn-hero-start-stream" class="hero-start-stream-btn" title="Click to start real-time Kafka transaction streaming">
+        <div class="stream-btn-icon-wrap" id="hero-stream-icon">▶</div>
+        <div class="stream-btn-content">
+          <div class="stream-btn-title" id="hero-stream-title">START LIVE DETECTION STREAM</div>
+          <div class="stream-btn-sub" id="hero-stream-sub">Click to begin real-time Apache Kafka ingestion &amp; Tri-Model AI screening (1 swipe every 1.8s)</div>
+        </div>
+      </button>
+    </div>
+
     <!-- SLEEK STREAMLINED CONTROLS TOOLBAR -->
     <div class="toolbar">
       <div class="toolbar-left">
@@ -2139,12 +2231,18 @@
     /* ───────── STATE & REFS ───────── */
     const API_BASE = (window.location.port === '3000') ? 'http://127.0.0.1:8000' : window.location.origin;
     let allEvents = [];
-    let isStreaming = true;
+    let isStreaming = false;
     let streamInterval = null;
     let selectedIdx = null;
     let currentActiveEvent = null;
     let activeFilter = 'all';
     let searchQuery = '';
+
+    // Hero Start Stream Ignition Ref
+    const btnHeroStartStream = document.getElementById('btn-hero-start-stream');
+    const heroStreamIcon = document.getElementById('hero-stream-icon');
+    const heroStreamTitle = document.getElementById('hero-stream-title');
+    const heroStreamSub = document.getElementById('hero-stream-sub');
 
     // DOM Refs
     const streamTbody = document.getElementById('stream-tbody');
@@ -4097,6 +4195,12 @@
       isStreaming = true;
       btnToggleStream.innerHTML = '<span>⏸</span> <span>Pause Feed</span>';
       btnToggleStream.classList.add('active');
+      if (btnHeroStartStream) {
+        btnHeroStartStream.classList.add('streaming-active');
+        if (heroStreamIcon) heroStreamIcon.textContent = '⏸';
+        if (heroStreamTitle) heroStreamTitle.textContent = 'PAUSE LIVE DETECTION STREAM';
+        if (heroStreamSub) heroStreamSub.innerHTML = '⚡ Streaming active &middot; Ingesting Apache Kafka topic <code>financial.transactions.stream</code> (1 event / 1.8s)';
+      }
       if (streamInterval) clearInterval(streamInterval);
       streamInterval = setInterval(fetchOne, 1800); // 1 txn / 1.8s
     }
@@ -4105,6 +4209,12 @@
       isStreaming = false;
       btnToggleStream.innerHTML = '<span>▶</span> <span>Resume Feed</span>';
       btnToggleStream.classList.remove('active');
+      if (btnHeroStartStream) {
+        btnHeroStartStream.classList.remove('streaming-active');
+        if (heroStreamIcon) heroStreamIcon.textContent = '▶';
+        if (heroStreamTitle) heroStreamTitle.textContent = 'START LIVE DETECTION STREAM';
+        if (heroStreamSub) heroStreamSub.innerHTML = 'Click to begin real-time Apache Kafka ingestion &amp; Tri-Model AI screening (1 swipe every 1.8s)';
+      }
       clearInterval(streamInterval);
       streamInterval = null;
     }
@@ -4112,6 +4222,12 @@
     btnToggleStream.addEventListener('click', () => {
       isStreaming ? stopStream() : startStream();
     });
+
+    if (btnHeroStartStream) {
+      btnHeroStartStream.addEventListener('click', () => {
+        isStreaming ? stopStream() : startStream();
+      });
+    }
 
     const btnToggleContinuous = document.getElementById('btn-toggle-continuous');
     const lblContinuousState = document.getElementById('lbl-continuous-state');
@@ -4300,7 +4416,8 @@
           }
         }
       } catch (e) { }
-      startStream();
+      // Paused on start so mentor has complete manual control via the Big Start Button!
+      stopStream();
     })();
   </script>
 </body>
