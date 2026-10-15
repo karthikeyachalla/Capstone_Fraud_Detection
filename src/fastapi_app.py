@@ -32,6 +32,12 @@ if SRC_DIR not in sys.path:
 
 from multi_agent_gateway import gateway as mas
 
+try:
+    import torch
+    torch.set_num_threads(1)
+except Exception:
+    pass
+
 app = FastAPI(
     title="Real-Time Financial Fraud & Credit Risk Intelligence Gateway",
     description="Enterprise Apache Kafka Event Stream & Tri-Model Multi-Agent Fraud Gateway",
