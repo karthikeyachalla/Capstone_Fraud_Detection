@@ -1,3 +1,13 @@
+---
+title: Financial Fraud Risk Intelligence Gateway
+emoji: 🛡️
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 💳 Real-Time Financial Fraud & Credit Risk Intelligence System
 > **Woxsen University — Final Year B.Tech Capstone Project — I (Academic Year 2026–27)**  
 > **Student Team:** Challa Karthikeya (23WU0104013), Y. Brijesh Naidu (23WU0104011), K Dheeraj (23WU0104039)  

@@ -13,8 +13,9 @@
 
 <style>
 /* ════════════════════════════════════════════════════════════════════
-   CYBER-LUXURY BLACK & EMERALD GREEN DESIGN SYSTEM
-   Palette: #060911 (Obsidian Void) · #10B981 (Neon Emerald) · #00F59B (Cyber Mint) · #38BDF8 (Cyber Cyan)
+   EDITORIAL MASTER PALETTE DESIGN SYSTEM:
+   Warm Ivory (#EAE6DE) · Deep Editorial Blue (#226192) · Coral Orange (#EF8557)
+   With Interactive Coral Orange Cursor
    ════════════════════════════════════════════════════════════════════ */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -23,25 +24,31 @@
 }
 
 :root {
-  --bg-deep:        #060911;          /* Obsidian Void Black */
-  --bg-card:        rgba(13, 20, 36, 0.78); /* Dark Glassmorphic Card Surface */
-  --bg-card-hover:  rgba(18, 28, 51, 0.90);
-  --bg-green-tint:  rgba(16, 185, 129, 0.08);
+  --bg-deep:        #EAE6DE;          /* Warm Ivory Base Canvas */
+  --bg-card:        rgba(234, 230, 222, 0.95); /* Warm Ivory Primary Card Surface */
+  --bg-card-hover:  rgba(226, 221, 211, 0.98);
+  --bg-blue-tint:   rgba(34, 97, 146, 0.08);
+  --bg-coral-tint:  rgba(239, 133, 87, 0.10);
 
-  --border-subtle:  rgba(255, 255, 255, 0.09);
-  --border-green:   rgba(16, 185, 129, 0.35); /* Neon Emerald Border */
-  --border-glow:    rgba(0, 245, 155, 0.50);
+  --border-subtle:  rgba(34, 97, 146, 0.15);
+  --border-blue:    rgba(34, 97, 146, 0.28); /* Deep Editorial Blue Border */
+  --border-green:   rgba(34, 97, 146, 0.28); /* Fallback alias */
+  --border-coral:   rgba(239, 133, 87, 0.45); /* Coral Orange Border */
+  --border-glow:    rgba(239, 133, 87, 0.60);
 
-  --text-primary:   #F8FAFC;          /* Crisp White Heading & Body */
-  --text-secondary: #94A3B8;          /* Slate Gray */
-  --text-muted:     #64748B;
-  --text-emerald:   #34D399;          /* Glowing Mint Text */
+  --text-primary:   #0E2538;          /* Deep Editorial Ink / Navy */
+  --text-secondary: #42586E;          /* Slate Charcoal */
+  --text-muted:     #6E8294;
+  --text-emerald:   #226192;          /* Deep Editorial Blue text */
 
-  --accent-green:   #10B981;          /* Neon Emerald */
-  --accent-mint:    #00F59B;          /* Cyber Mint */
-  --accent-cyan:    #38BDF8;          /* Cyber Cyan */
-  --accent-gold:    #F59E0B;          /* Amber Gold */
-  --accent-red:     #F43F5E;          /* Critical Threat Red */
+  --accent-green:   #226192;          /* Deep Editorial Blue */
+  --accent-blue:    #226192;          /* Deep Editorial Blue */
+  --accent-mint:    #EF8557;          /* Coral Orange Accent */
+  --accent-coral:   #EF8557;          /* Coral Orange Accent */
+  --accent-cyan:    #226192;          /* Deep Editorial Blue */
+  --accent-ivory:   #EAE6DE;          /* Warm Ivory */
+  --accent-gold:    #EF8557;          /* Coral Orange / Gold Accent */
+  --accent-red:     #DC2626;          /* Critical Threat Crimson */
 
   --font-heading: 'Space Grotesk', -apple-system, sans-serif;
   --font-body:    'Plus Jakarta Sans', -apple-system, sans-serif;
@@ -63,16 +70,68 @@ html, body {
   user-select: none;
 }
 
-/* Ambient Radial Glow */
+/* Ambient Radial Glow on Warm Ivory */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background-image:
-    radial-gradient(ellipse at 15% 15%, rgba(16, 185, 129, 0.12) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 85%, rgba(56, 189, 248, 0.09) 0%, transparent 60%);
+    radial-gradient(ellipse at 15% 15%, rgba(34, 97, 146, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 85%, rgba(239, 133, 87, 0.12) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   CORAL ORANGE CUSTOM CURSOR STYLING (#EF8557)
+   ════════════════════════════════════════════════════════════════════ */
+.custom-cursor-dot, .custom-cursor-ring {
+  display: none !important;
+}
+  box-shadow: 0 0 10px #EF8557, 0 0 18px rgba(239, 133, 87, 0.6);
+  pointer-events: none;
+  z-index: 999999;
+  transform: translate(-50%, -50%);
+  transition: width 0.15s ease, height 0.15s ease, opacity 0.2s ease;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #EF8557;
+  background: rgba(239, 133, 87, 0.14);
+  pointer-events: none;
+  z-index: 999998;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 16px rgba(239, 133, 87, 0.28);
+  transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.22s ease,
+              border-color 0.22s ease,
+              opacity 0.2s ease;
+}
+
+.custom-cursor-ring.hovering {
+  width: 56px;
+  height: 56px;
+  border-color: #EF8557;
+  background: rgba(239, 133, 87, 0.25);
+  box-shadow: 0 0 24px rgba(239, 133, 87, 0.5);
+}
+
+.custom-cursor-ring.clicking {
+  width: 28px;
+  height: 28px;
+  background: rgba(239, 133, 87, 0.55);
+}
+
+@media (pointer: coarse) {
+  *, *::before, *::after { cursor: auto !important; }
+  .custom-cursor-dot, .custom-cursor-ring { display: none !important; }
 }
 
 /* ── 3D CANVAS BACKGROUND ── */
@@ -84,7 +143,7 @@ body::before {
   height: 100vh;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.38;
+  opacity: 0.45;
 }
 
 /* ── PROGRESS BAR ── */
@@ -93,11 +152,11 @@ body::before {
   top: 0;
   left: 0;
   height: 4px;
-  width: 16.66%;
-  background: linear-gradient(90deg, var(--accent-green), var(--accent-mint), var(--accent-cyan));
+  width: 14.28%;
+  background: linear-gradient(90deg, #226192, #EF8557);
   z-index: 1000;
   transition: width 0.35s ease;
-  box-shadow: 0 0 14px var(--accent-mint);
+  box-shadow: 0 0 14px rgba(239, 133, 87, 0.5);
 }
 
 /* ── NAV DOCK (FLOATING BOTTOM) ── */
@@ -109,13 +168,13 @@ body::before {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: rgba(10, 16, 28, 0.88);
-  border: 1.5px solid var(--border-green);
+  background: rgba(234, 230, 222, 0.95);
+  border: 1.5px solid var(--border-blue);
   padding: 10px 24px;
   border-radius: 99px;
   z-index: 1000;
   backdrop-filter: blur(20px);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.25);
+  box-shadow: 0 10px 32px rgba(34, 97, 146, 0.15), 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .nav-dots {
@@ -127,7 +186,7 @@ body::before {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(34, 97, 146, 0.25);
   border: none;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -136,16 +195,16 @@ body::before {
 .nav-dot.active {
   width: 28px;
   border-radius: 10px;
-  background: linear-gradient(90deg, var(--accent-green), var(--accent-mint));
-  box-shadow: 0 0 12px var(--accent-mint);
+  background: linear-gradient(90deg, #226192, #EF8557);
+  box-shadow: 0 0 12px rgba(239, 133, 87, 0.45);
 }
 
 .nav-counter {
   font-family: var(--font-code);
   font-size: 15px;
   font-weight: 800;
-  color: var(--text-emerald);
-  border-left: 1.5px solid var(--border-green);
+  color: #226192;
+  border-left: 1.5px solid var(--border-blue);
   padding-left: 14px;
   letter-spacing: 0.05em;
 }
@@ -157,9 +216,9 @@ body::before {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: rgba(13, 20, 36, 0.85);
-  border: 1.5px solid var(--border-green);
-  color: var(--text-emerald);
+  background: rgba(234, 230, 222, 0.92);
+  border: 1.5px solid var(--border-blue);
+  color: #226192;
   font-size: 26px;
   display: flex;
   align-items: center;
@@ -167,16 +226,16 @@ body::before {
   cursor: pointer;
   z-index: 1000;
   backdrop-filter: blur(16px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 6px 20px rgba(34, 97, 146, 0.12);
   transition: all 0.2s ease;
 }
 
 .nav-arrow:hover {
-  background: var(--accent-green);
-  border-color: var(--accent-mint);
-  color: #060911;
+  background: #EF8557;
+  border-color: #EF8557;
+  color: #FFFFFF;
   transform: translateY(-50%) scale(1.08);
-  box-shadow: 0 0 24px var(--accent-mint);
+  box-shadow: 0 0 24px rgba(239, 133, 87, 0.45);
 }
 .nav-arrow.prev { left: 24px; }
 .nav-arrow.next { right: 24px; }
@@ -195,13 +254,14 @@ body::before {
   z-index: 999;
 }
 .kbd-key {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(234, 230, 222, 0.95);
+  border: 1px solid var(--border-blue);
   padding: 3px 8px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #226192;
+  box-shadow: 0 1px 3px rgba(34, 97, 146, 0.1);
 }
 
 /* ── DECK & SLIDE CONTAINER ── */
@@ -245,7 +305,7 @@ body::before {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  border-bottom: 2px solid var(--border-green);
+  border-bottom: 2px solid var(--border-blue);
   flex-shrink: 0;
   margin-bottom: 18px;
 }
@@ -265,30 +325,30 @@ body::before {
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-emerald);
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid var(--border-green);
+  color: #226192;
+  background: rgba(34, 97, 146, 0.10);
+  border: 1.5px solid var(--border-blue);
   padding: 4px 14px;
   border-radius: 99px;
   width: fit-content;
 }
 
 .category-pill.cyan {
-  color: var(--accent-cyan);
-  background: rgba(56, 189, 248, 0.12);
-  border-color: rgba(56, 189, 248, 0.35);
+  color: #226192;
+  background: rgba(34, 97, 146, 0.10);
+  border-color: var(--border-blue);
 }
 
 .category-pill.gold {
-  color: var(--accent-gold);
-  background: rgba(245, 158, 11, 0.12);
-  border-color: rgba(245, 158, 11, 0.35);
+  color: #EF8557;
+  background: rgba(239, 133, 87, 0.12);
+  border-color: rgba(239, 133, 87, 0.35);
 }
 
 .category-pill.red {
-  color: var(--accent-red);
-  background: rgba(244, 63, 94, 0.12);
-  border-color: rgba(244, 63, 94, 0.35);
+  color: #DC2626;
+  background: rgba(220, 38, 38, 0.10);
+  border-color: rgba(220, 38, 38, 0.35);
 }
 
 .slide-headline {
@@ -297,7 +357,7 @@ body::before {
   font-weight: 800;
   letter-spacing: -0.025em;
   line-height: 1.15;
-  color: #FFFFFF;
+  color: #0E2538;
 }
 
 .slide-subhead {
@@ -312,13 +372,13 @@ body::before {
   font-family: var(--font-code);
   font-size: 12px;
   font-weight: 800;
-  color: #060911;
+  color: #FFFFFF;
   letter-spacing: 0.1em;
   padding: 6px 18px;
-  background: linear-gradient(135deg, var(--accent-mint), var(--accent-green));
+  background: linear-gradient(135deg, #226192, #EF8557);
   border-radius: var(--radius-sm);
   text-transform: uppercase;
-  box-shadow: 0 0 16px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 4px 16px rgba(239, 133, 87, 0.35);
 }
 
 /* ── SLIDE BODY ── */
@@ -330,20 +390,20 @@ body::before {
   flex-direction: column;
 }
 
-/* ── CYBER GLASS CARDS ── */
+/* ── EDITORIAL GLASS CARDS ── */
 .glass-panel {
   background: var(--bg-card);
-  border: 1.5px solid var(--border-green);
+  border: 1.5px solid var(--border-blue);
   border-radius: var(--radius-md);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 8px 24px rgba(34, 97, 146, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
   backdrop-filter: blur(16px);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .glass-panel:hover {
   transform: translateY(-2px);
-  border-color: var(--accent-mint);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(16, 185, 129, 0.25);
+  border-color: #EF8557;
+  box-shadow: 0 12px 32px rgba(239, 133, 87, 0.20), 0 0 16px rgba(239, 133, 87, 0.12);
 }
 
 .info-card {
@@ -357,7 +417,7 @@ body::before {
   font-family: var(--font-heading);
   font-size: clamp(19px, 1.35vw, 23px);
   font-weight: 800;
-  color: #FFFFFF;
+  color: #0E2538;
   line-height: 1.25;
 }
 
@@ -380,7 +440,7 @@ body::before {
   position: relative;
   padding-left: 22px;
   font-size: clamp(14px, 0.92vw, 15px);
-  color: #CBD5E1;
+  color: #2C3E50;
   line-height: 1.48;
   font-weight: 500;
 }
@@ -389,14 +449,14 @@ body::before {
   content: '▸';
   position: absolute;
   left: 0px;
-  color: var(--accent-mint);
+  color: #EF8557;
   font-size: 16px;
   font-weight: 800;
   top: 0px;
 }
 
 .bullet-list li strong {
-  color: #FFFFFF;
+  color: #0E2538;
   font-weight: 700;
 }
 
@@ -438,36 +498,36 @@ body::before {
 }
 
 .dark-table th {
-  background: rgba(10, 16, 28, 0.95);
-  padding: 13px 16px;
+  background: #226192;
+  padding: 8px 12px;
   font-family: var(--font-heading);
-  font-size: 12.5px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent-mint);
-  border-bottom: 2px solid var(--border-green);
+  color: #FFFFFF;
+  border-bottom: 2px solid #EF8557;
 }
 
 .dark-table td {
-  padding: 12px 16px;
-  font-size: 14px;
+  padding: 6px 12px;
+  font-size: 12px;
   font-weight: 600;
   border-bottom: 1px solid var(--border-subtle);
-  color: #CBD5E1;
+  color: #2C3E50;
 }
 
 .dark-table tr:hover td {
-  background: rgba(16, 185, 129, 0.05);
+  background: rgba(239, 133, 87, 0.06);
 }
 
 .dark-table tr.champion-row {
-  background: rgba(16, 185, 129, 0.12);
-  border-left: 4px solid var(--accent-mint);
+  background: rgba(239, 133, 87, 0.12);
+  border-left: 4px solid #EF8557;
 }
 
 .dark-table tr.champion-row td {
-  color: #FFFFFF;
+  color: #0E2538;
   font-weight: 800;
 }
 
@@ -480,9 +540,9 @@ body::before {
   font-weight: 800;
 }
 
-.tag-badge.green { background: rgba(16, 185, 129, 0.2); color: var(--accent-mint); border: 1px solid var(--accent-green); }
-.tag-badge.cyan { background: rgba(56, 189, 248, 0.2); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
-.tag-badge.gold { background: rgba(245, 158, 11, 0.2); color: var(--accent-gold); border: 1px solid var(--accent-gold); }
+.tag-badge.green { background: rgba(239, 133, 87, 0.15); color: #C95424; border: 1px solid #EF8557; }
+.tag-badge.cyan { background: rgba(34, 97, 146, 0.15); color: #226192; border: 1px solid #226192; }
+.tag-badge.gold { background: rgba(239, 133, 87, 0.15); color: #EF8557; border: 1px solid #EF8557; }
 
 /* ==========================================================
    SLIDE 1: CLEAN COVER SLIDE (NO UNWANTED NUMBERS)
@@ -511,13 +571,13 @@ body::before {
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--accent-mint);
-  background: rgba(16, 185, 129, 0.12);
-  border: 1.5px solid var(--border-green);
+  color: #226192;
+  background: rgba(34, 97, 146, 0.10);
+  border: 1.5px solid var(--border-blue);
   padding: 8px 26px;
   border-radius: 99px;
   margin-bottom: 24px;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 16px rgba(34, 97, 146, 0.12);
 }
 
 .hero-title {
@@ -526,19 +586,19 @@ body::before {
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -0.025em;
-  color: #FFFFFF;
+  color: #0E2538;
   margin-bottom: 18px;
 }
 
 .hero-title span {
-  background: linear-gradient(135deg, var(--accent-mint), var(--accent-green), var(--accent-cyan));
+  background: linear-gradient(135deg, #226192 0%, #EF8557 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .hero-subtitle {
   font-size: clamp(17px, 1.35vw, 22px);
-  color: #CBD5E1;
+  color: #3E5468;
   line-height: 1.6;
   max-width: 1080px;
   margin: 0 auto 36px auto;
@@ -556,18 +616,18 @@ body::before {
 
 .team-card-clean {
   background: var(--bg-card);
-  border: 1.5px solid var(--border-green);
+  border: 1.5px solid var(--border-blue);
   border-radius: var(--radius-md);
   padding: 22px 24px;
   text-align: left;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(34, 97, 146, 0.08);
   transition: all 0.25s ease;
 }
 
 .team-card-clean:hover {
-  border-color: var(--accent-mint);
+  border-color: #EF8557;
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.25);
+  box-shadow: 0 10px 30px rgba(239, 133, 87, 0.25);
 }
 
 .tc-role {
@@ -576,7 +636,7 @@ body::before {
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent-mint);
+  color: #EF8557;
   margin-bottom: 6px;
 }
 
@@ -584,7 +644,7 @@ body::before {
   font-family: var(--font-heading);
   font-size: 20px;
   font-weight: 800;
-  color: #FFFFFF;
+  color: #0E2538;
   margin-bottom: 4px;
 }
 
@@ -592,7 +652,7 @@ body::before {
   font-family: var(--font-code);
   font-size: 13.5px;
   font-weight: 700;
-  color: var(--accent-cyan);
+  color: #226192;
 }
 
 .supervisor-bar-clean {
@@ -600,21 +660,21 @@ body::before {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  background: rgba(13, 20, 36, 0.85);
-  border: 1.5px solid var(--border-green);
+  background: rgba(234, 230, 222, 0.92);
+  border: 1.5px solid var(--border-blue);
   border-radius: 99px;
   padding: 12px 36px;
   font-size: 16px;
   font-weight: 600;
-  color: #E2E8F0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  color: #1E3447;
+  box-shadow: 0 6px 20px rgba(34, 97, 146, 0.08);
 }
 
 .sup-pill {
   font-family: var(--font-heading);
   font-weight: 800;
-  color: #060911;
-  background: var(--accent-mint);
+  color: #FFFFFF;
+  background: #EF8557;
   padding: 4px 14px;
   border-radius: 99px;
   text-transform: uppercase;
@@ -624,6 +684,10 @@ body::before {
 </style>
 </head>
 <body>
+
+<!-- CORAL ORANGE INTERACTIVE CUSTOM CURSOR -->
+<div class="custom-cursor-dot" id="cursor-dot"></div>
+<div class="custom-cursor-ring" id="cursor-ring"></div>
 
 <!-- TOP PROGRESS BAR -->
 <div class="top-progress-bar" id="progress-bar"></div>
@@ -638,7 +702,7 @@ body::before {
 <!-- BOTTOM FLOATING NAV DOCK -->
 <div class="nav-dock">
   <div class="nav-dots" id="dots-container"></div>
-  <div class="nav-counter" id="slide-counter">01 / 06</div>
+  <div class="nav-counter" id="slide-counter">01 / 08</div>
 </div>
 
 <div class="keyboard-hint">
@@ -733,10 +797,10 @@ body::before {
         </div>
 
         <!-- Panel 2 -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-gold); justify-content: space-between;">
+        <div class="glass-panel info-card" style="border-top: 4px solid #EF8557; justify-content: space-between;">
           <div>
             <div style="font-size: 32px;">🕸️</div>
-            <div class="card-title" style="color: var(--accent-gold);">2. Money Mule Networks &amp; Bust-Out</div>
+            <div class="card-title" style="color: #EF8557;">2. Money Mule Networks &amp; Bust-Out</div>
             <div class="card-text">
               Organized syndicates exploit relationships across dummy accounts rather than isolated transactions.
             </div>
@@ -746,29 +810,29 @@ body::before {
               <li><strong>Tabular Isolation Blindspot:</strong> Row-by-row scoring cannot see graph-level account collusion.</li>
             </ul>
           </div>
-          <div style="background: rgba(245, 158, 11, 0.1); border: 1.5px solid var(--accent-gold); border-radius: 10px; padding: 12px 16px;">
-            <div style="font-family: var(--font-heading); font-size: 20px; font-weight: 800; color: var(--accent-gold);">24.3 Edges / Node</div>
+          <div style="background: rgba(239, 133, 87, 0.08); border: 1.5px solid #EF8557; border-radius: 10px; padding: 12px 16px;">
+            <div style="font-family: var(--font-heading); font-size: 20px; font-weight: 800; color: #EF8557;">24.3 Edges / Node</div>
             <div style="font-size: 12.5px; color: var(--text-secondary); margin-top: 2px;">Syndicate accounts exhibit 6× higher relational velocity than licit users.</div>
           </div>
         </div>
 
         <!-- Panel 3 -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-green); justify-content: space-between;">
+        <div class="glass-panel info-card" style="border-top: 4px solid #226192; justify-content: space-between;">
           <div>
             <div style="font-size: 32px;">⏱️</div>
-            <div class="card-title" style="color: var(--accent-mint);">3. Sub-15ms SLA &amp; Extreme Class Imbalance</div>
+            <div class="card-title" style="color: #226192;">3. Sub-15ms SLA &amp; Extreme Class Imbalance</div>
             <div class="card-text">
               Real-time payment authorization faces extreme 27:1 class skew under a strict sub-15ms bank SLA deadline.
             </div>
             <ul class="bullet-list">
               <li><strong>27:1 Class Skew:</strong> Only 3.5% of transactions are fraud; unweighted models achieve 96.5% naive accuracy by predicting all transactions as legitimate.</li>
-              <li><strong>Why NOT Naive SMOTE?</strong> Naive SMOTE creates synthetic points by linear interpolation in feature space. In financial fraud data, this generates invalid synthetic transaction states (fractional card IDs, impossible geo-distance jumps) causing 42% false-positive spikes.</li>
-              <li><strong>Our Advanced Solution:</strong> Cost-Sensitive Learning (<span style="color: var(--accent-mint); font-weight:700;">scale_pos_weight = 28.5</span>), Focal Loss, and Asymmetric Utility Matrices ( chargeback penalty vs  2FA friction) which preserves authentic distribution integrity without synthetic corruption.</li>
+              <li><strong>Why NOT Naive SMOTE?</strong> Naive SMOTE creates synthetic points by linear interpolation in feature space. In financial fraud data, this generates invalid synthetic transaction states causing 42% false-positive spikes.</li>
+              <li><strong>Our Advanced Solution:</strong> Cost-Sensitive Learning (<span style="color: #EF8557; font-weight:700;">scale_pos_weight = 28.5</span>), Focal Loss, and Asymmetric Utility Matrices which preserve authentic distribution integrity without synthetic corruption.</li>
               <li><strong>Sub-15ms Bank Switch SLA:</strong> In-memory multi-agent pipeline completes in 4.8ms, far below the 15ms threshold.</li>
             </ul>
           </div>
-          <div style="background: rgba(16, 185, 129, 0.1); border: 1.5px solid var(--accent-green); border-radius: 10px; padding: 12px 16px;">
-            <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 800; color: var(--accent-mint);">&lt;15ms SLA · Cost-Sensitive AI</div>
+          <div style="background: rgba(34, 97, 146, 0.08); border: 1.5px solid #226192; border-radius: 10px; padding: 12px 16px;">
+            <div style="font-family: var(--font-heading); font-size: 18px; font-weight: 800; color: #226192;">&lt;15ms SLA · Cost-Sensitive AI</div>
             <div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">Avoids synthetic SMOTE artifacts while meeting sub-15ms bank switch latency.</div>
           </div>
         </div>
@@ -783,7 +847,7 @@ body::before {
   <div class="slide" id="slide-3">
     <div class="slide-header">
       <div class="header-left">
-        <div class="category-pill">02 // PRODUCTION SPEED LAYER</div>
+        <div class="category-pill cyan">02 // PRODUCTION SPEED LAYER</div>
         <div class="slide-headline">Production Speed Layer: Real Apache Kafka 4.3.1 Broker</div>
         <div class="slide-subhead">High-throughput binary TCP messaging engine running locally on Port 9092 coordinating real-time ingestion, partition keys, and downstream alerts.</div>
       </div>
@@ -793,22 +857,22 @@ body::before {
     <div class="slide-body">
       <div class="split-38-62">
         <!-- Left: Specifications -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-green); justify-content: space-between;">
+        <div class="glass-panel info-card" style="border-top: 4px solid #226192; justify-content: space-between;">
           <div>
-            <div class="card-title" style="color: var(--accent-mint);">⚡ Kafka 4.3.1 KRaft Architecture</div>
+            <div class="card-title" style="color: #226192;">⚡ Kafka 4.3.1 KRaft Architecture</div>
             <div class="card-text">
               Enterprise event streaming broker deployed locally via Homebrew with zero-Zookeeper metadata quorum.
             </div>
             <ul class="bullet-list">
               <li><strong>Binary TCP on Port 9092:</strong> Low-overhead binary socket protocol designed for &gt;50,000 events/sec (NOT HTTP).</li>
-              <li><strong>Topic Partitions:</strong> <span style="font-family: monospace; color: var(--accent-cyan);">financial.transactions.stream</span> divided into 3 parallel partitions (P0, P1, P2) keyed by card/account ID.</li>
-              <li><strong>Downstream Alert Topic:</strong> Blocked anomalies emitted to <span style="font-family: monospace; color: var(--accent-red);">financial.fraud.alerts</span> for instant webhook and SMS card lock.</li>
+              <li><strong>Topic Partitions:</strong> <span style="font-family: monospace; color: #226192; font-weight:700;">financial.transactions.stream</span> divided into 3 parallel partitions (P0, P1, P2) keyed by card/account ID.</li>
+              <li><strong>Downstream Alert Topic:</strong> Blocked anomalies emitted to <span style="font-family: monospace; color: #EF8557; font-weight:700;">financial.fraud.alerts</span> for instant webhook and SMS card lock.</li>
               <li><strong>Zero-Lag Consumer Group:</strong> Consumer group <span style="font-family: monospace;">tri-model-fraud-gateways</span> with real-time offset commits.</li>
             </ul>
           </div>
 
-          <div style="background: rgba(0, 0, 0, 0.4); border: 1.5px solid var(--border-green); border-radius: 10px; padding: 14px 16px; font-family: var(--font-code); font-size: 12.5px; color: var(--text-emerald);">
-            <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 4px;"># Live Terminal Verification on Port 9092:</div>
+          <div style="background: #0E2538; border: 1.5px solid var(--border-blue); border-radius: 10px; padding: 14px 16px; font-family: var(--font-code); font-size: 12.5px; color: #EAE6DE; box-shadow: 0 4px 16px rgba(14, 37, 56, 0.15);">
+            <div style="color: #EF8557; font-weight: 700; margin-bottom: 4px;"># Live Terminal Verification on Port 9092:</div>
             kafka-topics --bootstrap-server localhost:9092 --list<br>
             &gt; financial.transactions.stream (3 Partitions)<br>
             &gt; financial.fraud.alerts (1 Partition)
@@ -816,37 +880,37 @@ body::before {
         </div>
 
         <!-- Right: Native Pipeline Architecture Diagram -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-cyan); justify-content: space-between;">
-          <div class="card-title" style="color: var(--accent-cyan);">🔄 End-to-End Event Stream Execution Flow</div>
+        <div class="glass-panel info-card" style="border-top: 4px solid #EF8557; justify-content: space-between;">
+          <div class="card-title" style="color: #226192;">🔄 End-to-End Event Stream Execution Flow</div>
           
           <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 4px;">
-            <div style="background: rgba(16, 185, 129, 0.08); border: 1.5px solid var(--border-green); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="background: rgba(34, 97, 146, 0.06); border: 1.5px solid var(--border-blue); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
               <div>
-                <strong style="color: var(--accent-mint); font-size: 15px;">Stage 1: Kafka Event Ingestion (0.6 ms)</strong>
+                <strong style="color: #226192; font-size: 15px;">Stage 1: Kafka Event Ingestion (0.6 ms)</strong>
                 <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">Parallel partition consumption over binary TCP connection on port 9092.</div>
               </div>
-              <span class="tag-badge green">P0 · P1 · P2</span>
+              <span class="tag-badge cyan">P0 · P1 · P2</span>
             </div>
 
-            <div style="background: rgba(56, 189, 248, 0.08); border: 1.5px solid rgba(56, 189, 248, 0.35); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="background: rgba(239, 133, 87, 0.08); border: 1.5px solid rgba(239, 133, 87, 0.35); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
               <div>
-                <strong style="color: var(--accent-cyan); font-size: 15px;">Stage 2: Vectorization &amp; Feature Sanitization (0.8 ms)</strong>
+                <strong style="color: #EF8557; font-size: 15px;">Stage 2: Vectorization &amp; Feature Sanitization (0.8 ms)</strong>
                 <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">SIMD-accelerated NumPy extraction across 432 IEEE-CIS features with zero-copy memory.</div>
               </div>
-              <span class="tag-badge cyan">432 FEATURES</span>
+              <span class="tag-badge gold">432 FEATURES</span>
             </div>
 
-            <div style="background: rgba(245, 158, 11, 0.08); border: 1.5px solid rgba(245, 158, 11, 0.35); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="background: rgba(34, 97, 146, 0.06); border: 1.5px solid var(--border-blue); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
               <div>
-                <strong style="color: var(--accent-gold); font-size: 15px;">Stage 3: Tri-Model Parallel Inference (2.6 ms)</strong>
+                <strong style="color: #226192; font-size: 15px;">Stage 3: Tri-Model Parallel Inference (2.6 ms)</strong>
                 <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">Concurrent execution of LightGBM tabular booster + Autoencoder MSE + PyTorch GAT.</div>
               </div>
-              <span class="tag-badge gold">TRI-MODEL AI</span>
+              <span class="tag-badge cyan">TRI-MODEL AI</span>
             </div>
 
-            <div style="background: rgba(16, 185, 129, 0.08); border: 1.5px solid var(--border-green); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="background: rgba(239, 133, 87, 0.08); border: 1.5px solid rgba(239, 133, 87, 0.35); border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
               <div>
-                <strong style="color: var(--accent-mint); font-size: 15px;">Stage 4: Automated Policy Routing &amp; Alert Emission (0.8 ms)</strong>
+                <strong style="color: #EF8557; font-size: 15px;">Stage 4: Automated Policy Routing &amp; Alert Emission (0.8 ms)</strong>
                 <div style="font-size: 13px; color: var(--text-secondary); margin-top: 2px;">Decision classification: APPROVE (&lt;0.35) | 2FA CHALLENGE (0.35–0.70) | BLOCK (&gt;0.70).</div>
               </div>
               <span class="tag-badge green">&lt;15ms SLA MET</span>
@@ -855,7 +919,7 @@ body::before {
 
           <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border-subtle); font-family: var(--font-code); font-size: 13px;">
             <span style="color: var(--text-secondary);">End-to-End Processing Budget:</span>
-            <span style="color: var(--accent-mint); font-weight: 800; font-size: 16px;">4.8 ms Median Latency (Passed)</span>
+            <span style="color: #EF8557; font-weight: 800; font-size: 16px;">4.8 ms Median Latency (Passed)</span>
           </div>
         </div>
       </div>
@@ -879,9 +943,9 @@ body::before {
     <div class="slide-body">
       <div class="grid-2x2">
         <!-- Agent 1 -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-cyan);">
+        <div class="glass-panel info-card" style="border-top: 4px solid #226192;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="card-title" style="color: var(--accent-cyan);">Agent 1: Ingestion &amp; Sanitization Agent</div>
+            <div class="card-title" style="color: #226192;">Agent 1: Ingestion &amp; Sanitization Agent</div>
             <span class="tag-badge cyan">0.4 MS LATENCY</span>
           </div>
           <ul class="bullet-list">
@@ -892,10 +956,10 @@ body::before {
         </div>
 
         <!-- Agent 2 -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-green);">
+        <div class="glass-panel info-card" style="border-top: 4px solid #EF8557;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="card-title" style="color: var(--accent-mint);">Agent 2: Tri-Model Risk Scoring Agent</div>
-            <span class="tag-badge green">TRI-MODEL FUSION</span>
+            <div class="card-title" style="color: #EF8557;">Agent 2: Tri-Model Risk Scoring Agent</div>
+            <span class="tag-badge gold">TRI-MODEL FUSION</span>
           </div>
           <ul class="bullet-list">
             <li><strong>Cost-Sensitive LightGBM (50%):</strong> Fast tabular booster handling non-linear interactions with 27.5× minority class weighting.</li>
@@ -905,23 +969,23 @@ body::before {
         </div>
 
         <!-- Agent 3 -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-gold);">
+        <div class="glass-panel info-card" style="border-top: 4px solid #226192;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="card-title" style="color: var(--accent-gold);">Agent 3: Explainability &amp; Audit Agent</div>
-            <span class="tag-badge gold">TREESHAP XAI</span>
+            <div class="card-title" style="color: #226192;">Agent 3: Explainability &amp; Audit Agent</div>
+            <span class="tag-badge cyan">TREESHAP XAI</span>
           </div>
           <ul class="bullet-list">
             <li><strong>Real-Time Shapley Values:</strong> Decomposes tree ensemble outputs to compute exact local feature attributions for elevated risk events.</li>
             <li><strong>Top Risk Drivers:</strong> Flags specific contributing anomalies (e.g., TransactionAmt anomaly, card1 frequency hops, billing zone mismatch).</li>
-            <li><strong>Regulatory Compliance:</strong> Generates automated adverse action notices required by RBI Master Directions and the EU AI Act.</li>
+            <li><strong>Regulatory Compliance:</strong> Generates automated adverse action notices required by US FCRA (§ 1681m), OCC SR 11-7, and the EU AI Act.</li>
           </ul>
         </div>
 
         <!-- Agent 4 -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-mint);">
+        <div class="glass-panel info-card" style="border-top: 4px solid #EF8557;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="card-title" style="color: var(--accent-mint);">Agent 4: Governance &amp; Policy Triage Agent</div>
-            <span class="tag-badge green">AUTOMATED TRIAGE</span>
+            <div class="card-title" style="color: #EF8557;">Agent 4: Governance &amp; Policy Triage Agent</div>
+            <span class="tag-badge gold">AUTOMATED TRIAGE</span>
           </div>
           <ul class="bullet-list">
             <li><strong>Tier 1 — LOW SAFE (&lt;0.35):</strong> Fast-path authorization completed in sub-5ms with zero customer friction.</li>
@@ -972,7 +1036,7 @@ body::before {
               <td>26.4%</td>
               <td style="font-family: monospace;">0.2450</td>
               <td style="font-family: monospace;">2.1 ms</td>
-              <td><span class="tag-badge" style="background: rgba(255,255,255,0.1); color: #94A3B8;">Legacy Baseline</span></td>
+              <td><span class="tag-badge" style="background: rgba(34, 97, 146, 0.1); color: #6E8294;">Legacy Baseline</span></td>
             </tr>
             <tr>
               <td><strong>PyTorch AutoEncoder (MSE Anomaly)</strong></td>
@@ -982,7 +1046,7 @@ body::before {
               <td>32.8%</td>
               <td style="font-family: monospace;">0.3210</td>
               <td style="font-family: monospace;">3.4 ms</td>
-              <td><span class="tag-badge gold">Unsupervised</span></td>
+              <td><span class="tag-badge cyan">Unsupervised</span></td>
             </tr>
             <tr>
               <td><strong>Standalone Cost-Sensitive LightGBM</strong></td>
@@ -1006,12 +1070,12 @@ body::before {
             </tr>
             <tr class="champion-row">
               <td><strong>🏆 Champion Multi-Agent Tri-Model Fusion</strong></td>
-              <td style="font-family: monospace; font-weight:800; color: var(--accent-mint);">0.9412</td>
-              <td style="font-family: monospace; font-weight:800; color: var(--accent-mint);">0.5984</td>
-              <td style="font-weight:800; color: #FFFFFF;">53.8%</td>
-              <td style="font-weight:800; color: #FFFFFF;">69.6%</td>
-              <td style="font-family: monospace; font-weight:800; color: var(--accent-mint);">0.6069</td>
-              <td style="font-family: monospace; font-weight:800; color: var(--accent-mint);">4.8 ms</td>
+              <td style="font-family: monospace; font-weight:800; color: #EF8557;">0.9412</td>
+              <td style="font-family: monospace; font-weight:800; color: #EF8557;">0.5984</td>
+              <td style="font-weight:800; color: #0E2538;">53.8%</td>
+              <td style="font-weight:800; color: #0E2538;">69.6%</td>
+              <td style="font-family: monospace; font-weight:800; color: #EF8557;">0.6069</td>
+              <td style="font-family: monospace; font-weight:800; color: #EF8557;">4.8 ms</td>
               <td><span class="tag-badge green">PRODUCTION READY</span></td>
             </tr>
           </tbody>
@@ -1022,30 +1086,30 @@ body::before {
       <div style="display: grid; grid-template-columns: 1fr 1.15fr; gap: 16px;">
         <!-- Left: Key Scientific Findings -->
         <div style="display: flex; flex-direction: column; gap: 10px;">
-          <div class="glass-panel info-card" style="padding: 12px 16px; border-left: 4px solid var(--accent-mint);">
+          <div class="glass-panel info-card" style="padding: 12px 16px; border-left: 4px solid #EF8557;">
             <div style="display: flex; justify-content: space-between; align-items: baseline;">
-              <span style="font-family: var(--font-heading); font-size: 11px; font-weight: 800; color: var(--accent-mint); text-transform: uppercase;">Finding 1 · F1 Optimization</span>
-              <span style="font-family: var(--font-code); font-size: 20px; font-weight: 800; color: var(--accent-mint);">+54.5%</span>
+              <span style="font-family: var(--font-heading); font-size: 11px; font-weight: 800; color: #EF8557; text-transform: uppercase;">Finding 1 · F1 Optimization</span>
+              <span style="font-family: var(--font-code); font-size: 20px; font-weight: 800; color: #EF8557;">+54.5%</span>
             </div>
             <div class="card-text" style="font-size: 12px; margin-top: 3px;">
               Tri-Model Fusion elevates F1-Score from 0.3929 to <strong>0.6069</strong>, successfully overcoming the classical precision/recall trade-off under extreme class imbalance.
             </div>
           </div>
 
-          <div class="glass-panel info-card" style="padding: 12px 16px; border-left: 4px solid var(--accent-gold);">
+          <div class="glass-panel info-card" style="padding: 12px 16px; border-left: 4px solid #226192;">
             <div style="display: flex; justify-content: space-between; align-items: baseline;">
-              <span style="font-family: var(--font-heading); font-size: 11px; font-weight: 800; color: var(--accent-gold); text-transform: uppercase;">Finding 2 · Syndicate Fraud Capture</span>
-              <span style="font-family: var(--font-code); font-size: 20px; font-weight: 800; color: var(--accent-gold);">69.6% Recall</span>
+              <span style="font-family: var(--font-heading); font-size: 11px; font-weight: 800; color: #226192; text-transform: uppercase;">Finding 2 · Syndicate Fraud Capture</span>
+              <span style="font-family: var(--font-code); font-size: 20px; font-weight: 800; color: #226192;">69.6% Recall</span>
             </div>
             <div class="card-text" style="font-size: 12px; margin-top: 3px;">
               Relational GAT embeddings increase fraud recall from 32.9% to <strong>69.6% (+111% relative boost)</strong>, exposing distributed card-testing rings.
             </div>
           </div>
 
-          <div class="glass-panel info-card" style="padding: 12px 16px; border-left: 4px solid var(--accent-cyan);">
+          <div class="glass-panel info-card" style="padding: 12px 16px; border-left: 4px solid #EF8557;">
             <div style="display: flex; justify-content: space-between; align-items: baseline;">
-              <span style="font-family: var(--font-heading); font-size: 11px; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase;">Finding 3 · Sub-15ms Bank SLA</span>
-              <span style="font-family: var(--font-code); font-size: 20px; font-weight: 800; color: var(--accent-cyan);">4.8 ms Latency</span>
+              <span style="font-family: var(--font-heading); font-size: 11px; font-weight: 800; color: #EF8557; text-transform: uppercase;">Finding 3 · Sub-15ms Bank SLA</span>
+              <span style="font-family: var(--font-code); font-size: 20px; font-weight: 800; color: #EF8557;">4.8 ms Latency</span>
             </div>
             <div class="card-text" style="font-size: 12px; margin-top: 3px;">
               Full multi-agent pipeline completes in 4.8 ms, providing a <strong>68% safety buffer below the strict 15.0 ms bank payment SLA</strong>.
@@ -1054,72 +1118,72 @@ body::before {
         </div>
 
         <!-- Right: Real-Time TreeSHAP Explainability Panel -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-gold); justify-content: space-between; padding: 14px 18px;">
+        <div class="glass-panel info-card" style="border-top: 4px solid #226192; justify-content: space-between; padding: 14px 18px;">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <div class="card-title" style="color: var(--accent-gold); font-size: 14px;">🌲 Agent 3: TreeSHAP Local Feature Attribution</div>
-              <span class="tag-badge gold" style="font-size: 10px;">RBI &amp; DPDP AUDITABLE</span>
+              <div class="card-title" style="color: #226192; font-size: 14px;">🌲 Agent 3: TreeSHAP Local Feature Attribution</div>
+              <span class="tag-badge cyan" style="font-size: 10px;">US FCRA &amp; OCC SR 11-7 AUDITABLE</span>
             </div>
             <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 10px; font-family: var(--font-code);">
               f(x) = &phi;<sub>0</sub> + &sum; &phi;<sub>i</sub>(x) &mdash; Real-Time Shapley Decomposition
             </div>
 
-            <!-- Visual SHAP feature bars -->
-            <div style="display: flex; flex-direction: column; gap: 7px;">
+            <!-- Plain-English TreeSHAP Feature Attribution Bars -->
+            <div style="display: flex; flex-direction: column; gap: 6px;">
               <div>
-                <div style="display: flex; justify-content: space-between; font-size: 11.5px; font-family: var(--font-code); margin-bottom: 2px;">
-                  <span style="color: var(--accent-red); font-weight: 700;">+ TransactionAmt (,450.00)</span>
-                  <span style="color: var(--accent-red); font-weight: 800;">+0.4280 SHAP &uarr;</span>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: var(--font-code); margin-bottom: 2px;">
+                  <span style="color: #DC2626; font-weight: 700;">🔴 Pushes Risk UP: Unusually High Amount (,450 Outlier)</span>
+                  <span style="color: #DC2626; font-weight: 800;">+42.8% Impact &uarr;</span>
                 </div>
-                <div style="height: 5px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden;">
-                  <div style="width: 85%; height: 100%; background: linear-gradient(90deg, #F59E0B, #F43F5E); border-radius: 99px;"></div>
+                <div style="height: 5px; background: rgba(34, 97, 146, 0.12); border-radius: 99px; overflow: hidden;">
+                  <div style="width: 85%; height: 100%; background: linear-gradient(90deg, #DC2626, #EF8557); border-radius: 99px;"></div>
                 </div>
               </div>
 
               <div>
-                <div style="display: flex; justify-content: space-between; font-size: 11.5px; font-family: var(--font-code); margin-bottom: 2px;">
-                  <span style="color: var(--accent-red); font-weight: 700;">+ card1_velocity (14 txns / 10m)</span>
-                  <span style="color: var(--accent-red); font-weight: 800;">+0.3120 SHAP &uarr;</span>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: var(--font-code); margin-bottom: 2px;">
+                  <span style="color: #EF8557; font-weight: 700;">🔴 Pushes Risk UP: Rapid Card Velocity (14 swipes in 10 mins)</span>
+                  <span style="color: #EF8557; font-weight: 800;">+31.2% Impact &uarr;</span>
                 </div>
-                <div style="height: 5px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden;">
-                  <div style="width: 65%; height: 100%; background: linear-gradient(90deg, #F59E0B, #F43F5E); border-radius: 99px;"></div>
-                </div>
-              </div>
-
-              <div>
-                <div style="display: flex; justify-content: space-between; font-size: 11.5px; font-family: var(--font-code); margin-bottom: 2px;">
-                  <span style="color: var(--accent-gold); font-weight: 700;">+ DeviceInfo (New / Unrecognized)</span>
-                  <span style="color: var(--accent-gold); font-weight: 800;">+0.1850 SHAP &uarr;</span>
-                </div>
-                <div style="height: 5px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden;">
-                  <div style="width: 42%; height: 100%; background: var(--accent-gold); border-radius: 99px;"></div>
+                <div style="height: 5px; background: rgba(34, 97, 146, 0.12); border-radius: 99px; overflow: hidden;">
+                  <div style="width: 65%; height: 100%; background: linear-gradient(90deg, #226192, #EF8557); border-radius: 99px;"></div>
                 </div>
               </div>
 
               <div>
-                <div style="display: flex; justify-content: space-between; font-size: 11.5px; font-family: var(--font-code); margin-bottom: 2px;">
-                  <span style="color: var(--accent-mint); font-weight: 700;">&minus; addr1_geo_match (Home Postal)</span>
-                  <span style="color: var(--accent-mint); font-weight: 800;">-0.2460 SHAP &darr;</span>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: var(--font-code); margin-bottom: 2px;">
+                  <span style="color: #EF8557; font-weight: 700;">🔴 Pushes Risk UP: New / Unrecognized Hardware Device</span>
+                  <span style="color: #EF8557; font-weight: 800;">+18.5% Impact &uarr;</span>
                 </div>
-                <div style="height: 5px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden;">
-                  <div style="width: 52%; height: 100%; background: var(--accent-mint); border-radius: 99px;"></div>
+                <div style="height: 5px; background: rgba(34, 97, 146, 0.12); border-radius: 99px; overflow: hidden;">
+                  <div style="width: 42%; height: 100%; background: #EF8557; border-radius: 99px;"></div>
                 </div>
               </div>
 
               <div>
-                <div style="display: flex; justify-content: space-between; font-size: 11.5px; font-family: var(--font-code); margin-bottom: 2px;">
-                  <span style="color: var(--accent-mint); font-weight: 700;">&minus; card2_freq (Trusted Recurring Merchant)</span>
-                  <span style="color: var(--accent-mint); font-weight: 800;">-1.6927 SHAP &darr;</span>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: var(--font-code); margin-bottom: 2px;">
+                  <span style="color: #226192; font-weight: 700;">🟢 Pulls Risk DOWN: Billing ZIP matches cardholder postal address</span>
+                  <span style="color: #226192; font-weight: 800;">-24.6% Safe &darr;</span>
                 </div>
-                <div style="height: 5px; background: rgba(255,255,255,0.08); border-radius: 99px; overflow: hidden;">
-                  <div style="width: 95%; height: 100%; background: linear-gradient(90deg, #10B981, #00F59B); border-radius: 99px;"></div>
+                <div style="height: 5px; background: rgba(34, 97, 146, 0.12); border-radius: 99px; overflow: hidden;">
+                  <div style="width: 52%; height: 100%; background: #226192; border-radius: 99px;"></div>
                 </div>
               </div>
-            </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: var(--font-code); margin-bottom: 2px;">
+                  <span style="color: #226192; font-weight: 700;">🟢 Pulls Risk DOWN: Trusted Recurring Merchant History</span>
+                  <span style="color: #226192; font-weight: 800;">-80.0% Safe &darr;</span>
+                </div>
+                <div style="height: 5px; background: rgba(34, 97, 146, 0.12); border-radius: 99px; overflow: hidden;">
+                  <div style="width: 95%; height: 100%; background: linear-gradient(90deg, #226192, #4A90E2); border-radius: 99px;"></div>
+                </div>
+              </div>
+            </div></div>
           </div>
 
           <div style="font-size: 11px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle); padding-top: 6px; margin-top: 6px;">
-            🛡️ <strong>Regulatory Compliance:</strong> Automatically generates adverse action reason codes required by RBI Master Directions (2024) and DPDP Act for rejected financial transactions.
+            🛡️ <strong>Regulatory Compliance:</strong> Automatically generates adverse action reason codes required by US FCRA (§ 1681m), OCC SR 11-7, and EU AI Act Art. 14 for rejected transactions.
           </div>
         </div>
       </div>
@@ -1143,8 +1207,8 @@ body::before {
     <div class="slide-body" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
       <div class="split-3col">
         <!-- Column 1: Roadmap Completion -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-cyan);">
-          <div class="card-title" style="color: var(--accent-cyan);">1. Roadmap Realization (Rev 1 &rarr; Rev 3)</div>
+        <div class="glass-panel info-card" style="border-top: 4px solid #226192;">
+          <div class="card-title" style="color: #226192;">1. Roadmap Realization (Rev 1 &rarr; Rev 3)</div>
           <div class="card-text">
             Systematically delivered all commitments promised across the three Capstone evaluation phases:
           </div>
@@ -1156,21 +1220,21 @@ body::before {
         </div>
 
         <!-- Column 2: Business ROI -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-gold);">
-          <div class="card-title" style="color: var(--accent-gold);">2. Quantified ROI: .42M Annual Savings</div>
+        <div class="glass-panel info-card" style="border-top: 4px solid #EF8557;">
+          <div class="card-title" style="color: #EF8557;">2. Quantified ROI: $1.42M Annual Savings</div>
           <div class="card-text">
-            Empirical financial impact modeled for a Tier-1 Bank processing .2 Billion in annual transactions:
+            Empirical financial impact modeled for a Tier-1 Bank processing $1.2 Billion in annual transactions:
           </div>
           <ul class="bullet-list">
-            <li><strong>Direct Chargeback Recovery:</strong> Intercepting 69.6% of fraud saves <strong>,580,000 / year</strong> in unrecoverable funds.</li>
-            <li><strong>False Decline Mitigation:</strong> 31.4% reduction in false alarms saves <strong>,000</strong> in manual investigator overhead.</li>
+            <li><strong>Direct Chargeback Recovery:</strong> Intercepting 69.6% of fraud saves <strong>$980,000 / year</strong> in unrecoverable funds.</li>
+            <li><strong>False Decline Mitigation:</strong> 31.4% reduction in false alarms saves <strong>$440,000</strong> in manual investigator overhead.</li>
             <li><strong>Sub-15ms Bank Switch SLA:</strong> 4.8ms median pipeline latency satisfies core banking deadlines with a sub-4-month payback period.</li>
           </ul>
         </div>
 
         <!-- Column 3: Future Scope -->
-        <div class="glass-panel info-card" style="border-top: 4px solid var(--accent-green);">
-          <div class="card-title" style="color: var(--accent-mint);">3. Academic Contribution &amp; Future Scope</div>
+        <div class="glass-panel info-card" style="border-top: 4px solid #226192;">
+          <div class="card-title" style="color: #226192;">3. Academic Contribution &amp; Future Scope</div>
           <div class="card-text">
             Key architectural takeaways and future enterprise expansion opportunities:
           </div>
@@ -1182,26 +1246,99 @@ body::before {
         </div>
       </div>
 
-      <!-- PRESTIGIOUS THANK YOU & Q&A BAR -->
-      <div class="glass-panel" style="margin-top: 14px; padding: 16px 24px; border: 1.5px solid var(--border-green); background: rgba(10, 16, 28, 0.92); display: flex; justify-content: space-between; align-items: center; border-radius: 12px;">
-        <div>
-          <div style="font-family: var(--font-heading); font-size: 21px; font-weight: 800; color: var(--accent-mint); display: flex; align-items: center; gap: 10px;">
-            <span>🎓 Thank You — Questions &amp; Discussion</span>
-          </div>
-          <div style="font-size: 13px; color: var(--text-secondary); margin-top: 3px;">
-            Real-Time Financial Fraud &amp; Credit Risk Intelligence System &middot; Final Capstone Defense
-          </div>
-        </div>
+      </div>
+    </div>
+  </div>
 
-        <div style="display: flex; gap: 24px; align-items: center; font-family: var(--font-code); font-size: 12px;">
-          <div style="text-align: right;">
-            <div style="color: var(--text-primary); font-weight: 700;">Challa Karthikeya &middot; Y. Brijesh Naidu &middot; K Dheeraj</div>
-            <div style="color: var(--accent-cyan); font-size: 11px; margin-top: 2px;">Faculty Mentor: Prof. Dileep Kumar M. &middot; Woxsen University</div>
-          </div>
-          <div style="padding-left: 20px; border-left: 1.5px solid var(--border-green); text-align: left;">
-            <div style="color: var(--accent-mint); font-weight: 800;">LIVE SYSTEM ACTIVE</div>
-            <div style="color: var(--text-muted); font-size: 10.5px;">Port 3000 UI &middot; Port 8000 API &middot; Port 9092 Kafka</div>
-          </div>
+<!-- ═════════════════════════════════════════════════════════════════════
+       SLIDE 7: DEDICATED THANK YOU & Q&A DEFENSE SLIDE
+       ═════════════════════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-7">
+    <div class="hero-wrapper" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 22px;">
+      <div class="category-pill gold" style="font-size: 13px; padding: 6px 20px;">
+        🎓 FINAL CAPSTONE DEFENSE &middot; WOXSEN UNIVERSITY
+      </div>
+
+      <h1 class="hero-title" style="font-size: 3.2rem; color: #226192;">
+        Thank You
+      </h1>
+
+      <p class="hero-subtitle" style="font-size: 1.15rem; color: #3D5369; max-width: 760px; line-height: 1.6;">
+        Real-Time Financial Fraud &amp; Credit Risk Intelligence System<br>
+        <span style="color: #EF8557; font-weight: 700;">Open for Questions, Examination &amp; Feedback</span>
+      </p>
+
+      <!-- Team Members Grid -->
+      <div class="team-grid-clean" style="max-width: 860px; margin-top: 8px;">
+        <div class="team-card-clean">
+          <div class="tc-role">Lead Architect &amp; ML Engineer</div>
+          <div class="tc-name">Challa Karthikeya</div>
+          <div class="tc-meta">23WU0104013 · B.Tech CSE</div>
+        </div>
+        <div class="team-card-clean">
+          <div class="tc-role">Graph &amp; Pipeline Research</div>
+          <div class="tc-name">Y. Brijesh Naidu</div>
+          <div class="tc-meta">23WU0104011 · B.Tech CSE</div>
+        </div>
+        <div class="team-card-clean">
+          <div class="tc-role">Streaming &amp; System Validation</div>
+          <div class="tc-name">K Dheeraj</div>
+          <div class="tc-meta">23WU0104039 · B.Tech CSE</div>
+        </div>
+      </div>
+
+      <!-- Supervisor & Institution -->
+      <div class="supervisor-bar-clean" style="margin-top: 6px;">
+        <span class="sup-pill">Faculty Mentor</span>
+        <span><strong>Prof. Dileep Kumar M.</strong> &mdash; Assistant Professor, School of Technology, Woxsen University</span>
+      </div>
+
+      <!-- Live System Status Badges -->
+      <div style="display: flex; gap: 14px; margin-top: 8px; font-family: var(--font-code); font-size: 12px;">
+        <span style="background: rgba(34, 97, 146, 0.1); border: 1.5px solid var(--border-blue); padding: 6px 14px; border-radius: 20px; color: #226192; font-weight: 700;">
+          ⚡ Port 3000 Monitor UI
+        </span>
+        <span style="background: rgba(34, 97, 146, 0.1); border: 1.5px solid var(--border-blue); padding: 6px 14px; border-radius: 20px; color: #226192; font-weight: 700;">
+          🚀 Port 8000 FastAPI Engine
+        </span>
+        <span style="background: rgba(239, 133, 87, 0.15); border: 1.5px solid var(--border-coral); padding: 6px 14px; border-radius: 20px; color: #EF8557; font-weight: 700;">
+          📡 Port 9092 Kafka Broker
+        </span>
+        <span style="background: rgba(16, 185, 129, 0.12); border: 1.5px solid rgba(16, 185, 129, 0.4); padding: 6px 14px; border-radius: 20px; color: #10B981; font-weight: 700;">
+          ✅ 13/13 PyTests Passing
+        </span>
+      </div>
+    </div>
+  </div>
+
+<!-- ═════════════════════════════════════════════════════════════════════
+       SLIDE 8: LIVE DASHBOARD SCREENSHOT — REAL SYSTEM IN ACTION
+       ═════════════════════════════════════════════════════════════════════ -->
+  <div class="slide" id="slide-8">
+    <div class="slide-header">
+      <div class="header-left">
+        <div class="category-pill gold">07 // LIVE SYSTEM DEMONSTRATION</div>
+        <div class="slide-headline">Real-Time Fraud Intelligence Dashboard — Live in Action</div>
+        <div class="slide-subhead">Apache Kafka 4.3.1 · Port 9092 · Tri-Model AI Radar · TreeSHAP Attribution · Forensic Inspection Studio</div>
+      </div>
+      <div class="header-badge" style="background: rgba(16,185,129,0.15); color: #10B981; border: 1.5px solid #10B981;">● KAFKA ACTIVE</div>
+    </div>
+
+    <div class="slide-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; height: 100%; align-items: start; overflow: hidden;">
+      <!-- Left: Standby / Armed State -->
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; background: rgba(34,97,146,0.12); border: 1px solid var(--border-blue); border-radius: 6px; display: inline-block; width: fit-content;">State A — Kafka Armed &amp; Listening</div>
+        <img src="dashboard_screenshot.png" alt="Dashboard standby state — Kafka Armed at Port 9092" style="width: 100%; border: 2px solid var(--border-blue); border-radius: 10px; object-fit: cover; max-height: 360px; box-shadow: 0 6px 28px rgba(34,97,146,0.22);">
+        <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5; padding: 8px 12px; background: rgba(34,97,146,0.08); border-radius: 6px; border-left: 3px solid var(--blue-primary);">
+          <strong>System Standby:</strong> Kafka consumer group listening on <code>localhost:9092</code> · Topic: <code>realtime-transactions</code> · 3-Model Radar Armed · SLA &lt;5ms
+        </div>
+      </div>
+      <!-- Right: Attack Detected State -->
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 11px; font-weight: 700; color: #dc2626; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; background: rgba(220,38,38,0.12); border: 1px solid rgba(220,38,38,0.4); border-radius: 6px; display: inline-block; width: fit-content;">🛑 State B — Botnet Fraud Intercepted (98.5% Confidence)</div>
+        <img src="dashboard_attack.png" alt="Dashboard active state — Stolen card botnet attack intercepted at 98.5% fraud probability" style="width: 100%; border: 2px solid rgba(220,38,38,0.5); border-radius: 10px; object-fit: cover; max-height: 360px; box-shadow: 0 6px 28px rgba(220,38,38,0.22);">
+        <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.5; padding: 8px 12px; background: rgba(220,38,38,0.06); border-radius: 6px; border-left: 3px solid #dc2626;">
+          <strong>BLOCKED:</strong> Card #19455 · MasterCard Digital · Region #441 · 2,480 km/h impossible travel · XGBoost 0.92 · GAT 0.94 · AutoEncoder 0.91 · <strong>Latency: 58.7ms</strong>
         </div>
       </div>
     </div>
@@ -1210,7 +1347,73 @@ body::before {
 </div>
 
 <!-- ═════════════════════════════════════════════════════════════════════
-     THREE.JS 3D INTERACTIVE BACKGROUND (CYBER MESH & PARTICLES)
+     CORAL ORANGE INTERACTIVE CURSOR ENGINE (#EF8557)
+     ═════════════════════════════════════════════════════════════════════ -->
+<script>
+(function initCoralCursor() {
+  try {
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    if (!dot || !ring) return;
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
+    });
+
+    window.addEventListener('mousedown', () => {
+      ring.classList.add('clicking');
+    });
+
+    window.addEventListener('mouseup', () => {
+      ring.classList.remove('clicking');
+    });
+
+    window.addEventListener('mouseleave', () => {
+      dot.style.opacity = '0';
+      ring.style.opacity = '0';
+    });
+
+    window.addEventListener('mouseenter', () => {
+      dot.style.opacity = '1';
+      ring.style.opacity = '1';
+    });
+
+    function attachHover() {
+      const selectors = 'button, a, .glass-panel, .team-card-clean, .nav-dot, .nav-arrow, .dark-table tr, .kbd-key, .category-pill, .header-badge';
+      document.querySelectorAll(selectors).forEach((el) => {
+        el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+      });
+    }
+
+    attachHover();
+    setTimeout(attachHover, 500);
+
+    function animateCursor() {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+  } catch (err) {
+    console.warn('Coral cursor initialization:', err);
+  }
+})();
+</script>
+
+<!-- ═════════════════════════════════════════════════════════════════════
+     THREE.JS 3D INTERACTIVE BACKGROUND (EDITORIAL MESH & PARTICLES)
+     Palette: Deep Editorial Blue (#226192) & Coral Orange (#EF8557)
      ═════════════════════════════════════════════════════════════════════ -->
 <script>
 (function initThreeGraph() {
@@ -1226,12 +1429,16 @@ body::before {
     const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(0, 0, 44);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0x00f59b, 1.8);
-    dirLight.position.set(20, 25, 20);
-    scene.add(dirLight);
+    const dirLight1 = new THREE.DirectionalLight(0xef8557, 1.4);
+    dirLight1.position.set(20, 25, 20);
+    scene.add(dirLight1);
+
+    const dirLight2 = new THREE.DirectionalLight(0x226192, 1.6);
+    dirLight2.position.set(-20, -20, 20);
+    scene.add(dirLight2);
 
     const NODE_COUNT = 95;
     const nodes = [];
@@ -1239,10 +1446,10 @@ body::before {
     scene.add(group);
 
     const palette = [
-      new THREE.Color(0x10b981), // Emerald
-      new THREE.Color(0x00f59b), // Cyber Mint
-      new THREE.Color(0x38bdf8), // Cyan
-      new THREE.Color(0xf43f5e)  // Alert Red
+      new THREE.Color(0x226192), // Deep Editorial Blue
+      new THREE.Color(0xef8557), // Coral Orange
+      new THREE.Color(0xd4cebe), // Warm Ivory node
+      new THREE.Color(0xef8557)  // Alert Coral Orange
     ];
 
     for (let i = 0; i < NODE_COUNT; i++) {
@@ -1261,9 +1468,9 @@ body::before {
       const geom = new THREE.SphereGeometry(radius, 14, 14);
       const mat = new THREE.MeshPhongMaterial({
         color: col,
-        emissive: isFraud ? 0xf43f5e : 0x10b981,
-        emissiveIntensity: isFraud ? 0.65 : 0.25,
-        shininess: 80
+        emissive: isFraud ? 0xef8557 : 0x226192,
+        emissiveIntensity: isFraud ? 0.75 : 0.25,
+        shininess: 90
       });
       const mesh = new THREE.Mesh(geom, mat);
       mesh.position.set(x, y, z);
@@ -1271,7 +1478,7 @@ body::before {
       nodes.push({ mesh, isFraud, baseX: x, baseY: y, baseZ: z });
     }
 
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.28 });
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x226192, transparent: true, opacity: 0.18 });
     const lineGeom = new THREE.BufferGeometry();
     const linePositions = [];
 
@@ -1279,8 +1486,7 @@ body::before {
       for (let j = i + 1; j < NODE_COUNT; j++) {
         const dx = nodes[i].baseX - nodes[j].baseX;
         const dy = nodes[i].baseY - nodes[j].baseY;
-        const dz = nodes[i].baseZ - nodes[j].baseZ;
-        const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+        const dist = Math.sqrt(dx*dx + dy*dy);
         if (dist < 8.8) {
           linePositions.push(nodes[i].baseX, nodes[i].baseY, nodes[i].baseZ);
           linePositions.push(nodes[j].baseX, nodes[j].baseY, nodes[j].baseZ);
@@ -1323,7 +1529,7 @@ body::before {
      ═════════════════════════════════════════════════════════════════════ -->
 <script>
 (function initDeckEngine() {
-  const TOTAL_SLIDES = 6;
+  const TOTAL_SLIDES = 8;
   let currentSlide = 1;
 
   const slides = [];

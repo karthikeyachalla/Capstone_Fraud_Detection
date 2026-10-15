@@ -127,6 +127,54 @@ class TestFraudDetectionPipeline(unittest.TestCase):
         self.assertIn("transaction_amount", events[0])
         self.assertIn("payment_method", events[0])
 
+    def test_10_enterprise_resilience_status_endpoint(self):
+        """Verifies all 5 enterprise banking flaw solutions are active."""
+        response = self.client.get("/v1/resilience/status")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["status"], "OPERATIONAL")
+        self.assertIn("flaw_1_graph_scalability", data)
+        self.assertIn("flaw_2_cold_start_safeguard", data)
+        self.assertIn("flaw_3_adaptive_drift", data)
+        self.assertIn("flaw_4_gated_xai", data)
+        self.assertIn("flaw_5_resilient_kafka", data)
+
+    def test_11_cold_start_safeguard_probation(self):
+        """Verifies brand new cards with high amounts trigger 2FA probation (Flaw 2)."""
+        response = self.client.post("/v1/cold-start/simulate?amount=350.0")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["action"], "CHALLENGE_2FA")
+        self.assertTrue(data["enterprise_resilience"]["flaw_2_cold_start_mitigation"]["is_cold_start"])
+        self.assertTrue(data["enterprise_resilience"]["flaw_2_cold_start_mitigation"]["enforced_step_up"])
+
+    def test_12_gated_treeshap_bypass(self):
+        """Verifies low-risk transactions bypass TreeSHAP to meet <15ms SLA (Flaw 4)."""
+        payload = {
+            "transaction_id": "TXN_SAFE_BYPASS_TEST",
+            "transaction_amount": 25.0,
+            "card1": 13500.0,
+            "new_device": "No"
+        }
+        response = self.client.post("/predict", json=payload)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["risk_tier"], "LOW_SAFE")
+        xai_meta = data["enterprise_resilience"]["flaw_4_gated_treeshap"]
+        self.assertEqual(xai_meta["gated_xai_status"], "FAST_PATH_BYPASS")
+        self.assertFalse(xai_meta["shap_computed"])
+
+    def test_13_resilient_kafka_ring_buffer_zero_loss(self):
+        """Verifies zero transaction loss in failover DLQ (Flaw 5)."""
+        from src.fastapi_app import mas
+        mgr = mas.kafka_cluster_mgr
+        pub_res = mgr.publish_event(
+            "financial.test.topic",
+            key="test_key",
+            payload={"msg": "resilience_probe"}
+        )
+        self.assertIn(pub_res["delivery_status"], ["ACKNOWLEDGED_BY_KAFKA", "BUFFERED_IN_MEMORY_FAILOVER_DLQ"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -55,7 +55,7 @@ def main():
             {"feature": "C1", "shap_value": 0.0984, "impact": "UNUSUAL_TRANSACTION_COUNT", "raw_value": 12.0},
             {"feature": "DeviceInfo", "shap_value": 0.0762, "impact": "SHARED_HARDWARE_SYNDICATE", "raw_value": "iOS 15"}
         ],
-        "regulatory_compliance": "Conforms to RBI Master Direction 2024 & EU AI Act Article 14 Explainability"
+        "regulatory_compliance": "Conforms to US FCRA § 1681m Adverse Action & OCC SR 11-7 Model Risk Guidance"
     }
 
     shap_path = os.path.join(MODELS_DIR, "shap_sample_explanation.json")

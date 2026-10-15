@@ -3,13 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Large Datasets (Avoid GitHub 100MB hard limit)
+# Large Datasets & Notebook Artifacts (Avoid GitHub limits)
 data/
 *.zip
 *.csv
 *.csv.gz
-*.pt
-models/lightgbm_model.pkl
+notebooks/kaggle_output/
+*_BACKUP.*
 
 # Virtual Environments
 .venv/
