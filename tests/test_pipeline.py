@@ -21,7 +21,13 @@ class TestFraudDetectionPipeline(unittest.TestCase):
     def test_01_root_endpoint(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        data = response.json()
+        # Root serves the live frontend dashboard
+        self.assertTrue(len(response.text) > 1000)
+        
+        # /api-info serves API metadata
+        api_resp = self.client.get("/api-info")
+        self.assertEqual(api_resp.status_code, 200)
+        data = api_resp.json()
         self.assertEqual(data["status"], "online")
         self.assertIn("Real-Time Financial Fraud", data["system"])
 
