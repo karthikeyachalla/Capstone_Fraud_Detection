@@ -3993,19 +3993,11 @@ btnClearTable.addEventListener('click', () => {
   resetArenaToStandby();
 });
 
-/* ───────── INIT: LOAD INITIAL EVENTS ───────── */
-(async function init() {
+/* ───────── INIT: STANDBY UNTIL BUTTON CLICK ───────── */
+(function init() {
   resetArenaToStandby();
-  try {
-    const res = await fetch('http://127.0.0.1:8000/stream/next?batch_size=1');
-    if (res.ok) {
-      const data = await res.json();
-      if (data.events && data.events.length > 0) {
-        data.events.forEach(ev => renderEvent(ev, false));
-      }
-    }
-  } catch(e) {}
-  startStream();
+  stopStream();
+  if (streamCountLbl) streamCountLbl.textContent = '0 events processed';
 })();
 </script>
 </body>
